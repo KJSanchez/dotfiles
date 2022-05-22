@@ -1,0 +1,19 @@
+[alias]
+	co = checkout
+	br = branch -vv
+	ci = commit
+    fe = fetch
+    lg = log --oneline
+    ls = ls-files
+	st = status
+	last = log -1 HEAD
+	ri = rebase --interactive
+[user]
+	name = Keenan Sanchez
+	email = keenan@gainful.com
+[core]
+	excludesfile = /Users/keenan/.gitignore
+[color "grep"]
+    linenumber = yellow bold
+    match = red
+    filename = magenta
