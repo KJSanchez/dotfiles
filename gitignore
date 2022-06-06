@@ -1,0 +1,7 @@
+.python-version
+*pyc
+Makefile
+.dir-locals.el
+docker-compose.yml-dev
+*/commands/zendesk.py
+testdox.log

@@ -21,4 +21,8 @@ call plug#begin()
     Plug 'junegunn/fzf.vim'
     Plug 'tomtom/tcomment_vim'
     Plug 'davidhalter/jedi-vim'
+    Plug 'cocopon/iceberg.vim'
 call plug#end()
+
+set background=dark
+colorscheme iceberg

@@ -2,7 +2,7 @@
 	co = checkout
 	br = branch -vv
 	ci = commit
-    fe = fetch
+    fe = fetch --prune
     lg = log --oneline
     ls = ls-files
 	st = status

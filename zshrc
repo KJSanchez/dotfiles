@@ -7,6 +7,7 @@ alias ls='ls -GH'
 alias j='cd ..'
 alias jj='cd ../..'
 alias grep='grep --color=auto'
+alias gti='git'
 cd ~/gainfulWeb
 export XDG_CONFIG_HOME=~/dotfiles
 
@@ -23,7 +24,14 @@ eval $(/opt/homebrew/bin/brew shellenv)
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/.ebcli-virtual-env/executables:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
+
+
+
+# Do not create .pyc files or __pycahce__
+export PYTHONDONTWRITEBYTECODE=1
+
