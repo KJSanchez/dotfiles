@@ -84,37 +84,27 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(setq-default
+ fill-column 88
+ git-commit-summary-max-length 68)
 
-(defun toggle-transparency ()
-  (let ((alpha (frame-parameter nil 'alpha)))
-    (if (eq
-     (if (numberp alpha)
-         alpha
-       (cdr alpha)) ; may also be nil
-     100)
-    (set-frame-parameter nil 'alpha '(80 . 50))
-      (set-frame-parameter nil 'alpha '(100 . 100)))))
-
-
-(map! :leader
-      :desc "Transparency"
-      "t t" #'toggle-transparency)
+(setq
+ initial-major-mode 'emacs-lisp-mode
+ doom-modeline-github t
+ which-key-idle-delay .01
+ which-key-idle-secondary-delay .01)
 
 (map! :leader
       :desc "Global Flycheck Mode"
       "t f" #'global-flycheck-mode)
 
-
-(defun gainful/is-private-method ()
-  (interactive)
-  (+vertico-file-search :query (current-word) :in "~/gainfulWeb" :all-files t))
-
-(defun gainful/privatize-method ()
-  (interactive)
-  (replace-regexp-in-string)
-  )
+(map! :leader
+      :desc "imenu"
+      "t i" #'imenu-list-minor-mode)
 
 (map! :leader
-      ;; :prefix "Refactor"
-      :desc "Search Occurances"
-      ":" #'gainful/is-private-method)
+      :desc "global visual line mode"
+      "t w" #'global-visual-line-mode)
+
+
+;; (setenv "RIPGREP_CONFIG_PATH" "~/.ripgreprc")
