@@ -1,7 +1,12 @@
 .python-version
-*pyc
-Makefile
+*.pyc
+*.swp
 .dir-locals.el
 docker-compose.yml-dev
-*/commands/zendesk.py
+venv/
 testdox.log
+*.o
+QUICKSTART.md
+Makefile
+
+settings/
