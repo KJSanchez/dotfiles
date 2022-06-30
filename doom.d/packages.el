@@ -51,3 +51,4 @@
 
 (package! imenu-list)
 (package! feature-mode)
+(package! csv-mode)

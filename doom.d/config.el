@@ -48,6 +48,7 @@
 ;; (setq lsp-python-ms-python-executable-cmd "PYENV_VERSION=3.6.12 python")
 
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\zshrc\\'" . sh-mode))
 
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 160))
@@ -92,7 +93,9 @@
  initial-major-mode 'emacs-lisp-mode
  doom-modeline-github t
  which-key-idle-delay .01
- which-key-idle-secondary-delay .01)
+ which-key-idle-secondary-delay .01
+ ;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
+ )
 
 (map! :leader
       :desc "Global Flycheck Mode"
@@ -106,5 +109,6 @@
       :desc "global visual line mode"
       "t w" #'global-visual-line-mode)
 
+(set-popup-rule! "*Ilist*" :side 'right :width 40)
 
-;; (setenv "RIPGREP_CONFIG_PATH" "~/.ripgreprc")
+;; (after! global-git-commit-mode)
