@@ -1,0 +1,5 @@
+export XDG_CONFIG_HOME=~/dotfiles
+export PATH="$HOME/.ebcli-virtual-env/executables:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
+export PYTHONDONTWRITEBYTECODE=1
+export RIPGREP_CONFIG_PATH=~/.ripgreprc

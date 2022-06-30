@@ -1,3 +1,11 @@
 --glob=!scripts/
 --glob=!seed_db.mysql
 --glob=!migrations/
+--glob=!*.svg
+--glob=!yarn.lock
+--glob=!*.js
+--glob=!*.tsx
+--glob=!package-lock.json
+--glob=!*.html
+--glob=!*.json
+--glob=!deploymentLog.txt
