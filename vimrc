@@ -26,3 +26,8 @@ call plug#end()
 
 set background=dark
 colorscheme iceberg
+
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
