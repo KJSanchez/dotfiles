@@ -1,0 +1,1 @@
+0 11 * * *  git -C ~/dotfiles commit -am $(date +'%Y-%m-%d') > /dev/null
