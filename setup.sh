@@ -6,3 +6,5 @@ ln vimrc ~/.vimrc
 ln -shf doom.d ~/.doom.d
 ln zshrc ~/.zshrc
 ln ripgreprc ~/.ripgreprc
+
+crontab ./crontab

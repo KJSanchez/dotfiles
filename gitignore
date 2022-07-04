@@ -8,6 +8,7 @@ testdox.log
 *.o
 QUICKSTART.md
 Makefile
+.DS_Store
 
 settings/
 configstore

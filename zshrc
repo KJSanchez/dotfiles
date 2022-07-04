@@ -1,4 +1,4 @@
-. ~/dotfiles/envars
+. ~/dotfiles/envvars
 . ~/dotfiles/functions.sh
 
 alias ls='ls -GH'

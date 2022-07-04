@@ -20,3 +20,13 @@ function unused-endpoints() {
             fi;
     done
 }
+
+
+function trigger-workflow() {
+    curl \
+        -X POST \
+        -H "Accept: application/vnd.github.v3+json" \
+        -H "Authorization: token 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" \
+        https://api.github.com/repos/gainfulHealth/gainfulWeb/dispatches \
+        -d '{"event_type":"on-demand-test","client_payload":{"unit":false,"integration":true}}'
+}
