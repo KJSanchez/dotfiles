@@ -18,9 +18,6 @@
 
 ;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
 
-;; TODO:
-;; (setq lsp-python-ms-python-executable-cmd "PYENV_VERSION=3.6.12 python")
-
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\zshrc\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\Cask\\'" . emacs-lisp-mode))
@@ -50,10 +47,12 @@
 ;;   `require' or `use-package'.
 ;; - `map!' for binding new keys
 ;;
+;;
+
+;; TODO set a smaller font in the imenu buffer.
 
 (setq-default
  fill-column 88
- imenu-list-size .3 ;; TODO pretty sure this is broken.
  git-commit-summary-max-length 68)
 
 
@@ -77,17 +76,17 @@
       "TAB 7" nil
       "TAB 8" nil
       "TAB 9" nil
-      ;; "b i" nil  ;; ibuffer
+      ;; "b i" nil        ;; ibuffer
       "`" nil
       "*" nil
-      "f E" nil  ;; Browse emacs.d
-
-      ;; :desc "Browse emacs.d"
-      ;; "b E" (cmd! (let ((default-directory doom-emacs-dir))
-      ;;               (projectile-find-file)))
+      "f E" nil        ;; Browse emacs.d
+      "f f" nil        ;; Find file
+      ;; ":" nil       ;; M-x
 
       :desc "Eval expression"
       "RET" (cmd! (call-interactively #'execute-extended-command))
+
+      "p f" (cmd! (error "use SPC SPC instead"))
 
       ;; "TAB TAB" #'+vterm/here
 
@@ -113,11 +112,10 @@
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
 
+;; FIXME disable centaur-tabs-mode in vterm buffer
 (add-hook! vterm-mode
   (centaur-tabs-mode))
-
 
 ;; # TODO open vterm in seperate workspace
 ;; # TODO toggle debugger
 ;; # TODO breakpoint snippets
-;; # TODO generic test function snippet
