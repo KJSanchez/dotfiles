@@ -2,54 +2,28 @@
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
+(load! "functions.el")
 
+(setq
+ user-full-name "Keenan Sanchez"
+ user-mail-address "keenan@gainful.com"
+ doom-theme 'doom-city-lights
+ org-directory "~/org/"
+ display-line-numbers-type t
+ evil-escape-key-sequence "kj"
+ initial-major-mode 'emacs-lisp-mode
+ doom-modeline-github t
+ which-key-idle-delay .01
+ which-key-idle-secondary-delay .01)
 
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
-(setq user-full-name "Keenan Sanchez"
-      user-mail-address "keenan@gainful.com")
-
-;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
-;; - `doom-font' -- the primary font to use
-;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;; - `doom-unicode-font' -- for unicode glyphs
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
-;;
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
-(setq evil-escape-key-sequence "kj")
+;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
 
 ;; TODO:
 ;; (setq lsp-python-ms-python-executable-cmd "PYENV_VERSION=3.6.12 python")
 
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\zshrc\\'" . sh-mode))
-
+(add-to-list 'auto-mode-alist '("\\Cask\\'" . emacs-lisp-mode))
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 160))
 
@@ -76,39 +50,74 @@
 ;;   `require' or `use-package'.
 ;; - `map!' for binding new keys
 ;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
 
 (setq-default
  fill-column 88
+ imenu-list-size .3 ;; TODO pretty sure this is broken.
  git-commit-summary-max-length 68)
 
-(setq
- initial-major-mode 'emacs-lisp-mode
- doom-modeline-github t
- which-key-idle-delay .01
- which-key-idle-secondary-delay .01
- ;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
- )
 
 (map! :leader
       :desc "Global Flycheck Mode"
-      "t f" #'global-flycheck-mode)
+      "t f" #'global-flycheck-mode
 
-(map! :leader
       :desc "imenu"
-      "t i" #'imenu-list-minor-mode)
+      "t i" #'imenu-list-minor-mode
 
-(map! :leader
       :desc "global visual line mode"
-      "t w" #'global-visual-line-mode)
+      "t w" #'global-visual-line-mode
 
-(set-popup-rule! "*Ilist*" :side 'right :width 40)
+      "TAB 0" nil
+      "TAB 1" nil
+      "TAB 2" nil
+      "TAB 3" nil
+      "TAB 4" nil
+      "TAB 5" nil
+      "TAB 6" nil
+      "TAB 7" nil
+      "TAB 8" nil
+      "TAB 9" nil
+      ;; "b i" nil  ;; ibuffer
+      "`" nil
+      "*" nil
+      "f E" nil  ;; Browse emacs.d
 
-;; (after! global-git-commit-mode)
+      ;; :desc "Browse emacs.d"
+      ;; "b E" (cmd! (let ((default-directory doom-emacs-dir))
+      ;;               (projectile-find-file)))
+
+      :desc "Eval expression"
+      "RET" (cmd! (call-interactively #'execute-extended-command))
+
+      ;; "TAB TAB" #'+vterm/here
+
+      :desc "Install a package"
+      "h i" #'package-install
+
+      :desc "Switch to last buffer"
+      "." #'evil-switch-to-windows-last-buffer
+
+      ;; :after vterm-mode
+      :map vterm-mode-map
+      :i "kj" #'+evil-force-normal-state)
+
+
+(set-popup-rule! "helpful function:" :height 25 :side 'bottom)
+(set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
+(set-popup-rule! "helpful command:" :height 25 :side 'bottom)
+(set-popup-rule! "*Ilist*" :side 'right :width 40 :select t)
+
+(add-hook! emacs-lisp-mode
+  (add-hook 'before-save-hook #'eval-buffer nil t)
+  (when (string= (buffer-name) "*scratch*")
+    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
+
+
+(add-hook! vterm-mode
+  (centaur-tabs-mode))
+
+
+;; # TODO open vterm in seperate workspace
+;; # TODO toggle debugger
+;; # TODO breakpoint snippets
+;; # TODO generic test function snippet

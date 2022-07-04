@@ -52,3 +52,7 @@
 (package! imenu-list)
 (package! feature-mode)
 (package! csv-mode)
+(package! crontab-mode)
+(package! iceberg-theme) ;; TODO why can't I load this theme?
+
+(load! "gainful-mode/package")
