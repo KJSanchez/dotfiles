@@ -1,29 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-(load! "functions.el")
-
-(setq
- user-full-name "Keenan Sanchez"
- user-mail-address "keenan@gainful.com"
- doom-theme 'doom-city-lights
- org-directory "~/org/"
- display-line-numbers-type t
- evil-escape-key-sequence "kj"
- initial-major-mode 'emacs-lisp-mode
- doom-modeline-github t
- which-key-idle-delay .01
- which-key-idle-secondary-delay .01)
-
-;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
-
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\zshrc\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\Cask\\'" . emacs-lisp-mode))
-(add-to-list 'default-frame-alist '(height . 50))
-(add-to-list 'default-frame-alist '(width . 160))
-
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
@@ -46,15 +22,36 @@
 ;;   this file. Emacs searches the `load-path' when you load packages with
 ;;   `require' or `use-package'.
 ;; - `map!' for binding new keys
-;;
-;;
 
 ;; TODO set a smaller font in the imenu buffer.
+
+(setq
+ user-full-name "Keenan Sanchez"
+ user-mail-address "keenan@gainful.com"
+ doom-theme 'doom-city-lights
+ org-directory "~/org/"
+ display-line-numbers-type t
+ evil-escape-key-sequence "kj"
+ initial-major-mode 'emacs-lisp-mode
+ doom-modeline-github t
+ which-key-idle-delay .01
+ which-key-idle-secondary-delay .01)
+
+
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\zshrc\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\Cask\\'" . emacs-lisp-mode))
+(add-to-list 'default-frame-alist '(height . 50))
+(add-to-list 'default-frame-alist '(width . 160))
+
+(after! centaur-tabs
+  (add-to-list 'centaur-tabs-excluded-prefixes "*Messages*")
+  (add-to-list 'centaur-tabs-excluded-prefixes "*doom*"))
 
 (setq-default
  fill-column 88
  git-commit-summary-max-length 68)
-
+;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
 
 (map! :leader
       :desc "Global Flycheck Mode"
@@ -65,6 +62,13 @@
 
       :desc "global visual line mode"
       "t w" #'global-visual-line-mode
+
+      :desc "Centaur tabs"
+      "t t" #'centaur-tabs-mode
+
+      ;; :desc "relative line numbers"
+      ;; "t l" (cmd!
+      ;;        (setq ))
 
       "TAB 0" nil
       "TAB 1" nil
@@ -80,31 +84,42 @@
       "`" nil
       "*" nil
       "f E" nil        ;; Browse emacs.d
-      "f f" nil        ;; Find file
+      ;; "f f" (cmd! (error "Use SPC SPC instead."))
       ;; ":" nil       ;; M-x
 
-      :desc "Eval expression"
-      "RET" (cmd! (call-interactively #'execute-extended-command))
-
-      "p f" (cmd! (error "use SPC SPC instead"))
+      ;; TODO how do I map to SPC?
+      ;; "SPC" (cmd! (error "use SPC p f instead."))
 
       ;; "TAB TAB" #'+vterm/here
 
       :desc "Install a package"
       "h i" #'package-install
 
+      :desc "Vterm"
+      "T" #'+vterm/here
+
       :desc "Switch to last buffer"
       "." #'evil-switch-to-windows-last-buffer
 
+      ;; FIXME: Why doesn't evil escape key sequence work in vterm?
       ;; :after vterm-mode
-      :map vterm-mode-map
-      :i "kj" #'+evil-force-normal-state)
+      (:map vterm-mode-map
+       :i "kj" #'+evil-force-normal-state)
+
+      (:map emacs-lisp-mode-map
+       :desc "run ert tests"
+       :localleader
+       "t" (cmd! (ert t))))
 
 
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful command:" :height 25 :side 'bottom)
-(set-popup-rule! "*Ilist*" :side 'right :width 40 :select t)
+(set-popup-rule! "helpful variable:" :height 25 :side 'bottom)
+;; FIXME why isn't :select option working?
+(set-popup-rule! "*Ilist*" :side 'right :width 50 :select t)
+;; TODO Add ENTER to ilist-mode-map
+(set-popup-rule! "*ert*" :side 'right :width 60 :select t)
 
 (add-hook! emacs-lisp-mode
   (add-hook 'before-save-hook #'eval-buffer nil t)
@@ -112,10 +127,13 @@
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
 
-;; FIXME disable centaur-tabs-mode in vterm buffer
 (add-hook! vterm-mode
-  (centaur-tabs-mode))
+  (centaur-tabs-local-mode nil))
 
-;; # TODO open vterm in seperate workspace
-;; # TODO toggle debugger
+(add-hook! imenu-list-minor-mode
+  (centaur-tabs-local-mode nil))
+
+
+;; # TODO How should debuggers integrate with emacs?
 ;; # TODO breakpoint snippets
+;; # TODO exclude popup buffers from centaur-tabs

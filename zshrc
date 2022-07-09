@@ -17,4 +17,4 @@ cd ~/gainfulWeb
 
 # TODO: why do I need this??
 eval $(/opt/homebrew/bin/brew shellenv)
-
+eval "$(pyenv init --path)"
