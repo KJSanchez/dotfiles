@@ -97,7 +97,6 @@
         +grip)
        org               ; organize your plain life in plain text
        python
-        ;; +pyenv)
        ;;racket            ; a DSL for DSLs
        sh                ; she sells {ba,z,fi}sh shells on the C xor
        yaml              ; JSON, but readable

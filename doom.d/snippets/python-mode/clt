@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: clt
+# uuid: clt
+# key: clt
+# condition: t
+# --
+
+
+class $1(TestCase):
+      def test_$2(self):
+          """
+          /$3/ returns a 200 response for trivial inputs.
+          """

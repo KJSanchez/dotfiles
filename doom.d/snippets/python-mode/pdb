@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: pdb
+# uuid: pdb
+# key: pdb
+# condition: t
+# --
+
+import pdb
+from pprint import pprint as pr
+
+pr($0)
+pdb.set_trace()

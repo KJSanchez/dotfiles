@@ -18,3 +18,6 @@ cd ~/gainfulWeb
 # TODO: why do I need this??
 eval $(/opt/homebrew/bin/brew shellenv)
 eval "$(pyenv init --path)"
+
+[[ -r `brew --prefix`/etc/profile.d/bash_completion.sh ]] && . `brew --prefix`/etc/profile.d/bash_completion.sh
+# [[ -f `brew --prefix`/etc/bash_completion.d/git-completion.bash ]] && . `brew --prefix`/etc/bash_completion.d/git-completion.bash

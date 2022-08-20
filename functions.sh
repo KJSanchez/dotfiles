@@ -1,6 +1,6 @@
 function :e() {
-	vim ~/.functions.sh
-	. ~/.functions.sh
+	vim ~/dotfiles/functions.sh
+	. ~/dotfiles/functions.sh
 }
 
 function venv() {
@@ -29,4 +29,8 @@ function trigger-workflow() {
         -H "Authorization: token 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" \
         https://api.github.com/repos/gainfulHealth/gainfulWeb/dispatches \
         -d '{"event_type":"on-demand-test","client_payload":{"unit":false,"integration":true}}'
+}
+
+function dtest() {
+    QUIET=1 venv/bin/python manage.py test -v1 -k --failfast $1 
 }

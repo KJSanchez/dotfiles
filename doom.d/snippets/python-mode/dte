@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: dte
+# uuid: dte
+# key: dte
+# condition: t
+# --
+
+
+def test_$1(self):
+    """
+    /$2/ returns a 200 response for trivial inputs.
+    """

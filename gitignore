@@ -4,11 +4,12 @@
 .dir-locals.el
 docker-compose.yml-dev
 venv/
-testdox.log
+testdox.bdd
 *.o
 QUICKSTART.md
 Makefile
 .DS_Store
 
-settings/
 configstore
+
+.pre-commit-config37.yaml

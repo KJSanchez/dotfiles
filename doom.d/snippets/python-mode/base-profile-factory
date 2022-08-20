@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: bpf
+# uuid: bpf
+# key: bpf
+# condition: t
+# --
+
+profile = BaseProfileFactory()
+success = self.client.login(email=profile.user.email, password="password")
+self.assertTrue(success)
+response = self.client.get("$1")
+self.assertEquals(response.status_code, 200)

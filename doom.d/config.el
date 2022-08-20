@@ -33,14 +33,14 @@
  display-line-numbers-type t
  evil-escape-key-sequence "kj"
  initial-major-mode 'emacs-lisp-mode
- doom-modeline-github t
- which-key-idle-delay .01
- which-key-idle-secondary-delay .01)
+ doom-modeline-github t)
+ ;; which-key-idle-delay .01
+ ;; which-key-idle-secondary-delay .01)
 
 
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\zshrc\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\Cask\\'" . emacs-lisp-mode))
+(add-to-list 'auto-mode-alist '("zshrc\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("Cask\\'" . emacs-lisp-mode))
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 160))
 
@@ -64,7 +64,18 @@
       "t w" #'global-visual-line-mode
 
       :desc "Centaur tabs"
-      "t t" #'centaur-tabs-mode
+      "t T" #'centaur-tabs-mode
+
+      :desc "toggle transparency"
+      "t t" (cmd!
+             (let ((alpha (frame-parameter nil 'alpha)))
+               (if (eq
+                    (if (numberp alpha)
+                        alpha
+                      (cdr alpha)) ; may also be nil
+                    100)
+                   (set-frame-parameter nil 'alpha '(60 . 50))
+                 (set-frame-parameter nil 'alpha '(100 . 100)))))
 
       ;; :desc "relative line numbers"
       ;; "t l" (cmd!
@@ -101,6 +112,9 @@
       :desc "Switch to last buffer"
       "." #'evil-switch-to-windows-last-buffer
 
+      :desc "edit snippet"
+      "c s" #'+snippets/find-private
+
       ;; FIXME: Why doesn't evil escape key sequence work in vterm?
       ;; :after vterm-mode
       (:map vterm-mode-map
@@ -111,6 +125,13 @@
        :localleader
        "t" (cmd! (ert t))))
 
+(map! :map python-mode-map
+      :prefix "coverage"
+      :localleader
+      :desc "toggle coverage overlay"
+      "c c" #'python-coverage-overlay-mode
+      :desc "refresh coverage overlay"
+      "c r" #'python-coverage-overlay-refresh)
 
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
@@ -123,9 +144,10 @@
 
 (add-hook! emacs-lisp-mode
   (add-hook 'before-save-hook #'eval-buffer nil t)
+  (when (string= (buffer-name) "*doom:scratch*")
+    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
   (when (string= (buffer-name) "*scratch*")
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
-
 
 (add-hook! vterm-mode
   (centaur-tabs-local-mode nil))
@@ -133,7 +155,36 @@
 (add-hook! imenu-list-minor-mode
   (centaur-tabs-local-mode nil))
 
-
 ;; # TODO How should debuggers integrate with emacs?
 ;; # TODO breakpoint snippets
 ;; # TODO exclude popup buffers from centaur-tabs
+
+
+(require 'ov)
+(require 'f)
+(require 's)
+
+(add-hook! python-mode
+  (when (-> (f-this-file) f-filename (string= "urls.py"))
+    (highlight-unused-routes)))
+
+(defun highlight-unused-routes ()
+  "(WIP) Highlight url routes that haven't been queried in the past 60 days."
+  (interactive)
+
+  (remove-overlays (point-min) (point-max))
+
+  (->> "/Users/keenan/dotfiles/doom.d/unused_routes.txt"
+       f-read-text
+       (s-replace "/api/admin/" "")
+       (s-replace "/api/" "")
+       (s-replace "/blog/" "")
+       (s-replace "/survey/admin/" "")
+       (s-replace "/admin/" "")
+       (s-replace "/api/quiz/" "")
+       (s-replace "/quiz/" "")
+       (s-replace "/users/" "")
+       (replace-regexp-in-string "^/" "")
+       s-lines
+       (mapc (lambda (api-route)
+               (ov-set (ov-regexp api-route) 'face 'error)))))

@@ -53,6 +53,8 @@
 (package! feature-mode)
 (package! csv-mode)
 (package! crontab-mode)
-(package! iceberg-theme) ;; TODO why can't I load this theme?
+(package! ov)
+(package! f)
+(package! python-coverage)
 
 ;; (load! "gainful-mode/package")
