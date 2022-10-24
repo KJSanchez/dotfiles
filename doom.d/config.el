@@ -41,6 +41,7 @@
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("zshrc\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("Cask\\'" . emacs-lisp-mode))
+(add-to-list 'auto-mode-alist '("django.config\\'" . yaml-mode))
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 160))
 
@@ -54,8 +55,11 @@
 ;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
 
 (map! :leader
-      :desc "Global Flycheck Mode"
-      "t f" #'global-flycheck-mode
+      ;; :desc "Global Flycheck Mode"
+      ;; "t f" #'global-flycheck-mode
+
+      :desc "Flycheck"
+      "t e" (cmd! (flycheck-list-errors) (switch-to-buffer-other-window "*Flycheck errors*"))
 
       :desc "imenu"
       "t i" #'imenu-list-minor-mode
@@ -66,7 +70,7 @@
       :desc "Centaur tabs"
       "t T" #'centaur-tabs-mode
 
-      :desc "toggle transparency"
+      :desc "transparency"
       "t t" (cmd!
              (let ((alpha (frame-parameter nil 'alpha)))
                (if (eq
@@ -102,6 +106,7 @@
       ;; "SPC" (cmd! (error "use SPC p f instead."))
 
       ;; "TAB TAB" #'+vterm/here
+      ;;
 
       :desc "Install a package"
       "h i" #'package-install
@@ -120,10 +125,16 @@
       (:map vterm-mode-map
        :i "kj" #'+evil-force-normal-state)
 
+      :desc "Switch to last buffer"
+      "l" #'evil-switch-to-windows-last-buffer
+
       (:map emacs-lisp-mode-map
        :desc "run ert tests"
        :localleader
        "t" (cmd! (ert t))))
+
+(map! :desc "Switch to last Centaur Tab"
+      "C-TAB" #'centaur-tabs-forward)
 
 (map! :map python-mode-map
       :prefix "coverage"
@@ -132,6 +143,12 @@
       "c c" #'python-coverage-overlay-mode
       :desc "refresh coverage overlay"
       "c r" #'python-coverage-overlay-refresh)
+
+(map! :map python-mode-map
+      :prefix "pyenv"
+      :localleader
+      :desc "pyenv local"
+      "g l" #'pyenv-mode-set)
 
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
@@ -150,41 +167,46 @@
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
 (add-hook! vterm-mode
+  (display-fill-column-indicator-mode -1)
   (centaur-tabs-local-mode nil))
 
 (add-hook! imenu-list-minor-mode
   (centaur-tabs-local-mode nil))
 
+(add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
+
 ;; # TODO How should debuggers integrate with emacs?
-;; # TODO breakpoint snippets
 ;; # TODO exclude popup buffers from centaur-tabs
 
 
-(require 'ov)
-(require 'f)
-(require 's)
+(defun centaur-tabs-hide-tab (x)
+  "Do no to show buffer X in tabs."
+  (let ((name (format "%s" x)))
+    (or
+     ;; Current window is not dedicated window.
+     (window-dedicated-p (selected-window))
 
-(add-hook! python-mode
-  (when (-> (f-this-file) f-filename (string= "urls.py"))
-    (highlight-unused-routes)))
+     ;; Buffer name not match below blacklist.
+     (string-prefix-p "*epc" name)
+     (string-prefix-p "*helm" name)
+     (string-prefix-p "*Helm" name)
+     (string-prefix-p "*Compile-Log*" name)
+     (string-prefix-p "*lsp" name)
+     (string-prefix-p "*company" name)
+     (string-prefix-p "*Flycheck" name)
+     (string-prefix-p "*flycheck" name)
+     (string-prefix-p "*Anaconda*" name)
+     (string-prefix-p "*anaconda-mode*" name)
+     (string-prefix-p "*tramp" name)
+     (string-prefix-p " *Mini" name)
+     (string-prefix-p "*help" name)
+     (string-prefix-p "*straight" name)
+     (string-prefix-p " *temp" name)
+     (string-prefix-p "*Help" name)
+     (string-prefix-p "*mybuf" name)
+     (string-prefix-p "*emacs*" name)
 
-(defun highlight-unused-routes ()
-  "(WIP) Highlight url routes that haven't been queried in the past 60 days."
-  (interactive)
-
-  (remove-overlays (point-min) (point-max))
-
-  (->> "/Users/keenan/dotfiles/doom.d/unused_routes.txt"
-       f-read-text
-       (s-replace "/api/admin/" "")
-       (s-replace "/api/" "")
-       (s-replace "/blog/" "")
-       (s-replace "/survey/admin/" "")
-       (s-replace "/admin/" "")
-       (s-replace "/api/quiz/" "")
-       (s-replace "/quiz/" "")
-       (s-replace "/users/" "")
-       (replace-regexp-in-string "^/" "")
-       s-lines
-       (mapc (lambda (api-route)
-               (ov-set (ov-regexp api-route) 'face 'error)))))
+     ;; Is not magit buffer.
+     (and (string-prefix-p "magit" name)
+	  (not (file-name-extension name)))
+     )))

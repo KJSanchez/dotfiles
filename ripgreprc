@@ -7,7 +7,7 @@
 --glob=!*.js.map
 # --glob=!*.tsx
 --glob=!package-lock.json
---glob=!*.html
+# --glob=!*.html
 # --glob=!*.json
 --glob=!deploymentLog.txt
 --glob=!*.css
@@ -17,3 +17,5 @@
 --glob=!*build_profile*
 --glob=!logs-insights-results.csv
 --glob=!fixtures
+--glob=!deploymentLog.txt
+--glob=!flycheck_*

@@ -13,3 +13,10 @@ Makefile
 configstore
 
 .pre-commit-config37.yaml
+
+node_modules
+flycheck_*
+
+db.sqlite3
+.pylintrc
+mypy.ini
