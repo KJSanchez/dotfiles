@@ -1,6 +1,6 @@
 --glob=!scripts/
 --glob=!seed_db.mysql
---glob=!migrations/
+--glob=!profiles/migrations/*
 --glob=!*.svg
 --glob=!yarn.lock
 # --glob=!*.js
@@ -19,3 +19,4 @@
 --glob=!fixtures
 --glob=!deploymentLog.txt
 --glob=!flycheck_*
+--glob=!vendors/

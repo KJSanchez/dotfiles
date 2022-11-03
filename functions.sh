@@ -43,3 +43,12 @@ function delete-old-branches() {
     echo $author $branch
 done
 }
+
+
+function() purge-db() {
+    docker-compose -f docker/docker-compose.yml down --remove-orhpans --volumes
+    docker-dompose -f docker/docker-compose.yml up --detach
+    echo "waiting for db to finish spinning up..."
+    sleep 15
+    python manage.py createsuperuser --email admin@gainful.com --name admin
+}

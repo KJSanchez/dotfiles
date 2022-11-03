@@ -45,9 +45,9 @@
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 160))
 
-(after! centaur-tabs
-  (add-to-list 'centaur-tabs-excluded-prefixes "*Messages*")
-  (add-to-list 'centaur-tabs-excluded-prefixes "*doom*"))
+;; (after! centaur-tabs
+;;   (add-to-list 'centaur-tabs-excluded-prefixes "*Messages*")
+;;   (add-to-list 'centaur-tabs-excluded-prefixes "*doom*"))
 
 (setq-default
  fill-column 88
@@ -55,86 +55,42 @@
 ;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
 
 (map! :leader
-      ;; :desc "Global Flycheck Mode"
-      ;; "t f" #'global-flycheck-mode
-
-      :desc "Flycheck"
-      "t e" (cmd! (flycheck-list-errors) (switch-to-buffer-other-window "*Flycheck errors*"))
-
       :desc "imenu"
-      "t i" #'imenu-list-minor-mode
+      "t i" #'imenu-list-minor-mode)
 
+(map! :leader
       :desc "global visual line mode"
-      "t w" #'global-visual-line-mode
+      "t w" #'global-visual-line-mode)
 
-      :desc "Centaur tabs"
-      "t T" #'centaur-tabs-mode
+(map! :leader
+      :desc "tabs"
+      "t T" #'tab-bar-mode)
 
+(map! :leader
       :desc "transparency"
-      "t t" (cmd!
-             (let ((alpha (frame-parameter nil 'alpha)))
-               (if (eq
-                    (if (numberp alpha)
-                        alpha
-                      (cdr alpha)) ; may also be nil
-                    100)
-                   (set-frame-parameter nil 'alpha '(60 . 50))
-                 (set-frame-parameter nil 'alpha '(100 . 100)))))
+      "t t" (cmd! (let ((alpha (frame-parameter nil 'alpha)))
+                    (if (eq
+                         (if (numberp alpha)
+                             alpha
+                           (cdr alpha)) ; may also be nil
+                         100)
+                        (set-frame-parameter nil 'alpha '(60 . 50))
+                      (set-frame-parameter nil 'alpha '(100 . 100))))))
 
-      ;; :desc "relative line numbers"
-      ;; "t l" (cmd!
-      ;;        (setq ))
-
-      "TAB 0" nil
-      "TAB 1" nil
-      "TAB 2" nil
-      "TAB 3" nil
-      "TAB 4" nil
-      "TAB 5" nil
-      "TAB 6" nil
-      "TAB 7" nil
-      "TAB 8" nil
-      "TAB 9" nil
-      ;; "b i" nil        ;; ibuffer
-      "`" nil
-      "*" nil
-      "f E" nil        ;; Browse emacs.d
-      ;; "f f" (cmd! (error "Use SPC SPC instead."))
-      ;; ":" nil       ;; M-x
-
-      ;; TODO how do I map to SPC?
-      ;; "SPC" (cmd! (error "use SPC p f instead."))
-
-      ;; "TAB TAB" #'+vterm/here
-      ;;
-
+(map! :leader
       :desc "Install a package"
-      "h i" #'package-install
+      "h i" #'package-install)
 
-      :desc "Vterm"
-      "T" #'+vterm/here
-
+(map! :leader
       :desc "Switch to last buffer"
-      "." #'evil-switch-to-windows-last-buffer
+      "l" #'evil-switch-to-windows-last-buffer)
 
-      :desc "edit snippet"
-      "c s" #'+snippets/find-private
 
-      ;; FIXME: Why doesn't evil escape key sequence work in vterm?
-      ;; :after vterm-mode
-      (:map vterm-mode-map
-       :i "kj" #'+evil-force-normal-state)
-
-      :desc "Switch to last buffer"
-      "l" #'evil-switch-to-windows-last-buffer
-
-      (:map emacs-lisp-mode-map
-       :desc "run ert tests"
-       :localleader
-       "t" (cmd! (ert t))))
-
-(map! :desc "Switch to last Centaur Tab"
-      "C-TAB" #'centaur-tabs-forward)
+(map!
+ :map emacs-lisp-mode-map
+ :desc "run ert tests"
+ :localleader
+ "t" (cmd! (ert t)))
 
 (map! :map python-mode-map
       :prefix "coverage"
@@ -143,12 +99,6 @@
       "c c" #'python-coverage-overlay-mode
       :desc "refresh coverage overlay"
       "c r" #'python-coverage-overlay-refresh)
-
-(map! :map python-mode-map
-      :prefix "pyenv"
-      :localleader
-      :desc "pyenv local"
-      "g l" #'pyenv-mode-set)
 
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
@@ -166,47 +116,55 @@
   (when (string= (buffer-name) "*scratch*")
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
-(add-hook! vterm-mode
-  (display-fill-column-indicator-mode -1)
-  (centaur-tabs-local-mode nil))
-
-(add-hook! imenu-list-minor-mode
-  (centaur-tabs-local-mode nil))
-
 (add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
 
 ;; # TODO How should debuggers integrate with emacs?
-;; # TODO exclude popup buffers from centaur-tabs
 
 
-(defun centaur-tabs-hide-tab (x)
-  "Do no to show buffer X in tabs."
-  (let ((name (format "%s" x)))
-    (or
-     ;; Current window is not dedicated window.
-     (window-dedicated-p (selected-window))
+(require 'ov)
+(require 'f)
+(require 's)
 
-     ;; Buffer name not match below blacklist.
-     (string-prefix-p "*epc" name)
-     (string-prefix-p "*helm" name)
-     (string-prefix-p "*Helm" name)
-     (string-prefix-p "*Compile-Log*" name)
-     (string-prefix-p "*lsp" name)
-     (string-prefix-p "*company" name)
-     (string-prefix-p "*Flycheck" name)
-     (string-prefix-p "*flycheck" name)
-     (string-prefix-p "*Anaconda*" name)
-     (string-prefix-p "*anaconda-mode*" name)
-     (string-prefix-p "*tramp" name)
-     (string-prefix-p " *Mini" name)
-     (string-prefix-p "*help" name)
-     (string-prefix-p "*straight" name)
-     (string-prefix-p " *temp" name)
-     (string-prefix-p "*Help" name)
-     (string-prefix-p "*mybuf" name)
-     (string-prefix-p "*emacs*" name)
 
-     ;; Is not magit buffer.
-     (and (string-prefix-p "magit" name)
-	  (not (file-name-extension name)))
-     )))
+(defun highlight-words-in-file ()
+  "Highlight words in a file"
+  (interactive)
+
+  (remove-overlays (point-min) (point-max))
+
+  (let ((file (read-string "File: ")))
+    (->> file
+         f-read-text
+         s-lines
+         (mapc (lambda (string-to-highlight)
+                 (ov-set (ov-regexp string-to-highlight) 'face 'error))))))
+
+
+(map! :after magit
+      :map magit-mode-map
+      :nv "]"
+      #'+workspace:switch-previous)
+
+(map! :leader
+      "g s"
+      (cmd! (+workspace-switch "magit" :auto-create-p)
+            (magit-status-setup-buffer)))
+
+(map! :leader "w o" #'delete-other-windows)
+
+(map! :leader
+      "c x"
+      (cmd! (+default/diagnostics)
+            (switch-to-buffer-other-window "*Flycheck errors*")))
+
+(map! :leader
+      "w v"
+      (cmd! (switch-to-buffer-other-window
+             (evil-switch-to-windows-last-buffer))))
+
+
+(map! :leader
+      :desc "eshell"
+      "o t"
+      (cmd! (+workspace-switch "eshell" :auto-create-p)
+            (eshell)))

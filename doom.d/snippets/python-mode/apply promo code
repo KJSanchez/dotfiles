@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: apply promo code
+# key: co
+# --
+
+
+(?P<code>[a-zA-Z0-9\-_]+)/?$

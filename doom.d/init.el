@@ -31,7 +31,7 @@
        neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +all)   ; tame sudden yet inevitable temporary windows
-       tabs              ; a tab bar for Emacs
+       ;; tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -54,7 +54,8 @@
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
-       vterm             ; the best terminal emulation in Emacs
+       eshell
+       ;; vterm
 
        :checkers
        (syntax
