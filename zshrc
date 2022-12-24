@@ -7,7 +7,8 @@ alias jj='cd ../..'
 alias grep='grep --color=auto'
 alias gti='git'
 alias ibrew='arch -arm64 brew'
-cd ~/gainfulWeb
+alias vim='nvim'
+cd ~/codez/gainfulWeb
 
 # # TODO: get zsh-completions setup
 # if type brew &>/dev/null; then
@@ -21,14 +22,16 @@ eval "$(pyenv init --path --no-rehash)"
 # [[ -r $(brew --prefix)/etc/profile.d/bash_completion.sh ]] && . $(brew --prefix)/etc/profile.d/bash_completion.sh
 # [[ -f `brew --prefix`/etc/bash_completion.d/git-completion.bash ]] && . `brew --prefix`/etc/bash_completion.d/git-completion.bash
 
-
 # echo 'eval "$(/usr/local/bin/brew shellenv)"
 
-# PROMPT='%~ %# '
 PROMPT='%~ λ '
 
-export PATH="$PATH:/Users/keenan/gainfulWeb/reactjs/node_modules/.bin"
+export PATH="$PATH:/Users/keenan/gainfulWeb/reactjs/node_modules/.bin:/Users/keenan/gainfulWeb/nextjs/node_modules/.bin:/opt/homebrew/bin/"
 
-# TODO: remove this after vterm is installed.
-export PATH=/opt/homebrew/bin:$PATH
-export PATH=/opt/homebrew/sbin:$PATH
+QUIET=1
+
+eval "$(starship init zsh)"
+
+eval "$(direnv hook zsh)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
