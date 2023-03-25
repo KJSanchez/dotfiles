@@ -15,8 +15,7 @@
 ;;      directory (for easy access to its source code).
 
 (doom! :completion
-       (company
-        +childframe)
+       (company +tng)
        ;; (helm +fuzzy)
        ;; ido
        (ivy +fuzzy)
@@ -62,9 +61,10 @@
         +childframe)
 
        :tools
+       ;; tree-sitter
        (debugger +lsp)
-       ;;direnv           ; TODO https://github.com/doomemacs/doomemacs/issues/1666#issuecomment-853629887
-       docker
+       direnv           ; TODO https://github.com/doomemacs/doomemacs/issues/1666#issuecomment-853629887
+       (docker +lsp)
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
@@ -76,15 +76,13 @@
        (:if IS-MAC macos)  ; improve compatibility with macOS
 
        :lang
-       ;; (cc +lsp)         ; C > C++ == 1
-       emacs-lisp        ; drown in parentheses
+       emacs-lisp
        json
-       javascript
+       (javascript +lsp)
        (markdown +grip)
-       org
        (python +pyenv)
-       sh
-       yaml
+       (sh +lsp)
+       (yaml +lsp)
 
        :config
        (default +bindings +smartparens))

@@ -33,9 +33,22 @@
  display-line-numbers-type t
  evil-escape-key-sequence "kj"
  initial-major-mode 'emacs-lisp-mode
+ confirm-kill-emacs nil
+ flycheck-disabled-checkers '(python-mypy)
  doom-modeline-github t)
  ;; which-key-idle-delay .01
  ;; which-key-idle-secondary-delay .01)
+
+
+;; (set-face-attribute 'default nil
+;;                     ;; :family "Source Code Pro"
+;;                     :height 120
+;;                     :weight 'normal
+;;                     :width 'normal)
+;;
+
+;; (setq doom-font (font-spec :family "Fira Code" :size 12))
+;; (setq next-line-add-newlines nil)
 
 
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
@@ -45,13 +58,9 @@
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 160))
 
-;; (after! centaur-tabs
-;;   (add-to-list 'centaur-tabs-excluded-prefixes "*Messages*")
-;;   (add-to-list 'centaur-tabs-excluded-prefixes "*doom*"))
-
 (setq-default
  fill-column 88
- git-commit-summary-max-length 68)
+ git-commit-summary-max-length 100)
 ;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
 
 (map! :leader
@@ -85,6 +94,14 @@
       :desc "Switch to last buffer"
       "l" #'evil-switch-to-windows-last-buffer)
 
+(map! :leader
+      :desc "Start debugger"
+      "o D" #'debugger/start
+      :desc "eshell"
+      "o t" #'eshell
+      :desc "Docker"
+      "o d" #'docker)
+
 
 (map!
  :map emacs-lisp-mode-map
@@ -117,6 +134,7 @@
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
 (add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
+(add-to-list '+format-on-save-enabled-modes 'sh-mode t)
 
 ;; # TODO How should debuggers integrate with emacs?
 
@@ -139,32 +157,51 @@
          (mapc (lambda (string-to-highlight)
                  (ov-set (ov-regexp string-to-highlight) 'face 'error))))))
 
+(add-hook! js-mode
+  (setq js-indent-level 2))
 
-(map! :after magit
-      :map magit-mode-map
-      :nv "]"
-      #'+workspace:switch-previous)
-
-(map! :leader
-      "g s"
-      (cmd! (+workspace-switch "magit" :auto-create-p)
-            (magit-status-setup-buffer)))
+(add-to-list '+format-on-save-enabled-modes 'json-mode :append)
 
 (map! :leader "w o" #'delete-other-windows)
+
+;; (map! :leader
+;;       :desc "dired"
+;;       "-" (cmd! (dired ".")))
 
 (map! :leader
       "c x"
       (cmd! (+default/diagnostics)
             (switch-to-buffer-other-window "*Flycheck errors*")))
 
-(map! :leader
-      "w v"
-      (cmd! (switch-to-buffer-other-window
-             (evil-switch-to-windows-last-buffer))))
+;; (map! :leader
+;;       "w v"
+;;       (cmd! (progn
+;;               (->>
+;;                (evil-window-vsplit)
+;;                (call-interactively #'counsel-find-file)
+;;               ;; BUG
+;;                (switch-to-buffer)
+;;               )
+;;               )))
+;;
+;;
+
+(map! :map eshell-mode-map
+      "<ESC>" #'+workspace/switch-left)
+
+;; Show branch descriptions in the branch counsel menu.
+
+(after! magit
+  (magit-add-section-hook
+   'magit-refs-sections-hook
+   'magit-insert-branch-description))
 
 
 (map! :leader
-      :desc "eshell"
-      "o t"
-      (cmd! (+workspace-switch "eshell" :auto-create-p)
-            (eshell)))
+      :desc "Switch to functions.sh"
+      "b f"
+      (cmd! ()))
+
+
+
+

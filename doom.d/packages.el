@@ -56,5 +56,6 @@
 (package! ov)
 (package! f)
 (package! python-coverage)
+(package! exec-path-from-shell)
 
 ;; (load! "gainful-mode/package")
