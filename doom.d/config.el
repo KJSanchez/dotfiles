@@ -97,8 +97,8 @@
 (map! :leader
       :desc "Start debugger"
       "o D" #'debugger/start
-      :desc "eshell"
-      "o t" #'eshell
+      ;; :desc "eshell"
+      ;; "o t" #'eshell
       :desc "Docker"
       "o d" #'docker)
 
@@ -138,24 +138,6 @@
 
 ;; # TODO How should debuggers integrate with emacs?
 
-
-(require 'ov)
-(require 'f)
-(require 's)
-
-
-(defun highlight-words-in-file ()
-  "Highlight words in a file"
-  (interactive)
-
-  (remove-overlays (point-min) (point-max))
-
-  (let ((file (read-string "File: ")))
-    (->> file
-         f-read-text
-         s-lines
-         (mapc (lambda (string-to-highlight)
-                 (ov-set (ov-regexp string-to-highlight) 'face 'error))))))
 
 (add-hook! js-mode
   (setq js-indent-level 2))
@@ -205,3 +187,13 @@
 
 
 
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word))
+  :config
+  (setq copilot-node-executable "/Users/keenan/.nodenv/versions/19.7.0/bin/node"))

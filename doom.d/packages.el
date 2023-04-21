@@ -57,5 +57,7 @@
 (package! f)
 (package! python-coverage)
 (package! exec-path-from-shell)
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
 ;; (load! "gainful-mode/package")
