@@ -34,7 +34,9 @@
  evil-escape-key-sequence "kj"
  initial-major-mode 'emacs-lisp-mode
  confirm-kill-emacs nil
+ ;; flycheck-disabled-checkers '(python-mypy python-pylint)
  flycheck-disabled-checkers '(python-mypy)
+ +workspaces-on-switch-project-behavior t
  doom-modeline-github t)
  ;; which-key-idle-delay .01
  ;; which-key-idle-secondary-delay .01)

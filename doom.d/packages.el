@@ -60,4 +60,4 @@
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
-;; (load! "gainful-mode/package")
+;; (load! "highlight-words-in-file.el")
