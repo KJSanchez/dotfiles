@@ -128,6 +128,9 @@
 ;; TODO Add ENTER to ilist-mode-map
 (set-popup-rule! "*ert*" :side 'right :width 60 :select t)
 
+
+(add-hook! 'dired-mode-hook #'dired-hide-details-mode)
+
 (add-hook! emacs-lisp-mode
   (add-hook 'before-save-hook #'eval-buffer nil t)
   (when (string= (buffer-name) "*doom:scratch*")
