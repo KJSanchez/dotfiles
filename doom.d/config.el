@@ -28,14 +28,14 @@
 (setq
  user-full-name "Keenan Sanchez"
  user-mail-address "keenan@gainful.com"
- doom-theme 'doom-city-lights
+ doom-theme 'doom-spacegrey
  org-directory "~/org/"
  display-line-numbers-type t
  evil-escape-key-sequence "kj"
  initial-major-mode 'emacs-lisp-mode
  confirm-kill-emacs nil
  ;; flycheck-disabled-checkers '(python-mypy python-pylint)
- flycheck-disabled-checkers '(python-mypy)
+ ;; flycheck-disabled-checkers '(python-mypy)
  +workspaces-on-switch-project-behavior t
  doom-modeline-github t)
  ;; which-key-idle-delay .01
