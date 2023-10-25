@@ -104,6 +104,14 @@
       :desc "Docker"
       "o d" #'docker)
 
+(map! :leader
+      :desc "compile"
+      "c C" #'+ivy/compile)
+
+(map! :leader
+      :desc "recompile"
+      "c c" #'recompile)
+
 
 (map!
  :map emacs-lisp-mode-map
@@ -118,6 +126,12 @@
       "c c" #'python-coverage-overlay-mode
       :desc "refresh coverage overlay"
       "c r" #'python-coverage-overlay-refresh)
+
+(map! :leader
+      :desc "global toggle modeline"
+      "t m" #'hide-mode-line-mode
+      :desc "global toggle modeline"
+      "t M" #'global-hide-mode-line-mode)
 
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
