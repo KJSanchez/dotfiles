@@ -142,6 +142,8 @@
 ;; TODO Add ENTER to ilist-mode-map
 (set-popup-rule! "*ert*" :side 'right :width 60 :select t)
 
+(set-popup-rule! "*compilation*" :select t :height 50)
+
 
 (add-hook! 'dired-mode-hook #'dired-hide-details-mode)
 
