@@ -133,6 +133,8 @@
       :desc "global toggle modeline"
       "t M" #'global-hide-mode-line-mode)
 
+(define-key evil-normal-state-map (kbd "RET") #'recompile)
+
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful command:" :height 25 :side 'bottom)
