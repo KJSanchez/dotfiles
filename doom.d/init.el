@@ -75,6 +75,8 @@
        (:if IS-MAC macos)  ; improve compatibility with macOS
 
        :lang
+       (rust +lsp)
+       (cc +lsp)
        emacs-lisp
        json
        (javascript +lsp)
