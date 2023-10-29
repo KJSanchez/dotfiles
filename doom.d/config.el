@@ -29,6 +29,7 @@
  user-full-name "Keenan Sanchez"
  user-mail-address "keenan@gainful.com"
  doom-theme 'doom-spacegrey
+ doom-theme 'doom-wilmersdorf
  org-directory "~/org/"
  display-line-numbers-type t
  evil-escape-key-sequence "kj"
@@ -37,10 +38,15 @@
  ;; flycheck-disabled-checkers '(python-mypy python-pylint)
  ;; flycheck-disabled-checkers '(python-mypy)
  +workspaces-on-switch-project-behavior t
+ doom-modeline-vcs-max-length 12
+ doom-modeline-buffer-encoding nil
+ domm-modeline-workspace-name t
+ doom-modeline-time-icon nil
+ doom-modeline-modal nil
+ doom-modeline-percent-position nil
  doom-modeline-github t)
  ;; which-key-idle-delay .01
  ;; which-key-idle-secondary-delay .01)
-
 
 ;; (set-face-attribute 'default nil
 ;;                     ;; :family "Source Code Pro"
@@ -50,20 +56,82 @@
 ;;
 
 ;; (setq doom-font (font-spec :family "Fira Code" :size 12))
-;; (setq next-line-add-newlines nil)
-
-
+;; (setq next-line-add-newlines nilf
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("zshrc\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("Cask\\'" . emacs-lisp-mode))
 (add-to-list 'auto-mode-alist '("django.config\\'" . yaml-mode))
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 160))
+(add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
+(add-to-list '+format-on-save-enabled-modes 'sh-mode t)
+(add-to-list '+format-on-save-enabled-modes 'json-mode :append)
+
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word))
+  :config
+  (setq copilot-node-executable "node"))
+
+
+
 
 (setq-default
  fill-column 88
  git-commit-summary-max-length 100)
 ;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
+
+
+(map! :leader
+      ;; :after workspaces
+      "TAB 0" nil
+      "TAB 1" nil
+      "TAB 2" nil
+      "TAB 3" nil
+      "TAB 4" nil
+      "TAB 5" nil
+      "TAB 6" nil
+      "TAB 7" nil
+      "TAB 8" nil
+      "TAB 9" nil)
+
+(map! :leader
+      ;; :after workspaces
+      :desc "Display tab bar"
+      "Tab f" #'+workspace/display)
+
+(map! :leader
+      ;; :after workspaces
+      :desc "Switch to workspace"
+      "TAB TAB" (cmd!
+                 (ivy-read "Switch to workspace: "
+                           (+workspace-list-names)
+                           :action #'+workspace-switch
+                           :caller #'+workspace-switch)
+                 (+workspace-list-names)))
+
+
+(map! :leader
+      :desc "Switch to last workspace"
+      "TAB l" #'+workspace:switch-previous)
+
+(map! :leader
+      ;; :after workspaces
+      :desc "Create workspace here"
+      "TAB n" (cmd!
+               (condition-case _
+                   (progn
+                     (+workspace/new (projectile-project-name) t)
+                     (+workspace/display))
+                 (error
+                  (progn
+                    (+workspace-switch (projectile-project-name) t)
+                    (+workspace/display))))))
 
 (map! :leader
       :desc "imenu"
@@ -105,6 +173,13 @@
       "o d" #'docker)
 
 (map! :leader
+      "c x"
+      (cmd! (+default/diagnostics)
+            (switch-to-buffer-other-window "*Flycheck errors*")))
+
+;; Switch compile commands
+
+(map! :leader
       :desc "compile"
       "c C" #'+ivy/compile)
 
@@ -112,12 +187,7 @@
       :desc "recompile"
       "c c" #'recompile)
 
-
-(map!
- :map emacs-lisp-mode-map
- :desc "run ert tests"
- :localleader
- "t" (cmd! (ert t)))
+(map! :leader "w o" #'delete-other-windows)
 
 (map! :map python-mode-map
       :prefix "coverage"
@@ -132,6 +202,14 @@
       "t m" #'hide-mode-line-mode
       :desc "global toggle modeline"
       "t M" #'global-hide-mode-line-mode)
+
+;; (map! :leader
+;;       :desc "Switch to functions.sh"
+;;       "b f"
+;;       (cmd! ()))
+
+
+
 
 (define-key evil-normal-state-map (kbd "RET") #'recompile)
 
@@ -156,67 +234,24 @@
   (when (string= (buffer-name) "*scratch*")
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
-(add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
-(add-to-list '+format-on-save-enabled-modes 'sh-mode t)
-
-;; # TODO How should debuggers integrate with emacs?
-
 
 (add-hook! js-mode
   (setq js-indent-level 2))
-
-(add-to-list '+format-on-save-enabled-modes 'json-mode :append)
-
-(map! :leader "w o" #'delete-other-windows)
-
-;; (map! :leader
-;;       :desc "dired"
-;;       "-" (cmd! (dired ".")))
-
-(map! :leader
-      "c x"
-      (cmd! (+default/diagnostics)
-            (switch-to-buffer-other-window "*Flycheck errors*")))
-
-;; (map! :leader
-;;       "w v"
-;;       (cmd! (progn
-;;               (->>
-;;                (evil-window-vsplit)
-;;                (call-interactively #'counsel-find-file)
-;;               ;; BUG
-;;                (switch-to-buffer)
-;;               )
-;;               )))
-;;
-;;
-
-(map! :map eshell-mode-map
-      "<ESC>" #'+workspace/switch-left)
-
-;; Show branch descriptions in the branch counsel menu.
 
 (after! magit
   (magit-add-section-hook
    'magit-refs-sections-hook
    'magit-insert-branch-description))
 
-
-(map! :leader
-      :desc "Switch to functions.sh"
-      "b f"
-      (cmd! ()))
-
+(after! modeline
+  (column-number-mode -1)
+  (line-number-mode -1)
+  (size-indication-mode -1))
 
 
+;; # TODO How should debuggers integrate with emacs?
 
-;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word))
-  :config
-  (setq copilot-node-executable "/Users/keenan/.nodenv/versions/19.7.0/bin/node"))
+; TODO
+; When I jump to an emacs function definition
+; then do leader+w+o
+; I should do a new workspace
