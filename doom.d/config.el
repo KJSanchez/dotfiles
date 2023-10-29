@@ -28,8 +28,16 @@
 (setq
  user-full-name "Keenan Sanchez"
  user-mail-address "keenan@gainful.com"
+;; doom-font (font-spec :family "Fira Code" :size 12)
  doom-theme 'doom-spacegrey
  doom-theme 'doom-wilmersdorf
+ doom-modeline-vcs-max-length 12
+ doom-modeline-buffer-encoding nil
+ domm-modeline-workspace-name t
+ doom-modeline-time-icon nil
+ doom-modeline-modal nil
+ doom-modeline-percent-position nil
+ doom-modeline-github t
  org-directory "~/org/"
  display-line-numbers-type t
  evil-escape-key-sequence "kj"
@@ -37,26 +45,16 @@
  confirm-kill-emacs nil
  ;; flycheck-disabled-checkers '(python-mypy python-pylint)
  ;; flycheck-disabled-checkers '(python-mypy)
- +workspaces-on-switch-project-behavior t
- doom-modeline-vcs-max-length 12
- doom-modeline-buffer-encoding nil
- domm-modeline-workspace-name t
- doom-modeline-time-icon nil
- doom-modeline-modal nil
- doom-modeline-percent-position nil
- doom-modeline-github t)
+ +workspaces-on-switch-project-behavior t)
  ;; which-key-idle-delay .01
  ;; which-key-idle-secondary-delay .01)
 
-;; (set-face-attribute 'default nil
-;;                     ;; :family "Source Code Pro"
-;;                     :height 120
-;;                     :weight 'normal
-;;                     :width 'normal)
-;;
+(setq-default
+ fill-column 88
+ git-commit-summary-max-length 100)
+;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
 
-;; (setq doom-font (font-spec :family "Fira Code" :size 12))
-;; (setq next-line-add-newlines nilf
+
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("zshrc\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("Cask\\'" . emacs-lisp-mode))
@@ -77,14 +75,6 @@
               ("C-<tab>" . 'copilot-accept-completion-by-word))
   :config
   (setq copilot-node-executable "node"))
-
-
-
-
-(setq-default
- fill-column 88
- git-commit-summary-max-length 100)
-;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
 
 
 (map! :leader
@@ -208,20 +198,14 @@
 ;;       "b f"
 ;;       (cmd! ()))
 
-
-
-
 (define-key evil-normal-state-map (kbd "RET") #'recompile)
 
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful command:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful variable:" :height 25 :side 'bottom)
-;; FIXME why isn't :select option working?
 (set-popup-rule! "*Ilist*" :side 'right :width 50 :select t)
-;; TODO Add ENTER to ilist-mode-map
 (set-popup-rule! "*ert*" :side 'right :width 60 :select t)
-
 (set-popup-rule! "*compilation*" :select t :height 50)
 
 
@@ -234,9 +218,9 @@
   (when (string= (buffer-name) "*scratch*")
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
-
 (add-hook! js-mode
   (setq js-indent-level 2))
+
 
 (after! magit
   (magit-add-section-hook
@@ -247,11 +231,3 @@
   (column-number-mode -1)
   (line-number-mode -1)
   (size-indication-mode -1))
-
-
-;; # TODO How should debuggers integrate with emacs?
-
-; TODO
-; When I jump to an emacs function definition
-; then do leader+w+o
-; I should do a new workspace
