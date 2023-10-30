@@ -192,6 +192,11 @@
       :localleader
       "t" #'python-pytest-dispatch)
 
+(map! :map python-mode-map
+      :n
+      "RET" #'python-pytest-last-failed
+      "RET" #'recompile)
+
 (map! :leader
       :desc "global toggle modeline"
       "t m" #'hide-mode-line-mode
@@ -202,8 +207,6 @@
 ;;       :desc "Switch to functions.sh"
 ;;       "b f"
 ;;       (cmd! ()))
-
-(define-key evil-normal-state-map (kbd "RET") #'recompile)
 
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
