@@ -187,6 +187,11 @@
       :desc "refresh coverage overlay"
       "c r" #'python-coverage-overlay-refresh)
 
+(map! :map python-mode-map
+      :prefix "test"
+      :localleader
+      "t" #'python-pytest-dispatch)
+
 (map! :leader
       :desc "global toggle modeline"
       "t m" #'hide-mode-line-mode
