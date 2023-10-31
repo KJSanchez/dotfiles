@@ -46,8 +46,7 @@
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired
-        +range)
+       (dired +ranger)
        electric          ; smarter, keyword-based electric-indent
        vc                ; version-control and Emacs, sitting in a tree
 
