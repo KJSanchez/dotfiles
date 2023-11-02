@@ -28,9 +28,9 @@
 (setq
  user-full-name "Keenan Sanchez"
  user-mail-address "keenan@gainful.com"
-;; doom-font (font-spec :family "Fira Code" :size 12)
+ ;; doom-font (font-spec :family "Fira Code" :size 12)
  doom-theme 'doom-spacegrey
- doom-theme 'doom-wilmersdorf
+ ;; doom-theme 'doom-wilmersdorf
  doom-modeline-vcs-max-length 12
  doom-modeline-buffer-encoding nil
  domm-modeline-workspace-name t
@@ -46,8 +46,8 @@
  ;; flycheck-disabled-checkers '(python-mypy python-pylint)
  ;; flycheck-disabled-checkers '(python-mypy)
  +workspaces-on-switch-project-behavior t)
- ;; which-key-idle-delay .01
- ;; which-key-idle-secondary-delay .01)
+;; which-key-idle-delay .01
+;; which-key-idle-secondary-delay .01)
 
 (setq-default
  fill-column 88
