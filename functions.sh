@@ -36,12 +36,7 @@ function dtest() {
 }
 
 function delete-old-branches() {
-    git br --all | grep remotes/origin | cut -d' ' -f3 | sed -e "s/^remotes\/origin\///" \
-        | while read branch; do
-
-    author=$(git show -s --format='%ae' origin/$branch)
-    echo $author $branch
-done
+    git branch --merged origin/master | grep -v 'master$' | xargs git branch -D
 }
 
 
