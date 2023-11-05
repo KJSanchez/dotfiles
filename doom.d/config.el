@@ -127,6 +127,26 @@
       :desc "imenu"
       "t i" #'imenu-list-minor-mode)
 
+(add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode)
+
+(after! centaur-tabs
+  (setq centaur-tabs-set-icons t
+        centaur-tabs-gray-out-icons 'buffer
+        centaur-tabs-set-bar 'left
+        centaur-tabs-set-modified-marker nil
+        ;; centaur-tabs-close-button ""
+        ;; centaur-tabs-modified-marker "x"
+        centaur-tabs-style "bar"
+        centaur-tabs-height 16
+        ;; Scrolling (with the mouse wheel) past the end of the tab list
+        ;; replaces the tab list with that of another Doom workspace. This
+        ;; prevents that.
+        centaur-tabs-cycle-scope 'tabs)
+
+        )
+  ;; (add-hook! '(imenu-list-minor-mode-hook comint-mode-hook dired-mode-hook compilation-mode)
+  ;;   (centaur-tabs-mode -1)))
+
 (map! :leader
       :desc "global visual line mode"
       "t w" #'global-visual-line-mode)
@@ -187,17 +207,18 @@
       :desc "refresh coverage overlay"
       "c r" #'python-coverage-overlay-refresh)
 
-(map! :map python-mode-map
-      :prefix "test"
-      :localleader
-      "t" #'python-pytest-dispatch)
+;; (map! :map python-mode-map
+;;       ;; :prefix ("test" . "test code")
+;;       :localleader
+;;       "t" #'python-pytest-dispatch)
 
 (map! :map python-mode-map
-      :n
-      "RET" #'python-pytest-last-failed
-      "RET" #'recompile)
+      :n "RET" #'python-pytest-last-failed
+      :n "RET" #'recompile)
 
 (map! :leader
+      :desc "global flycheck mode"
+      "t z" #'global-flycheck-mode
       :desc "global toggle modeline"
       "t m" #'hide-mode-line-mode
       :desc "global toggle modeline"
@@ -208,6 +229,7 @@
 ;;       "b f"
 ;;       (cmd! ()))
 
+(set-popup-rule! "*help*" :height 25 :side 'bottom)
 (set-popup-rule! "helpful function:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
 (set-popup-rule! "helpful command:" :height 25 :side 'bottom)
@@ -216,6 +238,7 @@
 (set-popup-rule! "*ert*" :side 'right :width 60 :select t)
 (set-popup-rule! "*compilation*" :select t :height 50)
 
+(set-popup-rule! "*pytest*" :height 25 :select t)
 
 (add-hook! 'dired-mode-hook #'dired-hide-details-mode)
 
