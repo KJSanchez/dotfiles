@@ -127,7 +127,6 @@
       :desc "imenu"
       "t i" #'imenu-list-minor-mode)
 
-(add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode)
 
 (after! centaur-tabs
   (setq centaur-tabs-set-icons t
@@ -143,9 +142,23 @@
         ;; prevents that.
         centaur-tabs-cycle-scope 'tabs)
 
-        )
+  (add-hook 'dired-mode-hook 'centaur-tabs-local-mode)
+  (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
+  (add-hook 'python-mode-hook 'centaur-tabs-local-mode)
+  (add-hook 'compilation-mode-hook 'centaur-tabs-local-mode)
+  (add-hook 'inferior-python-mode-hook 'centaur-tabs-local-mode))
   ;; (add-hook! '(imenu-list-minor-mode-hook comint-mode-hook dired-mode-hook compilation-mode)
-  ;;   (centaur-tabs-mode -1)))
+  ;;   (centaur-tabs-local-mode -1)))
+
+(after! modeline
+  (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode))
+
+;; (add-hook '+doom-dashboard-mode-hook 'centaur-tabs-local-mode)
+
+;; (defun bounce-centaur-tabs ()
+;;   (interactive)
+;;   (centaur-tabs-mode -1)
+;;   (centaur-tabs-mode 1))
 
 (map! :leader
       :desc "global visual line mode"
@@ -207,14 +220,26 @@
       :desc "refresh coverage overlay"
       "c r" #'python-coverage-overlay-refresh)
 
+(map! :map python-mode-map
+      :prefix "shell"
+      :localleader
+      "e B" #'run-python
+      "e b" #'python-shell-send-buffer)
+
+(map! :map python-mode-map
+      :n ", f" (cmd! (evil-buffer-new) (inferior-python-mode))
+      :n ", e" #'python-shell-send-buffer)
+      ;; :n "RET" #'python-pytest-last-failed)
+
+;; (map! :n "RET" #'recompile)
+
+(map! :map compilation-mode-map
+      :n "q" #'quit-window)
+
 ;; (map! :map python-mode-map
 ;;       ;; :prefix ("test" . "test code")
 ;;       :localleader
 ;;       "t" #'python-pytest-dispatch)
-
-(map! :map python-mode-map
-      :n "RET" #'python-pytest-last-failed
-      :n "RET" #'recompile)
 
 (map! :leader
       :desc "global flycheck mode"
@@ -224,30 +249,40 @@
       :desc "global toggle modeline"
       "t M" #'global-hide-mode-line-mode)
 
+(map! :map org-mode-map
+      :localleader
+      "a" #'org-show-all)
+
 ;; (map! :leader
 ;;       :desc "Switch to functions.sh"
 ;;       "b f"
 ;;       (cmd! ()))
 
-(set-popup-rule! "*help*" :height 25 :side 'bottom)
-(set-popup-rule! "helpful function:" :height 25 :side 'bottom)
-(set-popup-rule! "helpful macro:" :height 25 :side 'bottom)
-(set-popup-rule! "helpful command:" :height 25 :side 'bottom)
-(set-popup-rule! "helpful variable:" :height 25 :side 'bottom)
+(set-popup-rule! "*helpful function:" :height 100)
+(set-popup-rule! "*helpful macro:" :height 100)
+(set-popup-rule! "*helpful command:" :height 25 :side 'bottom)
+(set-popup-rule! "*helpful variable:" :height 25 :side 'bottom)
 (set-popup-rule! "*Ilist*" :side 'right :width 50 :select t)
 (set-popup-rule! "*ert*" :side 'right :width 60 :select t)
-(set-popup-rule! "*compilation*" :select t :height 50)
+(set-popup-rule! "*Anaconda*" :height 25)
+(set-popup-rule! "*compilation*" :select nil :height 50)
+(set-popup-rule! "*pytest*" :height .25 :select t)
 
-(set-popup-rule! "*pytest*" :height 25 :select t)
+(after! dired
+  (add-hook! 'dired-mode-hook #'dired-hide-details-mode))
 
-(add-hook! 'dired-mode-hook #'dired-hide-details-mode)
+(after! doom-dashboard
+  (setq +doom-dashboard-functions
+  '(doom-dashboard-widget-banner
+    ;; ++doom-dashboard-project-dired
+    doom-dashboard-widget-loaded)))
 
-(add-hook! emacs-lisp-mode
-  (add-hook 'before-save-hook #'eval-buffer nil t)
-  (when (string= (buffer-name) "*doom:scratch*")
-    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
-  (when (string= (buffer-name) "*scratch*")
-    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
+;; (add-hook! emacs-lisp-mode
+;;   (add-hook 'before-save-hook #'eval-buffer nil t)
+;;   (when (string= (buffer-name) "*doom:scratch*")
+;;     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
+;;   (when (string= (buffer-name) "*scratch*")
+;;     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
 (add-hook! js-mode
   (setq js-indent-level 2))
@@ -258,7 +293,9 @@
    'magit-refs-sections-hook
    'magit-insert-branch-description))
 
-(after! modeline
+(add-hook! doom-modeline-mode-hook
   (column-number-mode -1)
   (line-number-mode -1)
   (size-indication-mode -1))
+
+(global-visual-line-mode t)
