@@ -147,18 +147,9 @@
   (add-hook 'python-mode-hook 'centaur-tabs-local-mode)
   (add-hook 'compilation-mode-hook 'centaur-tabs-local-mode)
   (add-hook 'inferior-python-mode-hook 'centaur-tabs-local-mode))
-  ;; (add-hook! '(imenu-list-minor-mode-hook comint-mode-hook dired-mode-hook compilation-mode)
-  ;;   (centaur-tabs-local-mode -1)))
 
 (after! modeline
   (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode))
-
-;; (add-hook '+doom-dashboard-mode-hook 'centaur-tabs-local-mode)
-
-;; (defun bounce-centaur-tabs ()
-;;   (interactive)
-;;   (centaur-tabs-mode -1)
-;;   (centaur-tabs-mode 1))
 
 (map! :leader
       :desc "global visual line mode"
@@ -229,7 +220,7 @@
 (map! :map python-mode-map
       :n ", f" (cmd! (evil-buffer-new) (inferior-python-mode))
       :n ", e" #'python-shell-send-buffer)
-      ;; :n "RET" #'python-pytest-last-failed)
+;; :n "RET" #'python-pytest-last-failed)
 
 ;; (map! :n "RET" #'recompile)
 
@@ -273,9 +264,9 @@
 
 (after! doom-dashboard
   (setq +doom-dashboard-functions
-  '(doom-dashboard-widget-banner
-    ;; ++doom-dashboard-project-dired
-    doom-dashboard-widget-loaded)))
+        '(doom-dashboard-widget-banner
+          ;; ++doom-dashboard-project-dired
+          doom-dashboard-widget-loaded)))
 
 ;; (add-hook! emacs-lisp-mode
 ;;   (add-hook 'before-save-hook #'eval-buffer nil t)
