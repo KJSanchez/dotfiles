@@ -1,3 +1,5 @@
+[init]
+    templatedir = ~/.git-templates/
 [alias]
 	co = checkout
 	br = branch -vv
@@ -10,7 +12,7 @@
 	ri = rebase --interactive
 [user]
 	name = Keenan Sanchez
-	email = keenan@gainful.com
+	email = keejsan@gmail.com
 [core]
 	excludesfile = /Users/keenan/.gitignore
 [color "grep"]
