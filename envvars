@@ -1,5 +1,19 @@
+
 export XDG_CONFIG_HOME=~/dotfiles
-export PATH="$HOME/.ebcli-virtual-env/executables:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PYTHONDONTWRITEBYTECODE=1
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
+
+
+export DEFAULT_DIR=$HOME/codez/kjsanchez.github.io
+export DEFAULT_DIR=$HOME/codez/data-structures/hw5
+export DEFAULT_DIR=$HOME/codez/data-structures/hw7
+export DEFAULT_DIR=$HOME/codez/data-structures/hw0
+export DEFAULT_DIR=$HOME/codez/attune
+export DEFAULT_DIR=$HOME/codez/openMHA
+export DEFAULT_DIR=$HOME/codez/openMHA/mha/plugins
+export DEFAULT_DIR=$HOME/codez
+export DEFAULT_DIR=$HOME/codez/emacs
+export DEFAULT_DIR=$HOME/codez/json-parser/cpp/build
+export DEFAULT_DIR=$HOME/codez/interviews/cortex
+export DEFAULT_DIR=$HOME/codez/json-parser/ts

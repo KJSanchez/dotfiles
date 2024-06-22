@@ -30,7 +30,7 @@
        neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +all)   ; tame sudden yet inevitable temporary windows
-       tabs              ; a tab bar for Emacs
+       ;; tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -42,11 +42,11 @@
        fold              ; (nigh) universal code folding
        (format +onsave)  ; automated prettiness
        ;; parinfer          ; turn lisp into python, sort of
-       snippets          ; my elves. They type so I don't have to
+       ;; snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired +ranger)
+       dired
        electric          ; smarter, keyword-based electric-indent
        vc                ; version-control and Emacs, sitting in a tree
 
@@ -59,7 +59,7 @@
         +childframe)
 
        :tools
-       ;; tree-sitter
+       tree-sitter
        (debugger +lsp)
        direnv           ; TODO https://github.com/doomemacs/doomemacs/issues/1666#issuecomment-853629887
        (docker +lsp)
@@ -80,7 +80,7 @@
        json
        (javascript +lsp)
        (markdown +grip)
-       (python +pyenv)
+       (python +pyenv +tree-sitter)
        (sh +lsp)
        (yaml +lsp)
 

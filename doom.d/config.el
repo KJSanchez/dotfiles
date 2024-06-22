@@ -23,80 +23,43 @@
 ;;   `require' or `use-package'.
 ;; - `map!' for binding new keys
 
-;; TODO set a smaller font in the imenu buffer.
+(load! "functions.el")
 
-(setq
- user-full-name "Keenan Sanchez"
- user-mail-address "keenan@gainful.com"
- ;; doom-font (font-spec :family "Fira Code" :size 12)
- doom-theme 'doom-spacegrey
- ;; doom-theme 'doom-wilmersdorf
- doom-modeline-vcs-max-length 12
- doom-modeline-buffer-encoding nil
- domm-modeline-workspace-name t
- doom-modeline-time-icon nil
- doom-modeline-modal nil
- doom-modeline-percent-position nil
- doom-modeline-github t
- org-directory "~/org/"
- display-line-numbers-type t
- evil-escape-key-sequence "kj"
- initial-major-mode 'emacs-lisp-mode
- confirm-kill-emacs nil
- ;; flycheck-disabled-checkers '(python-mypy python-pylint)
- ;; flycheck-disabled-checkers '(python-mypy)
- +workspaces-on-switch-project-behavior t)
-;; which-key-idle-delay .01
-;; which-key-idle-secondary-delay .01)
-
-(setq-default
- fill-column 88
- git-commit-summary-max-length 100)
-;; git-commit-style-convention-checks (remove 'overlong-summary-line git-commit-style-convention-checks)
-
-
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("zshrc\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("Cask\\'" . emacs-lisp-mode))
-(add-to-list 'auto-mode-alist '("django.config\\'" . yaml-mode))
-(add-to-list 'default-frame-alist '(height . 50))
-(add-to-list 'default-frame-alist '(width . 160))
-(add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
-(add-to-list '+format-on-save-enabled-modes 'sh-mode t)
-(add-to-list '+format-on-save-enabled-modes 'json-mode :append)
-
-;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word))
+(use-package! vterm
   :config
-  (setq copilot-node-executable "node"))
+  (evil-set-initial-state 'vterm-mode 'emacs)
 
+  (setq +workspaces-on-switch-project-behavior t)
+
+  (map! :leader
+        "TAB 0" nil
+        "TAB 1" nil
+        "TAB 2" nil
+        "TAB 3" nil
+        "TAB 4" nil
+        "TAB 5" nil
+        "TAB 6" nil
+        "TAB 7" nil
+        "TAB 8" nil
+        "TAB 9" nil)
+
+  (map! :map vterm-mode-map
+        :e
+        "<escape>" #'+workspace/other)
+
+  (map! :leader
+        "o t" (cmd!
+               (if (++workspace/workspace-p "vterm")
+                   (++workspace/switch-to-by-name "vterm")
+                 (progn
+                   (+workspace/new "vterm")
+                   (+vterm/here nil))))))
 
 (map! :leader
-      ;; :after workspaces
-      "TAB 0" nil
-      "TAB 1" nil
-      "TAB 2" nil
-      "TAB 3" nil
-      "TAB 4" nil
-      "TAB 5" nil
-      "TAB 6" nil
-      "TAB 7" nil
-      "TAB 8" nil
-      "TAB 9" nil)
-
-(map! :leader
-      ;; :after workspaces
       :desc "Display tab bar"
-      "Tab f" #'+workspace/display)
+      "TAB f" #'+workspace/display)
 
 (map! :leader
-      ;; :after workspaces
       :desc "Switch to workspace"
       "TAB TAB" (cmd!
                  (ivy-read "Switch to workspace: "
@@ -105,13 +68,11 @@
                            :caller #'+workspace-switch)
                  (+workspace-list-names)))
 
-
 (map! :leader
       :desc "Switch to last workspace"
-      "TAB l" #'+workspace:switch-previous)
+      "TAB l" #'+workspace/other)
 
 (map! :leader
-      ;; :after workspaces
       :desc "Create workspace here"
       "TAB n" (cmd!
                (condition-case _
@@ -123,12 +84,72 @@
                     (+workspace-switch (projectile-project-name) t)
                     (+workspace/display))))))
 
+
+;; (use-package! evil
+;;   :conifg
+;;   (setq evil-escape-key-sequence "kj"))
+
+;; TODO set a smaller font in the imenu buffer.
+(setq
+ org-directory "~/org/"
+ display-line-numbers-type t
+ evil-escape-key-sequence "kj"
+ initial-major-mode 'emacs-lisp-mode
+ confirm-kill-emacs nil
+ ;; flycheck-disabled-checkers '(python-mypy)
+ projectile-project-search-path '("~/codez/")
+ )
+
+(use-package! doom
+  :config
+  ;; (setq doom-theme 'doom-wilmersdorf)
+  ;; (setq doom-font (font-spec :family "Fira Code" :size 12))
+  (setq doom-theme 'doom-spacegrey))
+
+;; (use-package! flycheck
+;;   :config
+;;   (setq flycheck-disabled-checkers '(python-mypy)))
+
+
+(use-package! doom-modeline
+  :config
+  (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode)
+  (setq
+   doom-modeline-vcs-max-length 12
+   doom-modeline-buffer-encoding nil
+   domm-modeline-workspace-name t
+   doom-modeline-time-icon nil
+   doom-modeline-modal nil
+   doom-modeline-percent-position nil
+   doom-modeline-github t)
+
+  (add-hook! doom-modeline-mode-hook
+    (column-number-mode -1)
+    (line-number-mode -1)
+    (size-indication-mode -1)))
+
+(setq-default
+ fill-column 88
+ git-commit-summary-max-length 100)
+
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("zshrc\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("Cask\\'" . emacs-lisp-mode))
+(add-to-list 'auto-mode-alist '("django.config\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '(".clang-format" . conf-mode))
+(setq initial-frame-alist '((top . 1) (left . 1) (width . 160) (height . 55)))
+
+;; (add-to-list '+format-on-save-enabled-modes 'mhtml-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'sh-mode t)
+;; (add-to-list '+format-on-save-enabled-modes 'json-mode :append)
+
 (map! :leader
       :desc "imenu"
       "t i" #'imenu-list-minor-mode)
 
-
-(after! centaur-tabs
+(use-package! centaur-tabs
+  :when (modulep! :ui tabs)
+  :config
   (setq centaur-tabs-set-icons t
         centaur-tabs-gray-out-icons 'buffer
         centaur-tabs-set-bar 'left
@@ -141,15 +162,11 @@
         ;; replaces the tab list with that of another Doom workspace. This
         ;; prevents that.
         centaur-tabs-cycle-scope 'tabs)
-
   (add-hook 'dired-mode-hook 'centaur-tabs-local-mode)
   (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
   (add-hook 'python-mode-hook 'centaur-tabs-local-mode)
   (add-hook 'compilation-mode-hook 'centaur-tabs-local-mode)
   (add-hook 'inferior-python-mode-hook 'centaur-tabs-local-mode))
-
-(after! modeline
-  (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode))
 
 (map! :leader
       :desc "global visual line mode"
@@ -180,22 +197,32 @@
 
 (map! :leader
       :desc "Start debugger"
-      "o D" #'debugger/start
-      ;; :desc "eshell"
-      ;; "o t" #'eshell
+      :when (modulep! :tools debugger)
+      "o D" #'debugger/start)
+
+(map! :leader
+      :when (modulep! :tools docker)
       :desc "Docker"
       "o d" #'docker)
 
 (map! :leader
+      :when (modulep! :config default)
       "c x"
       (cmd! (+default/diagnostics)
             (switch-to-buffer-other-window "*Flycheck errors*")))
 
-;; Switch compile commands
-
 (map! :leader
+      :when (modulep! :completion ivy)
       :desc "compile"
       "c C" #'+ivy/compile)
+
+(map! :leader
+      :desc "+make/run"
+      "c r" #'+make/run)
+
+(map! :leader
+      :desc "+make/run-last"
+      "c l" #'+make/run-last)
 
 (map! :leader
       :desc "recompile"
@@ -220,9 +247,6 @@
 (map! :map python-mode-map
       :n ", f" (cmd! (evil-buffer-new) (inferior-python-mode))
       :n ", e" #'python-shell-send-buffer)
-;; :n "RET" #'python-pytest-last-failed)
-
-;; (map! :n "RET" #'recompile)
 
 (map! :map compilation-mode-map
       :n "q" #'quit-window)
@@ -244,49 +268,48 @@
       :localleader
       "a" #'org-show-all)
 
-;; (map! :leader
-;;       :desc "Switch to functions.sh"
-;;       "b f"
-;;       (cmd! ()))
-
 (set-popup-rule! "*helpful function:" :height 100)
 (set-popup-rule! "*helpful macro:" :height 100)
 (set-popup-rule! "*helpful command:" :height 25 :side 'bottom)
 (set-popup-rule! "*helpful variable:" :height 25 :side 'bottom)
 (set-popup-rule! "*Ilist*" :side 'right :width 50 :select t)
 (set-popup-rule! "*ert*" :side 'right :width 60 :select t)
+(set-popup-rule! "*compilation*" :select nil :width .5 :side 'right)
 (set-popup-rule! "*Anaconda*" :height 25)
-(set-popup-rule! "*compilation*" :select nil :height 50)
 (set-popup-rule! "*pytest*" :height .25 :select t)
 
 (after! dired
   (add-hook! 'dired-mode-hook #'dired-hide-details-mode))
 
-(after! doom-dashboard
-  (setq +doom-dashboard-functions
-        '(doom-dashboard-widget-banner
-          ;; ++doom-dashboard-project-dired
-          doom-dashboard-widget-loaded)))
+(setq +doom-dashboard-functions
+      '(doom-dashboard-widget-banner
+        doom-dashboard-widget-shortmenu
+        doom-dashboard-widget-loaded))
 
-;; (add-hook! emacs-lisp-mode
-;;   (add-hook 'before-save-hook #'eval-buffer nil t)
-;;   (when (string= (buffer-name) "*doom:scratch*")
-;;     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
-;;   (when (string= (buffer-name) "*scratch*")
-;;     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
+(add-hook! emacs-lisp-mode
+  (when (string= (buffer-name) "functions.el")
+    (udd-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
+  (when (string= (buffer-name) "*doom:scratch*")
+    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
+  (when (string= (buffer-name) "*scratch*")
+    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
-(add-hook! js-mode
-  (setq js-indent-level 2))
-
-
-(after! magit
-  (magit-add-section-hook
-   'magit-refs-sections-hook
-   'magit-insert-branch-description))
-
-(add-hook! doom-modeline-mode-hook
-  (column-number-mode -1)
-  (line-number-mode -1)
-  (size-indication-mode -1))
 
 (global-visual-line-mode t)
+
+;; (setq native-comp-async-report-warnings-errors nil)
+
+
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word))
+  :config
+  (setq copilot-node-executable "node"))
+
+;; (add-hook! c++mode
+;;   (setq c-basic-offset 2))
