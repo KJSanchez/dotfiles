@@ -45,17 +45,21 @@
   :config
   (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode)
   (setq
-   doom-modeline-vcs-max-length 12
+   vc-display-status nil
+   doom-modeline-vcs-max-length 0
    doom-modeline-buffer-encoding nil
-   domm-modeline-workspace-name t
+   ;; doom-modeline-workspace-name t
    doom-modeline-time-icon nil
+   doom-modeline-vcs-icon nil
    doom-modeline-modal nil
-   doom-modeline-percent-position nil
-   doom-modeline-github t)
-  (add-hook! doom-modeline-mode-hook
-    (column-number-mode -1)
-    (line-number-mode -1)
-    (size-indication-mode -1)))
+   doom-modeline-major-mode-color-icon nil
+   doom-modeline-position-column-line-format nil
+   doom-modeline-percent-position nil))
+;; (add-hook! doom-modeline-mode-hook
+;;
+;;   (column-number-mode -1)
+;;   (line-number-mode -1)
+;;   (size-indication-mode -1)))
 
 
 (use-package! centaur-tabs
@@ -82,6 +86,7 @@
 
 
 (use-package! vterm
+  :defer t
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
 
@@ -100,8 +105,10 @@
                (if (++workspace/workspace-p "vterm")
                    (++workspace/switch-to-by-name "vterm")
                  (progn
-                   (+workspace/new "vterm")
-                   (+vterm/here nil))))))
+                   (+workspace/new "vterm")))
+
+               (unless (bufferp "*vterm*")
+                 (+vterm/here nil)))))
 
 (use-package! imenu-list
   :config
