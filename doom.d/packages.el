@@ -58,6 +58,7 @@
 ;; (package! exec-path-from-shell)
 
 (package! copilot
+  :disable t
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
 (when (modulep! :lang cc)
