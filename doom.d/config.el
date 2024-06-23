@@ -44,7 +44,13 @@
 (use-package! doom-modeline
   :config
   (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode)
+  (map! :leader
+        :desc "toggle modeline"
+        "t m" #'hide-mode-line-mode
+        :desc "global hide toggle modeline"
+        "t M" #'global-hide-mode-line-mode)
   (setq
+   mode-line-modified ""
    vc-display-status nil
    doom-modeline-vcs-max-length 0
    doom-modeline-buffer-encoding nil
@@ -52,6 +58,7 @@
    doom-modeline-time-icon nil
    doom-modeline-vcs-icon nil
    doom-modeline-modal nil
+   doom-modeline-major-mode-icon nil
    doom-modeline-major-mode-color-icon nil
    doom-modeline-position-column-line-format nil
    doom-modeline-percent-position nil))
@@ -86,7 +93,6 @@
 
 
 (use-package! vterm
-  :defer t
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
 
@@ -95,20 +101,21 @@
 
   (map! :map vterm-mode-map
         :e
-        "M-<left>" (cmd! (vterm-send-key "\e")))
-  ;; ;;       "M <right>" )
+        "M-<right>" (cmd! (vterm-send-escape) (vterm-send-key "f"))
+        "M-<left>" (cmd! (vterm-send-escape) (vterm-send-key "b")))
 
 
   (map! :when (modulep! :ui workspaces)
         :leader
         "o t" (cmd!
                (if (++workspace/workspace-p "vterm")
-                   (++workspace/switch-to-by-name "vterm")
+                   (progn
+                     (++workspace/switch-to-by-name "vterm")
+                     (unless (get-buffer "*vterm*")
+                       (+vterm/here nil)))
                  (progn
-                   (+workspace/new "vterm")))
-
-               (unless (bufferp "*vterm*")
-                 (+vterm/here nil)))))
+                   (+workspace/new "vterm")
+                   (+vterm/here nil))))))
 
 (use-package! imenu-list
   :config
@@ -116,9 +123,19 @@
         :desc "imenu"
         "t i" #'imenu-list-minor-mode))
 
-;; (use-package! evil
-;;   :conifg
-;;   (setq evil-escape-key-sequence "kj"))
+(use-package! evil
+  :config
+  (setq evil-escape-key-sequence "kj"))
+
+(map! :after evil
+      :leader
+      :n
+      :desc "++window-vsplit"
+      "w v" (cmd!
+             (split-window-right)
+             (other-window 1)
+             (switch-to-buffer (other-buffer))
+             (other-window 1)))
 
 (map! :when (modulep! :editor evil)
       :leader
@@ -145,7 +162,7 @@
 
 (map! :when (modulep! :ui workspaces)
       :leader
-      :desc "Display tab bar"
+      :desc "Display workspaces"
       "TAB f" #'+workspace/display)
 
 (map! :when (and (modulep! :ui workspaces) (modulep! :completion ivy))
@@ -176,16 +193,6 @@
                     (+workspace-switch (projectile-project-name) t)
                     (+workspace/display))))))
 
-(map! :when (modulep! :tools debugger)
-      :desc "Start debugger"
-      :leader
-      "o D" #'debugger/start)
-
-(map! :when (modulep! :tools docker)
-      :leader
-      :desc "Docker"
-      "o d" #'docker)
-
 (map! :when (modulep! :config default)
       :leader
       "c x"
@@ -195,11 +202,7 @@
 (map! :when (modulep! :checkers syntax)
       :leader
       :desc "global flycheck mode"
-      "t z" #'global-flycheck-mode
-      :desc "toggle modeline"
-      "t m" #'hide-mode-line-mode
-      :desc "global hide toggle modeline"
-      "t M" #'global-hide-mode-line-mode)
+      "t z" #'global-flycheck-mode)
 
 (map! :when (modulep! :completion ivy)
       :leader
@@ -286,6 +289,10 @@
   (when (string= (buffer-name) "*scratch*")
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
+;; (defun eval-scratch-buffer ()
+;;   (when (string= (buffer-name) "config.el")
+;;     (eval-buffer)))
+;; (add-hook 'evil-insert-state-exit-hook #'eval-scratch-buffer)
 
 (global-visual-line-mode t)
 
@@ -293,7 +300,6 @@
 (setq
  org-directory "~/org/"
  display-line-numbers-type t
- evil-escape-key-sequence "kj"
  initial-major-mode 'emacs-lisp-mode
  confirm-kill-emacs nil
  ;; flycheck-disabled-checkers '(python-mypy)
