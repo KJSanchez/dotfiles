@@ -25,36 +25,37 @@
 
 (load! "functions.el")
 
-;; ;; accept completion from copilot and fallback to company
-;; (use-package! copilot
-;;   :hook (prog-mode . copilot-mode)
-;;   :bind (:map copilot-completion-map
-;;               ("<tab>" . 'copilot-accept-completion)
-;;               ("TAB" . 'copilot-accept-completion)
-;;               ("C-TAB" . 'copilot-accept-completion-by-word)
-;;               ("C-<tab>" . 'copilot-accept-completion-by-word))
-;;   :config
-;;   (setq copilot-node-executable "node"))
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word))
+  :config
+  (setq copilot-node-executable "node"))
+
 
 (use-package! doom
   :config
   (setq doom-theme 'doom-spacegrey))
 
-;; (use-package! doom-modeline
-;;   :config
-;;   (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode)
-;;   (setq
-;;    doom-modeline-vcs-max-length 12
-;;    doom-modeline-buffer-encoding nil
-;;    domm-modeline-workspace-name t
-;;    doom-modeline-time-icon nil
-;;    doom-modeline-modal nil
-;;    doom-modeline-percent-position nil
-;;    doom-modeline-github t)
-;;   (add-hook! doom-modeline-mode-hook
-;;     (column-number-mode -1)
-;;     (line-number-mode -1)
-;;     (size-indication-mode -1)))
+(use-package! doom-modeline
+  :config
+  (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode)
+  (setq
+   doom-modeline-vcs-max-length 12
+   doom-modeline-buffer-encoding nil
+   domm-modeline-workspace-name t
+   doom-modeline-time-icon nil
+   doom-modeline-modal nil
+   doom-modeline-percent-position nil
+   doom-modeline-github t)
+  (add-hook! doom-modeline-mode-hook
+    (column-number-mode -1)
+    (line-number-mode -1)
+    (size-indication-mode -1)))
 
 
 (use-package! centaur-tabs
@@ -140,7 +141,7 @@
       :desc "Display tab bar"
       "TAB f" #'+workspace/display)
 
-(map! :when (and (modulep! :ui workspaces) (featurep 'ivy))
+(map! :when (and (modulep! :ui workspaces) (modulep! :completion ivy))
       :leader
       :desc "Switch to workspace"
       "TAB TAB" (cmd!
@@ -214,12 +215,12 @@
 
 (map! :when (modulep! :lang python)
       :map python-mode-map
-      :prefix "coverage"
       :localleader
-      :desc "toggle coverage overlay"
-      "c c" #'python-coverage-overlay-mode
-      :desc "refresh coverage overlay"
-      "c r" #'python-coverage-overlay-refresh)
+      (:prefix ("c" . "coverage")
+       :desc "toggle coverage overlay"
+       "c" #'python-coverage-overlay-mode
+       :desc "refresh coverage overlay"
+       "r" #'python-coverage-overlay-refresh))
 
 (map! :map org-mode-map
       :localleader
@@ -272,7 +273,7 @@
 (add-hook! 'dired-mode-hook #'dired-hide-details-mode)
 (add-hook! emacs-lisp-mode
   (when (string= (buffer-name) "functions.el")
-    (udd-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
+    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
   (when (string= (buffer-name) "*doom:scratch*")
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
   (when (string= (buffer-name) "*scratch*")
