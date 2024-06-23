@@ -1,7 +1,6 @@
 
 
-
-(defun ++workspace/switch-to-by-name (name &optional create)
+(defun ++workspace/switch-to-by-name (name)
   (let ((index (cl-position name (+workspace-list-names) :test 'string=)))
     (+workspace/switch-to index)))
 
