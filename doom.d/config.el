@@ -49,19 +49,18 @@
         "t m" #'hide-mode-line-mode
         :desc "global hide toggle modeline"
         "t M" #'global-hide-mode-line-mode)
-  (setq
-   mode-line-modified ""
-   vc-display-status nil
-   doom-modeline-vcs-max-length 0
-   doom-modeline-buffer-encoding nil
-   ;; doom-modeline-workspace-name t
-   doom-modeline-time-icon nil
-   doom-modeline-vcs-icon nil
-   doom-modeline-modal nil
-   doom-modeline-major-mode-icon nil
-   doom-modeline-major-mode-color-icon nil
-   doom-modeline-position-column-line-format nil
-   doom-modeline-percent-position nil))
+  (setq mode-line-modified "")
+  (setq vc-display-status nil)
+  (setq doom-modeline-vcs-max-length 0)
+  (setq doom-modeline-buffer-encoding nil)
+  (setq doom-modeline-workspace-name t)
+  (setq doom-modeline-time-icon nil)
+  (setq doom-modeline-vcs-icon nil)
+  (setq doom-modeline-modal nil)
+  (setq doom-modeline-major-mode-icon nil)
+  (setq doom-modeline-major-mode-color-icon nil)
+  (setq doom-modeline-position-column-line-format nil)
+  (setq doom-modeline-percent-position nil))
 ;; (add-hook! doom-modeline-mode-hook
 ;;
 ;;   (column-number-mode -1)
@@ -72,18 +71,18 @@
 (use-package! centaur-tabs
   :when (modulep! :ui tabs)
   :config
-  (setq centaur-tabs-set-icons t
-        centaur-tabs-gray-out-icons 'buffer
-        centaur-tabs-set-bar 'left
-        centaur-tabs-set-modified-marker nil
-        ;; centaur-tabs-close-button ""
-        ;; centaur-tabs-modified-marker "x"
-        centaur-tabs-style "bar"
-        centaur-tabs-height 16
-        ;; Scrolling (with the mouse wheel) past the end of the tab list
-        ;; replaces the tab list with that of another Doom workspace. This
-        ;; prevents that.
-        centaur-tabs-cycle-scope 'tabs)
+  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-gray-out-icons 'buffer)
+  (setq centaur-tabs-set-bar 'left)
+  (setq centaur-tabs-set-modified-marker nil)
+  ;;(setq centaur-tabs-close-button "")
+  ;;(setq centaur-tabs-modified-marker "x")
+  (setq centaur-tabs-style "bar")
+  (setq centaur-tabs-height 16)
+  ;; Scrolling (with the mouse wheel) past the end of the tab list
+  ;; replaces the tab list with that of another Doom workspace. This
+  ;; prevents that.
+  (setq centaur-tabs-cycle-scope 'tabs)
   (add-hook 'dired-mode-hook 'centaur-tabs-local-mode)
   (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
   (add-hook 'python-mode-hook 'centaur-tabs-local-mode)
@@ -246,10 +245,6 @@
       "t w" #'global-visual-line-mode)
 
 (map! :leader
-      :desc "tab-bar-mode"
-      "t t" #'tab-bar-mode)
-
-(map! :leader
       :desc "transparency"
       "t T" (cmd! (let ((alpha (frame-parameter nil 'alpha)))
                     (if (eq
@@ -297,20 +292,16 @@
 (global-visual-line-mode t)
 
 ;; TODO set a smaller font in the imenu buffer.
-(setq
- org-directory "~/org/"
- display-line-numbers-type t
- initial-major-mode 'emacs-lisp-mode
- confirm-kill-emacs nil
- ;; flycheck-disabled-checkers '(python-mypy)
- projectile-project-search-path '("~/codez/")
- )
-
+(setq org-directory "~/org/")
+(setq display-line-numbers-type t)
+(setq initial-major-mode 'emacs-lisp-mode)
+(setq confirm-kill-emacs nil)
+;;(setq flycheck-disabled-checkers '(python-mypy)
+(setq projectile-project-search-path '("~/codez/"))
 (setq initial-frame-alist '((top . 1) (left . 1) (width . 160) (height . 55)))
 
-(setq-default
- fill-column 88
- git-commit-summary-max-length 100)
+(setq-default fill-column 88)
+(setq-default git-commit-summary-max-length 100)
 
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("zshrc\\'" . sh-mode))

@@ -50,12 +50,10 @@
                                         ;(unpin! t)
 
 (package! imenu-list)
-(package! csv-mode)
-(package! ov)
+(package! csv-mode :disable t)
+(package! ov :disable t)
 (package! f)
 (package! dash)
-
-;; (package! exec-path-from-shell)
 
 (package! copilot
   :disable t
