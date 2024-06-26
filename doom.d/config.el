@@ -34,6 +34,8 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word))
   :config
+  (setq copilot-max-char -1)
+  (setq copilot-indent-offset-warning-disable t)
   (setq copilot-node-executable "node"))
 
 
