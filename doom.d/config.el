@@ -25,6 +25,27 @@
 
 (load! "functions.el")
 
+(use-package! tabspaces
+  :defer t
+  :config
+  (map! :leader
+        :n
+        :desc "tab-bar-close-tab"
+        "w g d" #'tab-bar-close-tab)
+  (map! :leader
+        :n
+        :desc "tabspaces-mode"
+        "t t" (cmd! (if tabspaces-mode
+                        (progn
+                          (tabspaces-save-session)
+                          (tab-bar-mode -1)
+                          (tabspaces-mode nil))
+                      (tab-bar-mode)
+                      (tabspaces-mode 1)
+                      (tabspaces-restore-session)))))
+
+
+
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
@@ -42,6 +63,7 @@
 (use-package! doom
   :config
   (setq doom-theme 'doom-spacegrey))
+
 
 (use-package! doom-modeline
   :config
@@ -63,11 +85,6 @@
   (setq doom-modeline-major-mode-color-icon nil)
   (setq doom-modeline-position-column-line-format nil)
   (setq doom-modeline-percent-position nil))
-;; (add-hook! doom-modeline-mode-hook
-;;
-;;   (column-number-mode -1)
-;;   (line-number-mode -1)
-;;   (size-indication-mode -1)))
 
 
 (use-package! centaur-tabs
@@ -92,8 +109,8 @@
   (add-hook 'inferior-python-mode-hook 'centaur-tabs-local-mode))
 
 
-
 (use-package! vterm
+  :defer t
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
 
@@ -118,11 +135,9 @@
                    (+workspace/new "vterm")
                    (+vterm/here nil))))))
 
-(use-package! imenu-list
-  :config
-  (map! :leader
-        :desc "imenu"
-        "t i" #'imenu-list-minor-mode))
+(map! :leader
+      :desc "imenu"
+      "t i" #'imenu-list-minor-mode)
 
 (use-package! evil
   :config
@@ -257,10 +272,6 @@
                         (set-frame-parameter nil 'alpha '(60 . 50))
                       (set-frame-parameter nil 'alpha '(100 . 100))))))
 
-(map! :leader
-      :desc "Install a package"
-      "h i" #'package-install)
-
 (set-popup-rule! "*helpful function:" :height 100)
 (set-popup-rule! "*helpful macro:" :height 100)
 (set-popup-rule! "*helpful command:" :height 25 :side 'bottom)
@@ -286,29 +297,27 @@
   (when (string= (buffer-name) "*scratch*")
     (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
 
-;; (defun eval-scratch-buffer ()
-;;   (when (string= (buffer-name) "config.el")
-;;     (eval-buffer)))
-;; (add-hook 'evil-insert-state-exit-hook #'eval-scratch-buffer)
+(defun eval-scratch-buffer ()
+  (when (string= (buffer-name) "config.el")
+    (eval-buffer)))
+(add-hook 'evil-insert-state-exit-hook #'eval-scratch-buffer)
 
-(global-visual-line-mode t)
+;; (global-visual-line-mode t)
 
 ;; TODO set a smaller font in the imenu buffer.
 (setq org-directory "~/org/")
 (setq display-line-numbers-type t)
-(setq initial-major-mode 'emacs-lisp-mode)
+;; Be careful using this because it blows up Doom's load time.
+;; (setq initial-major-mode 'emacs-lisp-mode)
 (setq confirm-kill-emacs nil)
-;;(setq flycheck-disabled-checkers '(python-mypy)
-(setq projectile-project-search-path '("~/codez/"))
-(setq initial-frame-alist '((top . 1) (left . 1) (width . 160) (height . 55)))
+(setq flycheck-disabled-checkers '(python-mypy))
+(setq projectile-project-search-path '("~/codez/" "~/open-source/"))
 
 (setq-default fill-column 88)
 (setq-default git-commit-summary-max-length 100)
 
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("zshrc\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("Cask\\'" . emacs-lisp-mode))
-(add-to-list 'auto-mode-alist '("django.config\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '(".clang-format" . conf-mode))
 
-;; (setq native-comp-async-report-warnings-errors nil)
+;; TODO: pop to *Messages* buffer
