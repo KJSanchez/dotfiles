@@ -56,7 +56,6 @@
 (package! dash)
 
 (package! copilot
-  :disable t
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
 (when (modulep! :lang cc)
@@ -65,3 +64,5 @@
 (when (modulep! :lang python)
   (package! python-coverage))
 
+
+(package! tabspaces)
