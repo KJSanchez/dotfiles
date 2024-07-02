@@ -1,6 +1,6 @@
 function :e() {
-	vim ~/dotfiles/functions.sh
-	. ~/dotfiles/functions.sh
+	vim ~/codez/dotfiles/envvars
+	. ~/codez/dotfiles/envvars
 }
 
 function delete-old-branches() {
