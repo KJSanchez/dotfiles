@@ -67,8 +67,9 @@
   (setq copilot-node-executable "node"))
 
 
-(use-package! doom
+(use-package! doom-ui
   :config
+  (setq doom-font (font-spec :family "Fira Code" :size 15))
   (setq doom-theme 'doom-spacegrey))
 
 
@@ -289,10 +290,44 @@
 (set-popup-rule! "*ert*" :side 'right :width .5)
 (set-popup-rule! "*compilation*" :select nil :width .5 :side 'right)
 (set-popup-rule! "*cargo-test*" :select nil :width .5 :side 'right)
+;; (set-popup-rule! "*compilation*" :select t :height 31 :side 'top)
 (set-popup-rule! "*Anaconda*" :height 25)
 (set-popup-rule! "*pytest*" :height .25 :select t)
 
+;; TODO: set-popup-rule when big-mode is enabled
+;;
+
+;; (add-hook! doom-big-font-mode-hook
+;;   (set-popup-rule! "*compilation*" :select t :side 'left :width 124))
+
+;; (set-popup-rule!
+;;   (lambda (buffer action)
+;;     (and (string-match-p "*compilation*" "*compilation*") (buffer-name buffer)
+;;     doom-big-font-mode))
+;; :select t :side 'left :width 124)
+
+;; (set-popup-rule! "*compilation*" :select t :side 'top :height 31)
+
 (when (modulep! :ui doom-dashboard)
+  (setq +doom-dashboard-ascii-banner-fn #'++doom-dashboard-draw-ascii-banner-fn)
+  (setq +doom-dashboard-menu-sections
+        '(("Open project"
+           :icon (nerd-icons-octicon "nf-oct-briefcase" :face 'doom-dashboard-menu-title)
+           :action projectile-switch-project)
+          ("Open .doom.d"
+           :icon (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
+           :when (file-directory-p doom-user-dir)
+           :action doom/open-private-config)
+          ("Recently opened files"
+           :icon (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
+           :action recentf-open-files)
+          ("Reload last session"
+           :icon (nerd-icons-octicon "nf-oct-history" :face 'doom-dashboard-menu-title)
+           :when (cond ((modulep! :ui workspaces)
+                        (file-exists-p (expand-file-name persp-auto-save-fname persp-save-dir)))
+                       ((require 'desktop nil t)
+                        (file-exists-p (desktop-full-file-name))))
+           :action doom/quickload-session)))
   (setq +doom-dashboard-functions
         '(doom-dashboard-widget-banner
           doom-dashboard-widget-shortmenu
@@ -311,7 +346,6 @@
 (setq flycheck-disabled-checkers '(python-mypy))
 (setq projectile-project-search-path '("~/codez/" "~/open-source/"))
 
-(setq-default fill-column 88)
 (setq-default git-commit-summary-max-length 100)
 
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
