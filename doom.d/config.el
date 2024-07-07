@@ -48,7 +48,14 @@
 
 ;; accept completion from copilot and fallback to company
 (use-package! copilot
-  :hook (prog-mode . copilot-mode)
+  :hook ((python-mode . copilot-mode)
+         (emacs-lisp-mode . copilot-mode)
+         (json-mode . copilot-mode)
+         (yaml-mode . copilot-mode)
+         (conf-mode . copilot-mode)
+         (markdown-mode . copilot-mode)
+         (sh-mode . copilot-mode)
+         (c++-mode . copilot-mode))
   :bind (:map copilot-completion-map
               ("<tab>" . 'copilot-accept-completion)
               ("TAB" . 'copilot-accept-completion)
@@ -115,7 +122,7 @@
   (evil-set-initial-state 'vterm-mode 'emacs)
 
   ;; TODO: move this somewhere else.
-  (setq +workspaces-on-switch-project-behavior t)
+  ;; (setq +workspaces-on-switch-project-behavior t)
 
   (map! :map vterm-mode-map
         :e
@@ -229,8 +236,7 @@
       :desc "recompile"
       "c c" #'recompile)
 
-;; (map! :n "RET" (cmd!
-;;                 (if ))
+(map! :n "RET" #'recompile)
 
 (map! :when (modulep! :tools make)
       :leader
@@ -272,6 +278,9 @@
                         (set-frame-parameter nil 'alpha '(60 . 50))
                       (set-frame-parameter nil 'alpha '(100 . 100))))))
 
+
+(map! :map emacs-lisp-mode-map
+      :n "RET" (cmd! (eval-buffer nil t)))
 (set-popup-rule! "*helpful function:" :height 100)
 (set-popup-rule! "*helpful macro:" :height 100)
 (set-popup-rule! "*helpful command:" :height 25 :side 'bottom)
@@ -279,6 +288,7 @@
 (set-popup-rule! "*Ilist*" :side 'right :width 50 :select t)
 (set-popup-rule! "*ert*" :side 'right :width .5)
 (set-popup-rule! "*compilation*" :select nil :width .5 :side 'right)
+(set-popup-rule! "*cargo-test*" :select nil :width .5 :side 'right)
 (set-popup-rule! "*Anaconda*" :height 25)
 (set-popup-rule! "*pytest*" :height .25 :select t)
 
@@ -289,18 +299,6 @@
           doom-dashboard-widget-loaded)))
 
 (add-hook! 'dired-mode-hook #'dired-hide-details-mode)
-(add-hook! emacs-lisp-mode
-  (when (string= (buffer-name) "functions.el")
-    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
-  (when (string= (buffer-name) "*doom:scratch*")
-    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t))
-  (when (string= (buffer-name) "*scratch*")
-    (add-hook 'evil-insert-state-exit-hook #'eval-buffer nil t)))
-
-(defun eval-scratch-buffer ()
-  (when (string= (buffer-name) "config.el")
-    (eval-buffer)))
-(add-hook 'evil-insert-state-exit-hook #'eval-scratch-buffer)
 
 ;; (global-visual-line-mode t)
 
