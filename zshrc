@@ -54,8 +54,7 @@ chpwd_functions+=(conda_audiofocus_activate)
 # echo 'eval "$(/usr/local/bin/brew shellenv)"
 
 export PATH="$PATH:/opt/homebrew/bin"
-
-export PATH="$PATH:$HOME/codez/audiofocus/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 
 eval "$(starship init zsh)"
 
