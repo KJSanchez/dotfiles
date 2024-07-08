@@ -38,11 +38,11 @@
 
        :editor
        (evil +everywhere)
-       ;; file-templates    ; auto-snippets for empty files
+       file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
        (format +onsave)  ; automated prettiness
        ;; parinfer          ; turn lisp into python, sort of
-       ;; snippets          ; my elves. They type so I don't have to
+       snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
@@ -56,6 +56,7 @@
 
        :checkers
        (syntax
+        ;; +flycheck      ; TODO: try?
         +childframe)
 
        :tools
