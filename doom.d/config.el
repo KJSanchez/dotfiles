@@ -73,6 +73,7 @@
   ;; (setq doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
   ;; (setq doom-font (font-spec :family "Menlo" :size 16))
   ;; (setq doom-font (font-spec :family "Monaco" :size 16))
+  (setq org-directory "~/codez/obsidian")
   (setq doom-theme 'doom-spacegrey))
 
 
@@ -382,3 +383,11 @@
   :disabled t)
 
 ;; TODO set a smaller font in the imenu buffer.
+
+
+;; Key mapping to
+;; accept keystroke
+;; take thing it's bound to
+;; then switch to config.el in popup buffer
+;; then populate a map! snippet with the keybinding
+;; key switch to
