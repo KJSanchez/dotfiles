@@ -62,6 +62,7 @@
   (package! realgud-lldb))
 
 (when (modulep! :lang python)
+  (package! hy-mode)
   (package! python-coverage))
 
 
