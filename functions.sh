@@ -1,6 +1,8 @@
 function :e() {
 	vim ~/codez/dotfiles/envvars
+    echo "sourcing envvars..."
 	. ~/codez/dotfiles/envvars
+    echo "done."
 }
 
 function delete-old-branches() {
