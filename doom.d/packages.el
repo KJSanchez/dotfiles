@@ -63,6 +63,7 @@
 
 (when (modulep! :lang python)
   (package! hy-mode)
+  (package! conda)
   (package! python-coverage))
 
 
