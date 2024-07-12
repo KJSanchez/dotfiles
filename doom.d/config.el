@@ -98,7 +98,7 @@
 
 
 (use-package! centaur-tabs
-  :defer t
+  :disabled t
   :config
   (centaur-tabs-group-by-projectile-project))
 
@@ -297,18 +297,24 @@
 
 (use-package! doom-ui
   :config
+  (setq doom-font (font-spec :family "Fira Code" :weight 'medium :size 15))
+  ;; (setq doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
+  ;; (setq doom-font (font-spec :family "Menlo" :size 16))
+  ;; (setq doom-font (font-spec :family "Monaco" :size 16))
+  (setq org-directory "~/codez/obsidian")
+  (setq doom-theme 'doom-spacegrey)
 
   ;; (add-hook! doom-big-font-mode-hook
   ;;   (set-popup-rule! "*compilation*" :select t :side 'left :width 124))
   (setq +doom-dashboard-ascii-banner-fn #'++doom-dashboard-draw-ascii-banner-fn)
   (setq +doom-dashboard-menu-sections
-        '(("Browse .doom.d"
+        '(("Browse project"
+           :icon (nerd-icons-octicon "nf-oct-briefcase" :face 'doom-dashboard-menu-title)
+           :action projectile-switch-project)
+          ("Browse .doom.d"
            :icon (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
            :when (file-directory-p doom-user-dir)
            :action doom/open-private-config)
-          ("Browse project"
-           :icon (nerd-icons-octicon "nf-oct-briefcase" :face 'doom-dashboard-menu-title)
-           :action projectile-switch-project)
           ("Recently opened files"
            :icon (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
            :action recentf-open-files)
@@ -347,7 +353,7 @@
 (use-package! projectile
   :defer t
   :config
-  (setq projectile-project-search-path '("~/codez/" "~/open-source/" "~/archived-projects")))
+  (setq projectile-project-search-path '("~/codez/" "~/codez/hello-world/" "~/ploomber/" "~/open-source/")))
 
 (use-package! magit
   :defer t
@@ -385,6 +391,7 @@
         "l" #'conda-env-list))
 
 
+;; sketchy
 (map! :leader
       :desc "++doom/reload-dir-locals"
       "h r R" (cmd!
