@@ -25,8 +25,11 @@
 
 ;;; Code:
 (load! "lib.el" nil t)
+(load! "experimentals.el" nil t)
 
-(add-hook! 'dired-mode-hook #'dired-hide-details-mode)
+;; Something's wrong with the binary.
+(use-package! parinfer
+  :disabled t)
 
 (use-package! tabspaces
   :defer t
@@ -65,15 +68,6 @@
   (setq copilot-max-char -1)
   (setq copilot-indent-offset-warning-disable t)
   (setq copilot-node-executable "node"))
-
-(use-package! doom-ui
-  :config
-  (setq doom-font (font-spec :family "Fira Code" :size 15))
-  ;; (setq doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
-  ;; (setq doom-font (font-spec :family "Menlo" :size 16))
-  ;; (setq doom-font (font-spec :family "Monaco" :size 16))
-  (setq org-directory "~/codez/obsidian")
-  (setq doom-theme 'doom-spacegrey))
 
 (use-package! doom-modeline
   :config
@@ -425,3 +419,5 @@
 ;;   (add-hook 'persp-frame-server-switch-hook #'project-tab-groups)
 ;;   ;; (remove-hook 'persp-frame-server-switch-hook #'project-tab-groups)
 ;;   (add-hook 'projectile-after-switch-project-hook #'project-tab-groups))
+
+(add-hook! 'dired-mode-hook #'dired-hide-details-mode)

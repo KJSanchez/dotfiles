@@ -81,7 +81,7 @@
        json
        (javascript +lsp)
        (markdown +grip)
-       (python +pyenv +tree-sitter)
+       (python +pyenv +tree-sitter +conda)
        (sh +lsp)
        (yaml +lsp)
 

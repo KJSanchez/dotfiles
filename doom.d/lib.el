@@ -39,6 +39,3 @@
                                    32)))
                "\n"))
      'face 'doom-dashboard-banner)))
-
-
-;; TODO: pop to *Messages* buffer
