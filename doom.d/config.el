@@ -26,6 +26,8 @@
 ;;; Code:
 (load! "lib.el" nil t)
 
+(add-hook! 'dired-mode-hook #'dired-hide-details-mode)
+
 (use-package! tabspaces
   :defer t
   :config
@@ -45,8 +47,6 @@
                       (tabspaces-mode 1)
                       (tabspaces-restore-session)))))
 
-
-;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook ((python-mode . copilot-mode)
          (emacs-lisp-mode . copilot-mode)
@@ -66,7 +66,6 @@
   (setq copilot-indent-offset-warning-disable t)
   (setq copilot-node-executable "node"))
 
-
 (use-package! doom-ui
   :config
   (setq doom-font (font-spec :family "Fira Code" :size 15))
@@ -76,49 +75,50 @@
   (setq org-directory "~/codez/obsidian")
   (setq doom-theme 'doom-spacegrey))
 
-
 (use-package! doom-modeline
   :config
-  (add-hook 'imenu-list-minor-mode-hook #'hide-mode-line-mode)
   (map! :leader
         :desc "toggle modeline"
         "t m" #'hide-mode-line-mode
         :desc "global hide toggle modeline"
         "t M" #'global-hide-mode-line-mode)
-  (setq mode-line-modified "")
-  (setq vc-display-status nil)
-  (setq doom-modeline-vcs-max-length 0)
-  (setq doom-modeline-buffer-encoding nil)
-  (setq doom-modeline-workspace-name t)
-  (setq doom-modeline-time-icon nil)
-  (setq doom-modeline-vcs-icon nil)
-  (setq doom-modeline-modal nil)
-  (setq doom-modeline-major-mode-icon nil)
-  (setq doom-modeline-major-mode-color-icon nil)
-  (setq doom-modeline-position-column-line-format nil)
-  (setq doom-modeline-percent-position nil))
+  ;; (setq mode-line-modified "")
+  ;; (setq vc-display-status nil)
+  ;; (setq doom-modeline-vcs-max-length 0)
+  ;; (setq doom-modeline-buffer-encoding nil)
+  ;; (setq doom-modeline-workspace-name t)
+  ;; (setq doom-modeline-time-icon nil)
+  ;; (setq doom-modeline-vcs-icon nil)
+  ;; (setq doom-modeline-modal nil)
+  ;; (setq doom-modeline-major-mode-icon nil)
+  ;; (setq doom-modeline-major-mode-color-icon nil)
+  ;; (setq doom-modeline-position-column-line-format nil)
+  ;; (setq doom-modeline-percent-position nil)
+  )
 
 
 (use-package! centaur-tabs
-  :when (modulep! :ui tabs)
+  :defer t
   :config
-  (setq centaur-tabs-set-icons t)
-  (setq centaur-tabs-gray-out-icons 'buffer)
-  (setq centaur-tabs-set-bar 'left)
-  (setq centaur-tabs-set-modified-marker nil)
-  ;; (setq centaur-tabs-close-button "")
-  ;; (setq centaur-tabs-modified-marker "x")
-  (setq centaur-tabs-style "bar")
-  (setq centaur-tabs-height 16)
-  ;; Scrolling (with the mouse wheel) past the end of the tab list
-  ;; replaces the tab list with that of another Doom workspace. This
-  ;; prevents that.
-  (setq centaur-tabs-cycle-scope 'tabs)
-  (add-hook 'dired-mode-hook 'centaur-tabs-local-mode)
-  (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
-  (add-hook 'python-mode-hook 'centaur-tabs-local-mode)
-  (add-hook 'compilation-mode-hook 'centaur-tabs-local-mode)
-  (add-hook 'inferior-python-mode-hook 'centaur-tabs-local-mode))
+  (centaur-tabs-group-by-projectile-project))
+
+;; (setq centaur-tabs-set-icons t)
+;; (setq centaur-tabs-gray-out-icons 'buffer)
+;; (setq centaur-tabs-set-bar 'left)
+;; (setq centaur-tabs-set-modified-marker nil)
+;; ;; (setq centaur-tabs-close-button "")
+;; ;; (setq centaur-tabs-modified-marker "x")
+;; (setq centaur-tabs-style "bar")
+;; (setq centaur-tabs-height 16)
+;; ;; Scrolling (with the mouse wheel) past the end of the tab list
+;; ;; replaces the tab list with that of another Doom workspace. This
+;; ;; prevents that.
+;; (setq centaur-tabs-cycle-scope 'tabs)
+;; (add-hook 'dired-mode-hook 'centaur-tabs-local-mode)
+;; (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
+;; (add-hook 'python-mode-hook 'centaur-tabs-local-mode)
+;; (add-hook 'compilation-mode-hook 'centaur-tabs-local-mode)
+;; (add-hook 'inferior-python-mode-hook 'centaur-tabs-local-mode))
 
 
 (use-package! vterm
@@ -126,14 +126,10 @@
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
 
-  ;; TODO: move this somewhere else.
-  ;; (setq +workspaces-on-switch-project-behavior t)
-
   (map! :map vterm-mode-map
         :e
         "M-<right>" (cmd! (vterm-send-escape) (vterm-send-key "f"))
         "M-<left>" (cmd! (vterm-send-escape) (vterm-send-key "b")))
-
 
   (map! :when (modulep! :ui workspaces)
         :leader
@@ -250,15 +246,6 @@
       :desc "+make/run-last"
       "c l" #'+make/run-last)
 
-(map! :when (modulep! :lang python)
-      :map python-mode-map
-      :localleader
-      (:prefix ("c" . "coverage")
-       :desc "toggle coverage overlay"
-       "c" #'python-coverage-overlay-mode
-       :desc "refresh coverage overlay"
-       "r" #'python-coverage-overlay-refresh))
-
 (map! :map org-mode-map
       :localleader
       "a" #'org-show-all)
@@ -337,8 +324,6 @@
           doom-dashboard-widget-shortmenu
           doom-dashboard-widget-loaded)))
 
-(add-hook! 'dired-mode-hook #'dired-hide-details-mode)
-
 (after! files
   (setq confirm-kill-emacs nil))
 
@@ -357,37 +342,79 @@
 (use-package! flycheck
   :defer t
   :config
-  (setq flycheck-disabled-checkers '(python-mypy)))
+  (setq flycheck-disabled-checkers '(python-pylint)))
 
 (use-package! projectile
   :defer t
   :config
-  (setq projectile-project-search-path '("~/codez/" "~/open-source/")))
-
-;; Would be nice to hide the dumb stuff from compilation-mode...
-;; (setq compilation-hidden-output '("cargo*"))
+  (setq projectile-project-search-path '("~/codez/" "~/open-source/" "~/archived-projects")))
 
 (use-package! magit
   :defer t
   :config
   (setq-default git-commit-summary-max-length 100))
 
-
 (use-package! neotree
   :defer t
   :config
   (setq neo-show-hidden-files nil))
 
-;; This has been more annoying than not =(.
-(use-package! persp-mode
-  :disabled t)
+(use-package! python-coverage
+  :defer t
+  :config
+  (map! :map python-mode-map :localleader "c" nil)
+  (map! :map python-mode-map
+        :localleader
+        :prefix ("t" . "test")
+        :desc "toggle coverage overlay"
+        "c" #'python-coverage-overlay-mode
+        :desc "refresh coverage overlay"
+        "r" #'python-coverage-overlay-refresh))
+
+(use-package! conda
+  :defer t
+  :config
+  (map! :map python-mode-map
+        :localleader
+        :prefix ("c" . "conda")
+        :desc "activate environment"
+        "a" #'conda-env-activate
+        :desc "deactivate environment"
+        "d" #'conda-env-deactivate
+        :desc "list environments"
+        "l" #'conda-env-list))
+
+
+(map! :leader
+      :desc "++doom/reload-dir-locals"
+      "h r R" (cmd!
+               (dir-locals-read-from-dir "/Users/keenansanchez/codez/cloud-backend")
+               (print flycheck-disabled-checkers)
+               ))
 
 ;; TODO set a smaller font in the imenu buffer.
-
-
 ;; Key mapping to
 ;; accept keystroke
 ;; take thing it's bound to
 ;; then switch to config.el in popup buffer
 ;; then populate a map! snippet with the keybinding
 ;; key switch to
+
+(use-package! kubernetes
+  :defer t
+  :config nil)
+
+;; This has been more annoying than not =(.
+(use-package! persp-mode
+  :defer t
+  :config
+  (setq +workspaces-on-switch-project-behavior t))
+
+;; (use-package! projectile
+;;   :config
+;;   (defun project-tab-groups ()
+;;     (interactive)
+;;     (message "here"))
+;;   (add-hook 'persp-frame-server-switch-hook #'project-tab-groups)
+;;   ;; (remove-hook 'persp-frame-server-switch-hook #'project-tab-groups)
+;;   (add-hook 'projectile-after-switch-project-hook #'project-tab-groups))
