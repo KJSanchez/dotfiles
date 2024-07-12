@@ -1,3 +1,10 @@
+export XDG_CONFIG_HOME=~/dotfiles
+export PYTHONDONTWRITEBYTECODE=1
+export RIPGREP_CONFIG_PATH=~/.ripgreprc
+export PATH="$PATH:/opt/homebrew/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$HOME/.emacs.d/bin:$PATH"
+
 alias ls='ls -GH'
 alias j='cd ..'
 alias jj='cd ../..'
@@ -35,20 +42,19 @@ fi
 unset __conda_setup
 
 function conda_activate() {
-    if [[ $PWD == /Users/$USER/codez/audiofocus* ]] ; then
+    echo $PWD
+    if [[ $PWD == $HOME/codez/audiofocus* ]] ; then
         conda activate audiofocus3.7
-    elif [[ $PWD == /Users/$USER/codez/cloud-frontend ]]; then
+    elif [[ $PWD == $HOME/codez/cloud-frontend* ]]; then
         conda activate frontend
-    elif [[ $PWD == /Users/$USER/codez/cloud-backend ]]; then
+    elif [[ $PWD == $HOME/codez/cloud-backend* ]]; then
         conda activate cloud-backend
     else
         conda deactivate
     fi
 }
 chpwd_functions+=(conda_activate)
-conda_activate
-
-# <<< conda initialize <<<
+# conda_activate
 
 
 # [[ -r $(brew --prefix)/etc/profile.d/bash_completion.sh ]] && . $(brew --prefix)/etc/profile.d/bash_completion.sh
@@ -62,8 +68,6 @@ eval "$(starship init zsh)"
 # eval "$(direnv hook zsh)"
  # eval "$(nodenv init -)"
 # eval "$(rbenv init - zsh)"
-
-
 
 autoload -U +X bashcompinit && bashcompinit
 

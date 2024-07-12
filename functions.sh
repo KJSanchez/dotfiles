@@ -1,7 +1,7 @@
 function :e() {
-	vim ~/codez/dotfiles/envvars
+	vim ~/codez/dotfiles/locals.zsh
     echo "sourcing envvars..."
-	. ~/codez/dotfiles/envvars
+	. ~/codez/dotfiles/locals.zsh
     echo "done."
 }
 
