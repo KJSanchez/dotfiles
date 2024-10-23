@@ -27,6 +27,11 @@
 (load! "lib.el" nil t)
 (load! "experimentals.el" nil t)
 
+(use-package! lsp-mode
+  :defer t
+  :config
+  (setq lsp-signature-auto-activate nil))
+
 ;; Something's wrong with the binary.
 (use-package! parinfer
   :disabled t)
@@ -51,8 +56,7 @@
                       (tabspaces-restore-session)))))
 
 (use-package! copilot
-  :hook ((python-mode . copilot-mode)
-         (emacs-lisp-mode . copilot-mode)
+  :hook ((emacs-lisp-mode . copilot-mode)
          (json-mode . copilot-mode)
          (yaml-mode . copilot-mode)
          (conf-mode . copilot-mode)
@@ -145,15 +149,15 @@
   :config
   (setq evil-escape-key-sequence "kj"))
 
-(map! :after evil
-      :leader
-      :n
-      :desc "++window-vsplit"
-      "w v" (cmd!
-             (split-window-right)
-             (other-window 1)
-             (switch-to-buffer (other-buffer))
-             (other-window 1)))
+;; (map! :after evil
+;;       :leader
+;;       :n
+;;       :desc "++window-vsplit"
+;;       "w v" (cmd!
+;;              (split-window-right)
+;;              (other-window 1)
+;;              (switch-to-buffer (other-buffer))
+;;              (other-window 1)))
 
 (map! :when (modulep! :editor evil)
       :leader
@@ -291,7 +295,7 @@
 
 (use-package! doom-ui
   :config
-  (setq doom-font (font-spec :family "Fira Code" :weight 'medium :size 15))
+  (setq doom-font (font-spec :family "Fira Code" :weight 'medium :size 13))
   ;; (setq doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
   ;; (setq doom-font (font-spec :family "Menlo" :size 16))
   ;; (setq doom-font (font-spec :family "Monaco" :size 16))
@@ -330,6 +334,11 @@
 (use-package! yaml
   :defer t
   :mode ("\\.yml\\'" . yaml-mode))
+
+(use-package! conf-toml-mode
+  :defer t
+  :mode (("\\.aws/credentials\\'" . conf-toml-mode)
+         ("\\.aws/config\\'" . conf-toml-mode)))
 
 (use-package! sh-script
   :defer t
@@ -371,7 +380,18 @@
         :desc "refresh coverage overlay"
         "r" #'python-coverage-overlay-refresh))
 
+(use-package! which-key
+  :defer t
+  :config
+  (map! :leader
+        :desc "doom/describe-active-minor-mode"
+        "h m" #'doom/describe-active-minor-mode)
+  (map! :leader
+        :desc "doom/describe-active-minor-mode"
+        "h M" nil))
+
 (use-package! conda
+  :disabled t
   :defer t
   :config
   (map! :map python-mode-map
@@ -421,3 +441,38 @@
 ;;   (add-hook 'projectile-after-switch-project-hook #'project-tab-groups))
 
 (add-hook! 'dired-mode-hook #'dired-hide-details-mode)
+
+
+(defun ++search-notes ()
+  (interactive)
+  (let ((default-directory org-directory))
+    (call-interactively
+     (cond ((modulep! :completion ivy)     #'+ivy/project-search)
+           ((modulep! :completion helm)    #'+helm/project-search)
+           ((modulep! :completion vertico) #'+vertico/project-search)
+           (#'projectile-ripgrep)))))
+
+
+(map! :leader
+      :n
+      :desc "++search-notes"
+      "n s" #'++search-notes)
+
+(map! :leader
+      :n
+      :desc "browse dotfiles"
+      "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
+
+
+
+;; TODO: `gd' should behave correctly with python decorated functions
+;; notes:
+;; `+lookup-xref-definitions-backend-fn'
+;;
+
+
+;; (defun ++lookup/city-of-new-york-dataset ()
+;;   (interactive)
+;;   (-> (format "https://data.cityofnewyork.us/"))
+;;   (+lookup/file "https://data.cityofnewyork.us/")
+;;   )

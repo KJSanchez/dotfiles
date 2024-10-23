@@ -26,4 +26,6 @@
 ;; (package! one-tab-per-project
 ;;   :recipe (:host github :repo "abougouffa/one-tab-per-project"))
 
-(package! nix-mode)
+(package! nix-mode :disable t)
+
+(package! feature-mode)

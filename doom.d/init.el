@@ -16,11 +16,7 @@
 
 (doom! :completion
        (company +tng)
-       ;; (helm +fuzzy)
-       ;; ido
        (ivy +fuzzy)
-       ;; vertico
-
        :ui
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
@@ -42,7 +38,7 @@
        fold              ; (nigh) universal code folding
        (format +onsave)  ; automated prettiness
        ;; parinfer          ; turn lisp into python, sort of
-       snippets          ; my elves. They type so I don't have to
+       ;; snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
@@ -63,12 +59,12 @@
        tree-sitter
        (debugger +lsp)
        direnv           ; TODO https://github.com/doomemacs/doomemacs/issues/1666#issuecomment-853629887
-       (docker +lsp)
+       docker
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
-       (lsp +peek)
-       (magit +forge)
+       lsp
+       magit
        make              ; run make tasks from Emacs
 
        :os
@@ -79,10 +75,10 @@
        (cc +lsp)
        emacs-lisp
        json
-       (javascript +lsp)
+       (javascript +lsp +tree-sitter)
        (markdown +grip)
-       (python +pyenv +tree-sitter +conda)
-       (sh +lsp)
+       (python +pyenv +lsp +pyright)
+       sh
        (yaml +lsp)
 
        :config
