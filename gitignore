@@ -1,23 +1,19 @@
 .python-version
 *.pyc
-*.swp
-.dir-locals.el
-docker-compose.yml-dev
 venv/
-testdox.bdd
+# .pylintrc
+
+*.swp
 *.o
-QUICKSTART.md
-Makefile
 .DS_Store
 
-configstore
-
-.pre-commit-config37.yaml
-
 node_modules
-flycheck_*
 
-db.sqlite3
-# .pylintrc
-mypy.ini
-skj:wq
+flycheck_*
+.dir-locals.el
+
+.envrc
+
+cmake/
+
+node_modules/
