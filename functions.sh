@@ -1,8 +1,9 @@
 function :e() {
-	vim ~/codez/dotfiles/locals.zsh
+	vim "$HOME/codez/dotfiles/local.zsh"
     echo "sourcing envvars..."
-	. ~/codez/dotfiles/locals.zsh
+	. "$HOME/codez/dotfiles/local.zsh"
     echo "done."
+    cd $DEFAULT_DIR
 }
 
 function delete-old-branches() {
