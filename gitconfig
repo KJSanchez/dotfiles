@@ -12,7 +12,7 @@
 	ri = rebase --interactive
 [user]
 	name = Keenan Sanchez
-	email = keejsan@gmail.com
+	email = ${GIT_AUTHOR_EMAIL}
 [core]
 	excludesfile = /Users/keenan/.gitignore
 [color "grep"]
