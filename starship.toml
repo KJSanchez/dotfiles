@@ -43,6 +43,7 @@ disabled = true
 
 [direnv]
 disabled = false
+format = ''
 
 # [rust]
 # disabled = false
