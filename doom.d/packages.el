@@ -29,3 +29,7 @@
 (package! nix-mode :disable t)
 
 (package! feature-mode)
+
+(package! lsp-tailwindcss
+  :disable (unless (modulep! :lang javascript))
+  :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))

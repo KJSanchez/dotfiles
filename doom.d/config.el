@@ -32,6 +32,8 @@
   :config
   (setq lsp-signature-auto-activate nil))
 
+(use-package! lsp-tailwindcss :after lsp-mode)
+
 ;; Something's wrong with the binary.
 (use-package! parinfer
   :disabled t)

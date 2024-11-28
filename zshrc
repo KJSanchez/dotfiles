@@ -4,7 +4,7 @@ export PYTHONDONTWRITEBYTECODE=1
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
-export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:$PATH"
 
 alias ls='ls -GH'
 alias j='cd ..'
