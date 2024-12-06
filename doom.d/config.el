@@ -62,6 +62,8 @@
          (json-mode . copilot-mode)
          (yaml-mode . copilot-mode)
          (conf-mode . copilot-mode)
+         (python-mode . copilot-mode)
+         (typescript-mode . copilot-mode)
          (markdown-mode . copilot-mode)
          (sh-mode . copilot-mode)
          (c++-mode . copilot-mode))
@@ -382,6 +384,13 @@
         :desc "refresh coverage overlay"
         "r" #'python-coverage-overlay-refresh))
 
+(featurep 'python)
+
+(use-package! python
+  :defer t
+  :config
+  (add-to-list 'auto-mode-alist '("poetry.lock" . conf-toml-mode)))
+
 (use-package! which-key
   :defer t
   :config
@@ -470,11 +479,4 @@
 ;; TODO: `gd' should behave correctly with python decorated functions
 ;; notes:
 ;; `+lookup-xref-definitions-backend-fn'
-;;
-
-
-;; (defun ++lookup/city-of-new-york-dataset ()
-;;   (interactive)
-;;   (-> (format "https://data.cityofnewyork.us/"))
-;;   (+lookup/file "https://data.cityofnewyork.us/")
-;;   )
+;; poetry.lock should trigger conf-toml-mode

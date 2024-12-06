@@ -17,3 +17,7 @@ flycheck_*
 cmake/
 
 node_modules/
+
+.envrc
+
+.ignore

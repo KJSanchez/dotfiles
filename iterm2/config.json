@@ -58,7 +58,7 @@
     "Red Component" : 0.48961970210075378,
     "Blue Component" : 0.64197766780853271
   },
-  "Blinking Cursor" : false,
+  "Blinking Cursor" : true,
   "Selected Text Color (Light)" : {
     "Green Component" : 0.7223970890045166,
     "Red Component" : 0.70114260911941528,
@@ -458,7 +458,7 @@
     "Alpha Component" : 1,
     "Green Component" : 0.7607843279838562
   },
-  "Normal Font" : "FiraCodeRoman-Regular 13",
+  "Normal Font" : "Menlo-Regular 14",
   "Unlimited Scrollback" : false,
   "Ansi 12 Color (Light)" : {
     "Green Component" : 0.56231993436813354,
