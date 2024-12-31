@@ -32,7 +32,15 @@
   :config
   (setq lsp-signature-auto-activate nil))
 
-(use-package! lsp-tailwindcss :after lsp-mode)
+(use-package! lsp-tailwindcss
+  :defer t
+  :after typescript-mode
+  :init
+  (setq lsp-tailwindcss-add-on-mode t))
+
+(map! :leader
+      :n
+      "k" #'lsp-ui-doc-glance)
 
 ;; Something's wrong with the binary.
 (use-package! parinfer
