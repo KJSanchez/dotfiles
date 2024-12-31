@@ -22,10 +22,12 @@ call plug#begin()
     Plug 'tomtom/tcomment_vim'
     Plug 'davidhalter/jedi-vim'
     Plug 'cocopon/iceberg.vim'
+    Plug 'vim-scripts/Spacegray.vim'
 call plug#end()
 
 set background=dark
 colorscheme iceberg
+" colorscheme spacegray
 
 " autocmd BufReadPost *
 "      \ if line("'\"") > 0 && line("'\"") <= line("$") |
