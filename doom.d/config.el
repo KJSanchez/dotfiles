@@ -38,6 +38,7 @@
   :defer t
   :after typescript-mode
   :init
+  (setq lsp-eldoc-enable-hover nil)
   (setq lsp-tailwindcss-add-on-mode t))
 
 (map! :leader
@@ -400,6 +401,12 @@
   :defer t
   :config
   (add-to-list 'auto-mode-alist '("poetry.lock" . conf-toml-mode)))
+
+
+(use-package! rainbow-mode
+  :defer t
+  :config
+  (add-to-list 'auto-mode-alist '("tailwind.config.ts" . rainbow-mode)))
 
 (use-package! which-key
   :defer t
