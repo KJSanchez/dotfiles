@@ -24,8 +24,8 @@
 ;; - `map!' for binding new keys
 
 ;;; Code:
-(load! "lib.el" nil t)
-(load! "experimentals.el" nil t)
+(load! "lib.el" doom-user-dir t)
+(load! "experimentals.el" doom-user-dir t)
 
 (toggle-frame-maximized)
 
