@@ -1,5 +1,5 @@
 [init]
-    templatedir = ~/.git-templates/
+    # templatedir = ~/.git-templates/
 [alias]
 	co = checkout
 	br = branch -vv
@@ -10,6 +10,7 @@
 	st = status
 	last = log -1 HEAD
 	ri = rebase --interactive
+	fixup = commit --ammend --no-edit
 [user]
 	name = Keenan Sanchez
 	email = ${GIT_AUTHOR_EMAIL}

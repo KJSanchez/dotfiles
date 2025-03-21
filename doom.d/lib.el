@@ -39,3 +39,12 @@
                                    32)))
                "\n"))
      'face 'doom-dashboard-banner)))
+
+
+(defun ++toggle-transparency ()
+  "Toggle between transparent and opaque frame backgrounds."
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (if (or (not alpha) (= (cdr alpha) 100))
+        (set-frame-parameter nil 'alpha '(85 . 85)) ; Transparent (85%)
+      (set-frame-parameter nil 'alpha '(100 . 100))))) ; Opaque (100%)
