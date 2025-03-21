@@ -1,0 +1,6 @@
+theme = "tokyonight"
+# theme = "spacegrey"
+
+
+[keys.insert]
+"k" = { "j" = "normal_mode" }
