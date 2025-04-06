@@ -16,6 +16,7 @@
 
 (doom! :completion
        (company +tng)
+       corfu
        (ivy +fuzzy)
        :ui
        doom              ; what makes DOOM look the way it does

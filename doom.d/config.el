@@ -407,7 +407,7 @@
         "h m" #'doom/describe-active-minor-mode)
   (map! :leader
         :desc "doom/describe-active-minor-mode"
-        "h M" nil))
+        "h M" #'describe-mode))
 
 (use-package! conda
   :disabled t
@@ -479,7 +479,7 @@
 
 (map! :leader
       :n
-      :desc "browse dotfiles"
+      :desc "Browse dotfiles"
       "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
 
 
