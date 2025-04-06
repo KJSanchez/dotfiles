@@ -15,8 +15,8 @@
 ;;      directory (for easy access to its source code).
 
 (doom! :completion
-       (company +tng)
        corfu
+       ;; vertico
        (ivy +fuzzy)
        :ui
        doom              ; what makes DOOM look the way it does

@@ -33,3 +33,6 @@
 (package! lsp-tailwindcss
   :disable (unless (modulep! :lang javascript))
   :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+
+(package! rg
+  :recipe (:host github :repo "dajva/rg.el"))

@@ -27,6 +27,8 @@
 (load! "lib.el" nil t)
 (load! "experimentals.el" nil t)
 
+(toggle-frame-maximized)
+
 (use-package! lsp-mode
   :defer t
   :config
@@ -482,9 +484,20 @@
       :desc "Browse dotfiles"
       "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
 
+(map! :leader
+      :n
+      :desc "Switch buffer"
+      ;; "," #'+ivy/switch-work-space-buffer)
+      "," #'+ivy/switch-buffer)
 
 
-;; TODO: `gd' should behave correctly with python decorated functions
-;; notes:
-;; `+lookup-xref-definitions-backend-fn'
-;; poetry.lock should trigger conf-toml-mode
+
+(after! ivy
+  (map!
+   :map ivy-minibuffer-map
+   "M-n" #'+ivy/woccur)
+
+  (map!
+   :map wgrep-mode-map
+   "M-n" (cmd!
+          (evil-ex (format "%%s/%s" (ivy-state-text ivy-last))))))

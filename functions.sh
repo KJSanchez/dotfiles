@@ -9,3 +9,9 @@ function :e() {
 function delete-old-branches() {
     git branch --merged origin/master | grep -v 'master$' | xargs git branch -D
 }
+
+function summarize-khov-resume() {
+    for project in dp-warranty-frontend dp-warranty-backend dp-infra; do
+        gh pr ls --author @me --json title,body,id --state merged --limit 10000 --repo https://github.com/K-Hovnanian-Digital-Products/$project > /tmp/$project.json
+    done
+}
