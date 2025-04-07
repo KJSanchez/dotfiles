@@ -9,7 +9,7 @@
 (package! kubernetes :disable (unless (modulep! :tools docker)))
 
 (package! copilot
-  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 
 (package! csv-mode :disable t)
 (package! dash)
@@ -40,3 +40,10 @@
 (package! rainbow-mode
   ;; Only need this for `tailwind.config.ts' so far.
   :disable (unless (moduelp! :lang javascript)))
+
+;; TODO: fix this.
+;; (package! rainbow-mode
+;;   ;; Only need this for `tailwind.config.ts' so far.
+;;   :disable (unless (moduelp! :lang javascript)))
+
+(package! aidermacs :disable t)

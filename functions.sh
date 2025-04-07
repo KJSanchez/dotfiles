@@ -7,7 +7,7 @@ function :e() {
 }
 
 function delete-old-branches() {
-    git branch --merged origin/master | grep -v 'master$' | xargs git branch -D
+    git branch --merged origin/main | grep -v 'main$' | xargs git branch -D
 }
 
 function summarize-khov-resume() {
