@@ -2,3 +2,4 @@ doom.d/custom.el
 doom.d/experimentals.el
 
 local.zsh
+.aider*

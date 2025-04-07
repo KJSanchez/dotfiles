@@ -31,3 +31,6 @@ brew "pyenv-virtualenv"
 brew "fd"
 brew "cmake"
 brew "sponge"
+
+# Trying out aider emacs
+brew "aider"
