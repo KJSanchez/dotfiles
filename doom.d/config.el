@@ -436,14 +436,6 @@
         "l" #'conda-env-list))
 
 
-;; sketchy
-(map! :leader
-      :desc "++doom/reload-dir-locals"
-      "h r R" (cmd!
-               (dir-locals-read-from-dir "/Users/keenansanchez/codez/cloud-backend")
-               (print flycheck-disabled-checkers)
-               ))
-
 ;; TODO set a smaller font in the imenu buffer.
 ;; Key mapping to
 ;; accept keystroke
@@ -500,8 +492,6 @@
       ;; "," #'+ivy/switch-work-space-buffer)
       "," #'+ivy/switch-buffer)
 
-
-
 (after! ivy
   (map!
    :map ivy-minibuffer-map
@@ -511,3 +501,5 @@
    :map wgrep-mode-map
    "M-n" (cmd!
           (evil-ex (format "%%s/%s" (ivy-state-text ivy-last))))))
+
+;; poetry.lock should trigger conf-toml-mode
