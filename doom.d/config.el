@@ -395,13 +395,16 @@
         :desc "refresh coverage overlay"
         "r" #'python-coverage-overlay-refresh))
 
-(featurep 'python)
-
 (use-package! python
   :defer t
   :config
   (add-to-list 'auto-mode-alist '("poetry.lock" . conf-toml-mode)))
 
+;; (WIP)
+(use-package! javascript
+  :defer t
+  :config
+  (add-to-list 'auto-mode-alist '(".env.local" . shell-script-mode)))
 
 (use-package! rainbow-mode
   :defer t
