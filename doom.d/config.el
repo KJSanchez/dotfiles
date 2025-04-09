@@ -4,7 +4,7 @@
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
 ;;   (after! PACKAGE
-;;     (setq x y))
+;;     (setopt x y))
 ;;
 ;; The exceptions to this rule:
 ;;
@@ -32,14 +32,14 @@
 (use-package! lsp-mode
   :defer t
   :config
-  (setq lsp-signature-auto-activate nil))
+  (setopt lsp-signature-auto-activate nil))
 
 (use-package! lsp-tailwindcss
   :defer t
   :after typescript-mode
   :init
-  (setq lsp-eldoc-enable-hover nil)
-  (setq lsp-tailwindcss-add-on-mode t))
+  (setopt lsp-eldoc-enable-hover nil)
+  (setopt lsp-tailwindcss-add-on-mode t))
 
 (map! :leader
       :n
@@ -84,9 +84,9 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word))
   :config
-  (setq copilot-max-char -1)
-  (setq copilot-indent-offset-warning-disable t)
-  (setq copilot-node-executable "node"))
+  (setopt copilot-max-char -1)
+  (setopt copilot-indent-offset-warning-disable t)
+  (setopt copilot-node-executable "node"))
 
 (use-package! doom-modeline
   :config
@@ -94,20 +94,20 @@
         :desc "toggle modeline"
         "t m" #'hide-mode-line-mode
         :desc "global hide toggle modeline"
-        "t M" #'global-hide-mode-line-mode)
-  ;; (setq mode-line-modified "")
-  ;; (setq vc-display-status nil)
-  ;; (setq doom-modeline-vcs-max-length 0)
-  ;; (setq doom-modeline-buffer-encoding nil)
-  ;; (setq doom-modeline-workspace-name t)
-  ;; (setq doom-modeline-time-icon nil)
-  ;; (setq doom-modeline-vcs-icon nil)
-  ;; (setq doom-modeline-modal nil)
-  ;; (setq doom-modeline-major-mode-icon nil)
-  ;; (setq doom-modeline-major-mode-color-icon nil)
-  ;; (setq doom-modeline-position-column-line-format nil)
-  ;; (setq doom-modeline-percent-position nil)
-  )
+        "t M" #'global-hide-mode-line-mode))
+;; (setopt mode-line-modified "")
+;; (setopt vc-display-status nil)
+;; (setopt doom-modeline-vcs-max-length 0)
+;; (setopt doom-modeline-buffer-encoding nil)
+;; (setopt doom-modeline-workspace-name t)
+;; (setopt doom-modeline-time-icon nil)
+;; (setopt doom-modeline-vcs-icon nil)
+;; (setopt doom-modeline-modal nil)
+;; (setopt doom-modeline-major-mode-icon nil)
+;; (setopt doom-modeline-major-mode-color-icon nil)
+;; (setopt doom-modeline-position-column-line-format nil)
+;; (setopt doom-modeline-percent-position nil)
+
 
 
 (use-package! centaur-tabs
@@ -115,18 +115,18 @@
   :config
   (centaur-tabs-group-by-projectile-project))
 
-;; (setq centaur-tabs-set-icons t)
-;; (setq centaur-tabs-gray-out-icons 'buffer)
-;; (setq centaur-tabs-set-bar 'left)
-;; (setq centaur-tabs-set-modified-marker nil)
-;; ;; (setq centaur-tabs-close-button "")
-;; ;; (setq centaur-tabs-modified-marker "x")
-;; (setq centaur-tabs-style "bar")
-;; (setq centaur-tabs-height 16)
+;; (setopt centaur-tabs-set-icons t)
+;; (setopt centaur-tabs-gray-out-icons 'buffer)
+;; (setopt centaur-tabs-set-bar 'left)
+;; (setopt centaur-tabs-set-modified-marker nil)
+;; ;; (setopt centaur-tabs-close-button "")
+;; ;; (setopt centaur-tabs-modified-marker "x")
+;; (setopt centaur-tabs-style "bar")
+;; (setopt centaur-tabs-height 16)
 ;; ;; Scrolling (with the mouse wheel) past the end of the tab list
 ;; ;; replaces the tab list with that of another Doom workspace. This
 ;; ;; prevents that.
-;; (setq centaur-tabs-cycle-scope 'tabs)
+;; (setopt centaur-tabs-cycle-scope 'tabs)
 ;; (add-hook 'dired-mode-hook 'centaur-tabs-local-mode)
 ;; (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
 ;; (add-hook 'python-mode-hook 'centaur-tabs-local-mode)
@@ -162,7 +162,7 @@
 
 (use-package! evil
   :config
-  (setq evil-escape-key-sequence "kj"))
+  (setopt evil-escape-key-sequence "kj"))
 
 ;; (map! :after evil
 ;;       :leader
@@ -310,41 +310,41 @@
 
 (use-package! doom-ui
   :config
-  (setq doom-font (font-spec :family "Fira Code" :weight 'medium :size 13))
-  ;; (setq doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
-  ;; (setq doom-font (font-spec :family "Menlo" :size 16))
-  ;; (setq doom-font (font-spec :family "Monaco" :size 16))
-  (setq org-directory "~/codez/obsidian")
-  (setq doom-theme 'doom-spacegrey)
+  (setopt doom-font (font-spec :family "Fira Code" :weight 'medium :size 13))
+  ;; (setopt doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
+  ;; (setopt doom-font (font-spec :family "Menlo" :size 16))
+  ;; (setopt doom-font (font-spec :family "Monaco" :size 16))
+  (setopt org-directory "~/codez/obsidian")
+  (setopt doom-theme 'doom-spacegrey)
 
   ;; (add-hook! doom-big-font-mode-hook
   ;;   (set-popup-rule! "*compilation*" :select t :side 'left :width 124))
-  (setq +doom-dashboard-ascii-banner-fn #'++doom-dashboard-draw-ascii-banner-fn)
-  (setq +doom-dashboard-menu-sections
-        '(("Browse project"
-           :icon (nerd-icons-octicon "nf-oct-briefcase" :face 'doom-dashboard-menu-title)
-           :action projectile-switch-project)
-          ("Browse .doom.d"
-           :icon (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
-           :when (file-directory-p doom-user-dir)
-           :action doom/open-private-config)
-          ("Recently opened files"
-           :icon (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
-           :action recentf-open-files)
-          ("Reload last session"
-           :icon (nerd-icons-octicon "nf-oct-history" :face 'doom-dashboard-menu-title)
-           :when (cond ((modulep! :ui workspaces)
-                        (file-exists-p (expand-file-name persp-auto-save-fname persp-save-dir)))
-                       ((require 'desktop nil t)
-                        (file-exists-p (desktop-full-file-name))))
-           :action doom/quickload-session)))
-  (setq +doom-dashboard-functions
-        '(doom-dashboard-widget-banner
-          doom-dashboard-widget-shortmenu
-          doom-dashboard-widget-loaded)))
+  (setopt +doom-dashboard-ascii-banner-fn #'++doom-dashboard-draw-ascii-banner-fn)
+  (setopt +doom-dashboard-menu-sections
+          '(("Browse project"
+             :icon (nerd-icons-octicon "nf-oct-briefcase" :face 'doom-dashboard-menu-title)
+             :action projectile-switch-project)
+            ("Browse .doom.d"
+             :icon (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
+             :when (file-directory-p doom-user-dir)
+             :action doom/open-private-config)
+            ("Recently opened files"
+             :icon (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
+             :action recentf-open-files)
+            ("Reload last session"
+             :icon (nerd-icons-octicon "nf-oct-history" :face 'doom-dashboard-menu-title)
+             :when (cond ((modulep! :ui workspaces))
+                         (file-exists-p (expand-file-name persp-auto-save-fname persp-save-dir))
+                         ((require 'desktop nil t)
+                          (file-exists-p (desktop-full-file-name))))
+             :action doom/quickload-session)))
+  (setopt +doom-dashboard-functions
+          '(doom-dashboard-widget-banner
+            doom-dashboard-widget-shortmenu
+            doom-dashboard-widget-loaded)))
 
 (after! files
-  (setq confirm-kill-emacs nil))
+  (setopt confirm-kill-emacs nil))
 
 (use-package! yaml
   :defer t
@@ -366,22 +366,22 @@
 (use-package! flycheck
   :defer t
   :config
-  (setq flycheck-disabled-checkers '(python-pylint)))
+  (setopt flycheck-disabled-checkers '(python-pylint)))
 
 (use-package! projectile
   :defer t
   :config
-  (setq projectile-project-search-path '("~/codez/" "~/codez/hello-world/" "~/ploomber/" "~/open-source/")))
+  (setopt projectile-project-search-path '("~/codez/" "~/codez/hello-world/" "~/ploomber/" "~/open-source/")))
 
 (use-package! magit
   :defer t
   :config
-  (setq-default git-commit-summary-max-length 100))
+  (setopt-default git-commit-summary-max-length 100))
 
 (use-package! neotree
   :defer t
   :config
-  (setq neo-show-hidden-files nil))
+  (setopt neo-show-hidden-files nil))
 
 (use-package! python-coverage
   :defer t
@@ -452,7 +452,7 @@
 (use-package! persp-mode
   :defer t
   :config
-  (setq +workspaces-on-switch-project-behavior t))
+  (setopt +workspaces-on-switch-project-behavior t))
 
 ;; (use-package! projectile
 ;;   :config
@@ -492,7 +492,8 @@
       ;; "," #'+ivy/switch-work-space-buffer)
       "," #'+ivy/switch-buffer)
 
-(after! ivy
+(after! (:and ivy-avy ivy-rich ivy-xref ivy ivy-faces ivy-overlay wgrep evil-ex)
+  (message "configuring ivy")
   (map!
    :map ivy-minibuffer-map
    "M-n" #'+ivy/woccur)
