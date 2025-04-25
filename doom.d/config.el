@@ -486,21 +486,28 @@
       :desc "Browse dotfiles"
       "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
 
-(map! :leader
-      :n
-      :desc "Switch buffer"
-      ;; "," #'+ivy/switch-work-space-buffer)
-      "," #'+ivy/switch-buffer)
+;; TODO: figure out why :after is not working.
+(map!
+ :after ivy
+ :map ivy-minibuffer-map
+ "M-n" #'+ivy/woccur)
 
-(after! (:and ivy-avy ivy-rich ivy-xref ivy ivy-faces ivy-overlay wgrep evil-ex)
-  (message "configuring ivy")
-  (map!
-   :map ivy-minibuffer-map
-   "M-n" #'+ivy/woccur)
+(map!
+ :after ivy
+ :map ivy-minibuffer-map
+ "," #'ivy-next-line)
 
-  (map!
-   :map wgrep-mode-map
-   "M-n" (cmd!
-          (evil-ex (format "%%s/%s" (ivy-state-text ivy-last))))))
+(map!
+ :after ivy
+ :map ivy-minibuffer-map
+ "<" #'ivy-previous-line)
+
+
+(map!
+ :after '(ivy wgrep)
+ :map wgrep-mode-map
+ "M-n" (cmd!
+        (evil-ex (format "%%s/%s" (ivy-state-text ivy-last)))))
+
 
 ;; poetry.lock should trigger conf-toml-mode
