@@ -29,7 +29,11 @@ set background=dark
 colorscheme iceberg
 " colorscheme spacegray
 
-" autocmd BufReadPost *
-"      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-"      \   exe "normal! g`\"" |
-"      \ endif
+" Restore cursor to last position when opening file
+augroup restore_cursor_on_open
+  autocmd!
+  autocmd BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
+augroup END
