@@ -7,8 +7,8 @@ ln vimrc ~/.vimrc
 ln zshrc ~/.zshrc
 ln ripgreprc ~/.ripgreprc
 ln starship.toml ~/.config/starship.toml
-# TODO needs to be absolute pah
-ln -s ./helix ~/.config/helix
+ln ./helix/config.toml ~/.config/helix/config.toml
+ln ./helix/languages.toml ~/.config/helix/languages.toml
 
 cd doom.d
 ln config.el ~/.config/doom/config.el

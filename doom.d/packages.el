@@ -30,20 +30,17 @@
 
 (package! feature-mode)
 
-(package! lsp-tailwindcss
-  :disable (unless (modulep! :lang javascript))
-  :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+; (package! lsp-tailwindcss
+;   :disable (unless (modulep! :lang javascript))
+;   :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
 (package! rg
   :recipe (:host github :repo "dajva/rg.el"))
 
-(package! rainbow-mode
-  ;; Only need this for `tailwind.config.ts' so far.
-  :disable (unless (moduelp! :lang javascript)))
-
 ;; TODO: fix this.
-;; (package! rainbow-mode
-;;   ;; Only need this for `tailwind.config.ts' so far.
-;;   :disable (unless (moduelp! :lang javascript)))
+ (package! rainbow-mode
+   ;; Only need this for `tailwind.config.ts' so far.
+   :disable (unless (modulep! :lang javascript)))
+
 
 (package! aidermacs :disable t)

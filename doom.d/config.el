@@ -90,25 +90,14 @@
 
 (use-package! doom-modeline
   :config
+  (doom-modeline-def-modeline 'main
+    '(bar buffer-info)
+    '(misc-info minor-modes input-method buffer-encoding process check major-mode vcs))
   (map! :leader
         :desc "toggle modeline"
         "t m" #'hide-mode-line-mode
         :desc "global hide toggle modeline"
         "t M" #'global-hide-mode-line-mode))
-;; (setopt mode-line-modified "")
-;; (setopt vc-display-status nil)
-;; (setopt doom-modeline-vcs-max-length 0)
-;; (setopt doom-modeline-buffer-encoding nil)
-;; (setopt doom-modeline-workspace-name t)
-;; (setopt doom-modeline-time-icon nil)
-;; (setopt doom-modeline-vcs-icon nil)
-;; (setopt doom-modeline-modal nil)
-;; (setopt doom-modeline-major-mode-icon nil)
-;; (setopt doom-modeline-major-mode-color-icon nil)
-;; (setopt doom-modeline-position-column-line-format nil)
-;; (setopt doom-modeline-percent-position nil)
-
-
 
 (use-package! centaur-tabs
   :disabled t
@@ -376,7 +365,7 @@
 (use-package! magit
   :defer t
   :config
-  (setopt-default git-commit-summary-max-length 100))
+  (setopt git-commit-summary-max-length 100))
 
 (use-package! neotree
   :defer t
@@ -395,12 +384,13 @@
         :desc "refresh coverage overlay"
         "r" #'python-coverage-overlay-refresh))
 
+;; TODO poetry.lock should trigger conf-toml-mode
 (use-package! python
   :defer t
   :config
   (add-to-list 'auto-mode-alist '("poetry.lock" . conf-toml-mode)))
 
-;; (WIP)
+;; TODO: not working.
 (use-package! javascript
   :defer t
   :config
@@ -410,6 +400,10 @@
   :defer t
   :config
   (add-to-list 'auto-mode-alist '("tailwind.config.ts" . rainbow-mode)))
+
+(when (featurep 'rainbow-mode)
+  (add-to-list 'auto-mode-alist '("tailwind.config.ts" . rainbow-mode)))
+
 
 (use-package! which-key
   :defer t
@@ -510,4 +504,14 @@
         (evil-ex (format "%%s/%s" (ivy-state-text ivy-last)))))
 
 
-;; poetry.lock should trigger conf-toml-mode
+(global-visual-line-mode 1)
+
+
+;; TODO: add stuff for flycheck.
+;; TODO: figure out how to have project-wide *problems* buffer, akin to vscode.
+;; Create a work flow where I can have a dedicated frame for problems.
+;; Have SPC-c-x switch the frame with the *problems* buffer if it exists,
+;; otherwise use the standard popup.
+;; 
+;; (after! flycheck
+;;   (map! :mode flycheck-error-list-mode-map))
