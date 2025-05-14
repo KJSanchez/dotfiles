@@ -37,10 +37,9 @@
 (package! rg
   :recipe (:host github :repo "dajva/rg.el"))
 
-;; TODO: fix this.
- (package! rainbow-mode
-   ;; Only need this for `tailwind.config.ts' so far.
-   :disable (unless (modulep! :lang javascript)))
+(package! rainbow-mode
+  ;; Only need this for `tailwind.config.ts' so far.
+  :disable (unless (modulep! :lang javascript)))
 
 
 (package! aidermacs :disable t)

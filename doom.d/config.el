@@ -484,21 +484,12 @@
 (map!
  :after ivy
  :map ivy-minibuffer-map
- "M-n" #'+ivy/woccur)
-
-(map!
- :after ivy
- :map ivy-minibuffer-map
- "," #'ivy-next-line)
-
-(map!
- :after ivy
- :map ivy-minibuffer-map
+ "M-n" #'+ivy/woccur
+ "," #'ivy-next-line
  "<" #'ivy-previous-line)
 
 
 (map!
- :after '(ivy wgrep)
  :map wgrep-mode-map
  "M-n" (cmd!
         (evil-ex (format "%%s/%s" (ivy-state-text ivy-last)))))

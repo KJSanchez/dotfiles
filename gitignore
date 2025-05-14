@@ -21,3 +21,21 @@ node_modules/
 .envrc
 
 .ignore
+
+
+# useAPI.ts
+# useHomeChat.ts
+
+# hooks/*
+# context/EnvProvider.tsx
+
+shell_plus_plus.py
+promote_user.py
+local/
+assess_results.py
+clients/dw/tests.py
+
+
+middleware.ts
+
+.projectile-cache.eld
