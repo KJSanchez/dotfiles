@@ -3,11 +3,12 @@
 
 
 (package! realgud-lldb :disable (unless (modulep! :lang cc)))
-(package! hy-mode  :disable (unless (modulep! :lang python)))
+(package! hy-mode :disable (unless (modulep! :lang python)))
 (package! python-coverage :disable (unless (modulep! :lang python)))
 
 (package! kubernetes :disable (unless (modulep! :tools docker)))
 
+(package! aidermacs :disable t)
 (package! copilot
   :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 
@@ -42,3 +43,5 @@
   :disable (unless (modulep! :lang javascript)))
 
 (package! aidermacs :disable t)
+
+(package! cobol-mode)
