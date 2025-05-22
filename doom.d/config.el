@@ -360,7 +360,7 @@
 (use-package! projectile
   :defer t
   :config
-  (setopt projectile-project-search-path '("~/codez/" "~/codez/hello-world/" "~/ploomber/" "~/open-source/")))
+  (setopt projectile-project-search-path '("~/codez/" "~/open-source/")))
 
 (use-package! magit
   :defer t
@@ -384,11 +384,6 @@
         :desc "refresh coverage overlay"
         "r" #'python-coverage-overlay-refresh))
 
-;; TODO poetry.lock should trigger conf-toml-mode
-;; (when (modulep! :lang python)
-;;   (add-to-list 'auto-mode-alist '("poetry.lock" . conf-toml-mode)))
-
-;; TODO: haven't verified.
 (use-package! python
   :defer t
   :mode ("poetry.lock" . conf-toml-mode))
@@ -396,13 +391,11 @@
 (when (modulep! :lang javascript)
   (add-to-list 'auto-mode-alist '(".env.local" . shell-script-mode)))
 
-;; TODO: get this working as it's the preferred way to do this.
 (use-package! rainbow-mode
   :defer t
-  :mode ("tailwind.config.ts" . rainbow-mode))
-
-;; (when (locate-library "rainbow-mode")
-;;   (add-to-list 'auto-mode-alist '("tailwind.config.ts" . rainbow-mode)))
+  :mode ("tailwind.config.ts" . (lambda ()
+                                  (typescript-mode)
+                                  (rainbow-mode 1))))
 
 (use-package! which-key
   :defer t
@@ -500,6 +493,6 @@
 ;; Create a work flow where I can have a dedicated frame for problems.
 ;; Have SPC-c-x switch the frame with the *problems* buffer if it exists,
 ;; otherwise use the standard popup.
-;; 
+;;
 ;; (after! flycheck
 ;;   (map! :mode flycheck-error-list-mode-map))
