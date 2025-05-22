@@ -385,25 +385,24 @@
         "r" #'python-coverage-overlay-refresh))
 
 ;; TODO poetry.lock should trigger conf-toml-mode
+;; (when (modulep! :lang python)
+;;   (add-to-list 'auto-mode-alist '("poetry.lock" . conf-toml-mode)))
+
+;; TODO: haven't verified.
 (use-package! python
   :defer t
-  :config
-  (add-to-list 'auto-mode-alist '("poetry.lock" . conf-toml-mode)))
+  :mode ("poetry.lock" . conf-toml-mode))
 
-;; TODO: not working.
-(use-package! javascript
-  :defer t
-  :config
+(when (modulep! :lang javascript)
   (add-to-list 'auto-mode-alist '(".env.local" . shell-script-mode)))
 
+;; TODO: get this working as it's the preferred way to do this.
 (use-package! rainbow-mode
   :defer t
-  :config
-  (add-to-list 'auto-mode-alist '("tailwind.config.ts" . rainbow-mode)))
+  :mode ("tailwind.config.ts" . rainbow-mode))
 
-(when (featurep 'rainbow-mode)
-  (add-to-list 'auto-mode-alist '("tailwind.config.ts" . rainbow-mode)))
-
+;; (when (locate-library "rainbow-mode")
+;;   (add-to-list 'auto-mode-alist '("tailwind.config.ts" . rainbow-mode)))
 
 (use-package! which-key
   :defer t
@@ -480,14 +479,12 @@
       :desc "Browse dotfiles"
       "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
 
-;; TODO: figure out why :after is not working.
 (map!
  :after ivy
  :map ivy-minibuffer-map
  "M-n" #'+ivy/woccur
  "," #'ivy-next-line
  "<" #'ivy-previous-line)
-
 
 (map!
  :map wgrep-mode-map
