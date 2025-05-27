@@ -461,7 +461,6 @@
            ((modulep! :completion vertico) #'+vertico/project-search)
            (#'projectile-ripgrep)))))
 
-
 (map! :leader
       :n
       :desc "++search-notes"
@@ -483,7 +482,6 @@
  :map wgrep-mode-map
  "M-n" (cmd!
         (evil-ex (format "%%s/%s" (ivy-state-text ivy-last)))))
-
 
 (global-visual-line-mode 1)
 
