@@ -92,7 +92,7 @@
   :config
   (doom-modeline-def-modeline 'main
     '(bar buffer-info)
-    '(misc-info minor-modes input-method buffer-encoding process check major-mode vcs))
+    '(misc-info minor-modes check major-mode vcs))
   (map! :leader
         :desc "toggle modeline"
         "t m" #'hide-mode-line-mode
