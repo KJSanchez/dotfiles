@@ -35,6 +35,8 @@
   :disable (unless (modulep! :lang javascript))
   :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
+(package! cobol-mode)
+
 (package! rg
   :recipe (:host github :repo "dajva/rg.el"))
 
