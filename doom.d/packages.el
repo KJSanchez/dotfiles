@@ -5,6 +5,7 @@
 (package! realgud-lldb :disable (unless (modulep! :lang cc)))
 (package! hy-mode :disable (unless (modulep! :lang python)))
 (package! python-coverage :disable (unless (modulep! :lang python)))
+(package! jinja2-mode :disable (unless (modulep! :lang python)))
 
 (package! kubernetes :disable (unless (modulep! :tools docker)))
 
@@ -47,3 +48,5 @@
 (package! aidermacs :disable t)
 
 (package! cobol-mode)
+
+;; (package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :files ("*.el")))
