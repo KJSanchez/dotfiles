@@ -30,7 +30,11 @@
 
 (package! nix-mode :disable t)
 
-(package! feature-mode)
+(package! feature-mode
+  :recipe (:host github :repo "freesteph/cucumber.el"))
+
+(package! activities
+  :recipe (:host github :repo "alphapapa/activities.el"))
 
 (package! lsp-tailwindcss
   :disable (unless (modulep! :lang javascript))
@@ -46,7 +50,5 @@
   :disable (unless (modulep! :lang javascript)))
 
 (package! aidermacs :disable t)
-
-(package! cobol-mode)
 
 ;; (package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :files ("*.el")))
