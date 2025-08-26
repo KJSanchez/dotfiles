@@ -33,8 +33,7 @@
 (package! feature-mode
   :recipe (:host github :repo "freesteph/cucumber.el"))
 
-(package! activities
-  :recipe (:host github :repo "alphapapa/activities.el"))
+(package! activities)
 
 (package! lsp-tailwindcss
   :disable (unless (modulep! :lang javascript))
