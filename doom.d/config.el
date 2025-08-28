@@ -335,6 +335,10 @@
 (after! files
   (setopt confirm-kill-emacs nil))
 
+(use-package! jinja2-mode
+  :defer t
+  :mode ("\\.html" . jinja2-mode))
+
 (use-package! yaml
   :defer t
   :mode ("\\.yml\\'" . yaml-mode))
@@ -466,10 +470,11 @@
       :desc "++search-notes"
       "n s" #'++search-notes)
 
-(map! :leader
-      :n
-      :desc "Browse dotfiles"
-      "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
+(map!
+ :leader
+ :n
+ :desc "Browse dotfiles"
+ "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
 
 (map!
  :after ivy
@@ -483,7 +488,9 @@
  "M-n" (cmd!
         (evil-ex (format "%%s/%s" (ivy-state-text ivy-last)))))
 
-(global-visual-line-mode 1)
+(map!
+ :leader
+ "t F" #'toggle-frame-maximized)
 
 
 ;; TODO: add stuff for flycheck.
