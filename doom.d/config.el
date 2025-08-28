@@ -403,12 +403,14 @@
 (use-package! which-key
   :defer t
   :config
-  (map! :leader
-        :desc "doom/describe-active-minor-mode"
-        "h m" #'doom/describe-active-minor-mode)
-  (map! :leader
-        :desc "doom/describe-active-minor-mode"
-        "h M" #'describe-mode))
+  (map!
+   :leader
+   :desc "doom/describe-active-minor-mode"
+   "h m" #'doom/describe-active-minor-mode)
+  (map!
+   :leader
+   :desc "doom/describe-active-minor-mode"
+   "h M" #'describe-mode))
 
 (use-package! conda
   :disabled t
