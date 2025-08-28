@@ -27,6 +27,45 @@
 
 (toggle-frame-maximized)
 
+(set-popup-rule! "*helpful function:" :height 100)
+
+(set-popup-rule! "*helpful macro:" :height 100)
+
+(set-popup-rule! "*helpful command:"
+  :height 25
+  :side 'bottom)
+
+(set-popup-rule! "*helpful variable:"
+  :height 25
+  :side 'bottom)
+
+(set-popup-rule! "*Ilist*"
+  :side 'right
+  :width 50
+  :select t)
+
+(set-popup-rule! "*ert*"
+  :side 'right
+  :width .5)
+
+(set-popup-rule! "*compilation*"
+  :select nil
+  :width .5
+  :side 'right)
+
+(set-popup-rule! "*cargo-test*"
+  :select nil
+  :width .5
+  :side 'right)
+
+;; (set-popup-rule! "*compilation*" :select t :height 31 :side 'top)
+(set-popup-rule! "*Anaconda*" :height 25)
+
+(set-popup-rule! "*pytest*"
+  :height .25
+  :select t)
+
+
 ;;; Code:
 (load! "lib.el" doom-user-dir t)
 
@@ -319,44 +358,6 @@
 (map!
  :map emacs-lisp-mode-map
  :n "RET" (cmd! (eval-buffer nil t)))
-
-(set-popup-rule! "*helpful function:" :height 100)
-
-(set-popup-rule! "*helpful macro:" :height 100)
-
-(set-popup-rule! "*helpful command:"
-  :height 25
-  :side 'bottom)
-
-(set-popup-rule! "*helpful variable:"
-  :height 25
-  :side 'bottom)
-
-(set-popup-rule! "*Ilist*"
-  :side 'right
-  :width 50
-  :select t)
-
-(set-popup-rule! "*ert*"
-  :side 'right
-  :width .5)
-
-(set-popup-rule! "*compilation*"
-  :select nil
-  :width .5
-  :side 'right)
-
-(set-popup-rule! "*cargo-test*"
-  :select nil
-  :width .5
-  :side 'right)
-
-;; (set-popup-rule! "*compilation*" :select t :height 31 :side 'top)
-(set-popup-rule! "*Anaconda*" :height 25)
-
-(set-popup-rule! "*pytest*"
-  :height .25
-  :select t)
 
 ;; Something's wrong with the binary.
 (use-package! parinfer
