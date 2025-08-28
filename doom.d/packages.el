@@ -63,11 +63,11 @@
            :repo "dajva/rg.el"))
 
 (package! rainbow-mode
-  ;; Only need this for `tailwind.config.ts' so far.
   :disable
   (unless (modulep! :lang javascript)))
 
-(package! aidermacs :disable t)
+(package! aider
+  :recipe (:host github :repo "MatthewZMD/aidermacs"))
 
 ;; (package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :files ("*.el")))
 
