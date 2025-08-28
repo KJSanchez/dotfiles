@@ -464,10 +464,11 @@
            ((modulep! :completion vertico) #'+vertico/project-search)
            (#'projectile-ripgrep)))))
 
-(map! :leader
-      :n
-      :desc "++search-notes"
-      "n s" #'++search-notes)
+(map!
+ :leader
+ :n
+ :desc "++search-notes"
+ "n s" #'++search-notes)
 
 (map!
  :leader
