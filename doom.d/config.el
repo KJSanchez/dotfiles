@@ -24,10 +24,12 @@
 ;; - `map!' for binding new keys
 
 (global-visual-line-mode 1)
+
 (toggle-frame-maximized)
 
 ;;; Code:
 (load! "lib.el" doom-user-dir t)
+
 (load! "experimentals.el" doom-user-dir t)
 
 ;; (use-package! evil-textobj-tree-sitter
@@ -136,31 +138,38 @@
   :defer t
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
-
-  (map! :map vterm-mode-map
-        :e
-        "M-<right>" (cmd! (vterm-send-escape) (vterm-send-key "f"))
-        "M-<left>" (cmd! (vterm-send-escape) (vterm-send-key "b")))
-
-  (map! :when (featurep 'activities) ;; (modulep! :ui workspaces)
-        :leader
-        "o t" (cmd!
-               (if (activities-named "vterm")
-                   (activities-switch (activities-named "vterm"))
-                 (progn
-                   (let* ((monitors (display-monitor-attributes-list))
-                          ;; pick monitor whose x is greater than 0 (right of main display)
-                          (right-monitor (seq-find (lambda (m)
-                                                     (> (nth 0 (cdr (assoc 'geometry m))) 0))
-                                                   monitors))
-                          (geom (cdr (assoc 'geometry right-monitor)))
-                          (x (nth 0 geom))
-                          (y (nth 1 geom)))
-                     (make-frame `((left . ,x)
-                                   (top . ,y)
-                                   (fullscreen . maximized)))
-                     (activities-new "vterm")
-                     (+vterm/here nil)))))))
+  (map!
+   :map vterm-mode-map
+   :e
+   "M-<right>" (cmd! (vterm-send-escape)
+                     (vterm-send-key "f"))
+   "M-<left>" (cmd! (vterm-send-escape)
+                    (vterm-send-key "b")))
+  (map!
+   :when (featurep 'activities) ;; (modulep! :ui workspaces)
+   :leader
+   "o t" (cmd!
+          (if (activities-named "vterm")
+              (activities-switch (activities-named "vterm"))
+            (progn
+              (let* ((monitors (display-monitor-attributes-list))
+                     ;; pick monitor whose x is greater than 0 (right of main display)
+                     (right-monitor (seq-find (lambda (m)
+                                                (>
+                                                 (nth 0
+                                                      (cdr
+                                                       (assoc
+                                                        'geometry m)))
+                                                 0))
+                                              monitors))
+                     (geom (cdr (assoc 'geometry right-monitor)))
+                     (x (nth 0 geom))
+                     (y (nth 1 geom)))
+                (make-frame `((left . ,x)
+                              (top . ,y)
+                              (fullscreen . maximized)))
+                (activities-new "vterm")
+                (+vterm/here nil)))))))
 
 (map! :leader
       :desc "imenu"
@@ -180,97 +189,111 @@
 ;;              (switch-to-buffer (other-buffer))
 ;;              (other-window 1)))
 
-(map! :when (modulep! :editor evil)
-      :leader
-      :desc "Switch to last buffer"
-      "l" #'evil-switch-to-windows-last-buffer)
+(map!
+ :when (modulep! :editor evil)
+ :leader
+ :desc "Switch to last buffer"
+ "l" #'evil-switch-to-windows-last-buffer)
 
-(map! :when (modulep! :ui workspaces)
-      :leader
-      "TAB 0" nil
-      "TAB 1" nil
-      "TAB 2" nil
-      "TAB 3" nil
-      "TAB 4" nil
-      "TAB 5" nil
-      "TAB 6" nil
-      "TAB 7" nil
-      "TAB 8" nil
-      "TAB 9" nil)
+(map!
+ :when (modulep! :ui workspaces)
+ :leader
+ "TAB 0" nil
+ "TAB 1" nil
+ "TAB 2" nil
+ "TAB 3" nil
+ "TAB 4" nil
+ "TAB 5" nil
+ "TAB 6" nil
+ "TAB 7" nil
+ "TAB 8" nil
+ "TAB 9" nil)
 
-(map! :when (modulep! :ui workspaces)
-      :map vterm-mode-map
-      :e
-      "<escape>" #'+workspace/other)
+(map!
+ :when (modulep! :ui workspaces)
+ :map vterm-mode-map
+ :e
+ "<escape>" #'+workspace/other)
 
-(map! :when (modulep! :ui workspaces)
-      :leader
-      :desc "Display workspaces"
-      "TAB f" #'+workspace/display)
+(map!
+ :when (modulep! :ui workspaces)
+ :leader
+ :desc "Display workspaces"
+ "TAB f" #'+workspace/display)
 
-(map! :when (and (modulep! :ui workspaces) (modulep! :completion ivy))
-      :leader
-      :desc "Switch to workspace"
-      "TAB TAB" (cmd!
-                 (ivy-read "Switch to workspace: "
-                           (+workspace-list-names)
-                           :action #'+workspace-switch
-                           :caller #'+workspace-switch)
-                 (+workspace-list-names)))
+(map!
+ :when (and (modulep! :ui workspaces)
+            (modulep! :completion ivy))
+ :leader
+ :desc "Switch to workspace"
+ "TAB TAB" (cmd!
+            (ivy-read "Switch to workspace: "
+                      (+workspace-list-names)
+                      :action #'+workspace-switch
+                      :caller #'+workspace-switch)
+            (+workspace-list-names)))
 
-(map! :when (modulep! :ui workspaces)
-      :leader
-      :desc "Switch to last workspace"
-      "TAB l" #'+workspace/other)
+(map!
+ :when (modulep! :ui workspaces)
+ :leader
+ :desc "Switch to last workspace"
+ "TAB l" #'+workspace/other)
 
-(map! :when (modulep! :ui workspaces)
-      :leader
-      :desc "Create workspace here"
-      "TAB n" (cmd!
-               (condition-case _
-                   (progn
-                     (+workspace/new (projectile-project-name) t)
-                     (+workspace/display))
-                 (error
-                  (progn
-                    (+workspace-switch (projectile-project-name) t)
-                    (+workspace/display))))))
+(map!
+ :when (modulep! :ui workspaces)
+ :leader
+ :desc "Create workspace here"
+ "TAB n" (cmd!
+          (condition-case _
+              (progn
+                (+workspace/new (projectile-project-name) t)
+                (+workspace/display))
+            (error
+             (progn
+               (+workspace-switch (projectile-project-name) t)
+               (+workspace/display))))))
 
-(map! :when (modulep! :config default)
-      :leader
-      "c x"
-      (cmd! (+default/diagnostics)
-            (switch-to-buffer-other-window "*Flycheck errors*")))
+(map!
+ :when (modulep! :config default)
+ :leader
+ "c x"
+ (cmd! (+default/diagnostics)
+       (switch-to-buffer-other-window "*Flycheck errors*")))
 
-(map! :when (modulep! :checkers syntax)
-      :leader
-      :desc "global flycheck mode"
-      "t z" #'global-flycheck-mode)
+(map!
+ :when (modulep! :checkers syntax)
+ :leader
+ :desc "global flycheck mode"
+ "t z" #'global-flycheck-mode)
 
-(map! :when (modulep! :completion ivy)
-      :leader
-      :desc "compile"
-      "c C" #'+ivy/compile)
+(map!
+ :when (modulep! :completion ivy)
+ :leader
+ :desc "compile"
+ "c C" #'+ivy/compile)
 
 (map! :leader
       :desc "recompile"
       "c c" #'recompile)
 
-(map! :when (modulep! :tools make)
-      :leader
-      :desc "+make/run"
-      "c r" #'+make/run
-      :desc "+make/run-last"
-      "c l" #'+make/run-last)
+(map!
+ :when (modulep! :tools make)
+ :leader
+ :desc "+make/run"
+ "c r" #'+make/run
+ :desc "+make/run-last"
+ "c l" #'+make/run-last)
 
-(map! :map org-mode-map
-      :localleader
-      "a" #'org-show-all)
+(map!
+ :map org-mode-map
+ :localleader
+ "a" #'org-show-all)
 
 (map! :leader "w o" #'delete-other-windows)
 
-(map! :map compilation-mode-map
-      :n "q" #'quit-window)
+(map!
+ :map compilation-mode-map
+ :n "q" #'quit-window)
 
 (map! :leader
       :desc "global visual line mode"
@@ -278,34 +301,62 @@
 
 (map! :leader
       :desc "transparency"
-      "t T" (cmd! (let ((alpha (frame-parameter nil 'alpha)))
-                    (if (eq
-                         (if (numberp alpha)
-                             alpha
-                           (cdr alpha)) ; may also be nil
-                         100)
-                        (set-frame-parameter nil 'alpha '(60 . 50))
-                      (set-frame-parameter nil 'alpha '(100 . 100))))))
+      "t T" (cmd!
+             (let ((alpha (frame-parameter nil 'alpha)))
+               (if (eq
+                    (if (numberp alpha)
+                        alpha
+                      (cdr alpha))      ; may also be nil
+                    100)
+                   (set-frame-parameter nil 'alpha '(60 . 50))
+                 (set-frame-parameter nil 'alpha '(100 . 100))))))
 
 ;; (map! :when (modulep! :ui popup)
 ;;       :n
 ;;       :map +popup-mode-map
 ;;       "Q" (cmd! (+popup-mode -q)))
 
-(map! :map emacs-lisp-mode-map
-      :n "RET" (cmd! (eval-buffer nil t)))
+(map!
+ :map emacs-lisp-mode-map
+ :n "RET" (cmd! (eval-buffer nil t)))
 
 (set-popup-rule! "*helpful function:" :height 100)
+
 (set-popup-rule! "*helpful macro:" :height 100)
-(set-popup-rule! "*helpful command:" :height 25 :side 'bottom)
-(set-popup-rule! "*helpful variable:" :height 25 :side 'bottom)
-(set-popup-rule! "*Ilist*" :side 'right :width 50 :select t)
-(set-popup-rule! "*ert*" :side 'right :width .5)
-(set-popup-rule! "*compilation*" :select nil :width .5 :side 'right)
-(set-popup-rule! "*cargo-test*" :select nil :width .5 :side 'right)
+
+(set-popup-rule! "*helpful command:"
+  :height 25
+  :side 'bottom)
+
+(set-popup-rule! "*helpful variable:"
+  :height 25
+  :side 'bottom)
+
+(set-popup-rule! "*Ilist*"
+  :side 'right
+  :width 50
+  :select t)
+
+(set-popup-rule! "*ert*"
+  :side 'right
+  :width .5)
+
+(set-popup-rule! "*compilation*"
+  :select nil
+  :width .5
+  :side 'right)
+
+(set-popup-rule! "*cargo-test*"
+  :select nil
+  :width .5
+  :side 'right)
+
 ;; (set-popup-rule! "*compilation*" :select t :height 31 :side 'top)
 (set-popup-rule! "*Anaconda*" :height 25)
-(set-popup-rule! "*pytest*" :height .25 :select t)
+
+(set-popup-rule! "*pytest*"
+  :height .25
+  :select t)
 
 ;; Something's wrong with the binary.
 (use-package! parinfer
@@ -318,33 +369,42 @@
 
 (use-package! doom-ui
   :config
-  (setopt doom-font (font-spec :family "Fira Code" :weight 'medium :size 13))
+  (setopt doom-font (font-spec
+                     :family "Fira Code"
+                     :weight 'medium
+                     :size 13))
   ;; (setopt doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
   ;; (setopt doom-font (font-spec :family "Menlo" :size 16))
   ;; (setopt doom-font (font-spec :family "Monaco" :size 16))
   (setopt org-directory "~/codez/obsidian")
   (setopt doom-theme 'doom-spacegrey)
-
   ;; (add-hook! doom-big-font-mode-hook
   ;;   (set-popup-rule! "*compilation*" :select t :side 'left :width 124))
-  (setopt +doom-dashboard-ascii-banner-fn #'++doom-dashboard-draw-ascii-banner-fn)
+  (setopt +doom-dashboard-ascii-banner-fn
+          #'++doom-dashboard-draw-ascii-banner-fn)
   (setopt +doom-dashboard-menu-sections
           '(("Browse project"
-             :icon (nerd-icons-octicon "nf-oct-briefcase" :face 'doom-dashboard-menu-title)
+             :icon (nerd-icons-octicon "nf-oct-briefcase" :face
+                                       'doom-dashboard-menu-title)
              :action projectile-switch-project)
             ("Browse .doom.d"
-             :icon (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
+             :icon (nerd-icons-octicon "nf-oct-tools" :face
+                                       'doom-dashboard-menu-title)
              :when (file-directory-p doom-user-dir)
              :action doom/open-private-config)
             ("Recently opened files"
-             :icon (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
+             :icon (nerd-icons-faicon "nf-fa-file_text" :face
+                                      'doom-dashboard-menu-title)
              :action recentf-open-files)
             ("Reload last session"
-             :icon (nerd-icons-octicon "nf-oct-history" :face 'doom-dashboard-menu-title)
-             :when (cond ((modulep! :ui workspaces))
-                         (file-exists-p (expand-file-name persp-auto-save-fname persp-save-dir))
-                         ((require 'desktop nil t)
-                          (file-exists-p (desktop-full-file-name))))
+             :icon (nerd-icons-octicon "nf-oct-history" :face
+                                       'doom-dashboard-menu-title)
+             :when
+             (cond ((modulep! :ui workspaces))
+                   (file-exists-p (expand-file-name persp-auto-save-fname
+                                                    persp-save-dir))
+                   ((require 'desktop nil t)
+                    (file-exists-p (desktop-full-file-name))))
              :action doom/quickload-session)))
   (setopt +doom-dashboard-functions
           '(doom-dashboard-widget-banner
@@ -353,6 +413,13 @@
 
 (after! files
   (setopt confirm-kill-emacs nil))
+
+(use-package! apheleia-mode
+  :defer t
+  :init
+  (add-to-list 'apheleia-inhibit-functions
+               (cmd! (eq major-mode 'emacs-lisp-mode)))
+  (add-hook 'emacs-lisp-mode-hook #'prettier-elisp-mode))
 
 (use-package! jinja2-mode
   :defer t
@@ -398,14 +465,17 @@
 (use-package! python-coverage
   :defer t
   :config
-  (map! :map python-mode-map :localleader "c" nil)
-  (map! :map python-mode-map
-        :localleader
-        :prefix ("t" . "test")
-        :desc "toggle coverage overlay"
-        "c" #'python-coverage-overlay-mode
-        :desc "refresh coverage overlay"
-        "r" #'python-coverage-overlay-refresh))
+  (map!
+   :map python-mode-map
+   :localleader "c" nil)
+  (map!
+   :map python-mode-map
+   :localleader
+   :prefix ("t" . "test")
+   :desc "toggle coverage overlay"
+   "c" #'python-coverage-overlay-mode
+   :desc "refresh coverage overlay"
+   "r" #'python-coverage-overlay-refresh))
 
 (use-package! python
   :defer t
@@ -447,7 +517,6 @@
    :desc "list environments"
    "l" #'conda-env-list))
 
-
 ;; TODO set a smaller font in the imenu buffer.
 ;; Key mapping to
 ;; accept keystroke
@@ -476,7 +545,6 @@
 ;;   (add-hook 'projectile-after-switch-project-hook #'project-tab-groups))
 
 (add-hook! 'dired-mode-hook #'dired-hide-details-mode)
-
 
 (defun ++search-notes ()
   (interactive)
@@ -512,8 +580,6 @@
 (map!
  :leader
  "t F" #'toggle-frame-maximized)
-
-
 ;; TODO: add stuff for flycheck.
 ;; TODO: figure out how to have project-wide *problems* buffer, akin to vscode.
 ;; Create a work flow where I can have a dedicated frame for problems.
