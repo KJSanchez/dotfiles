@@ -239,8 +239,6 @@
       :desc "recompile"
       "c c" #'recompile)
 
-(map! :n "RET" #'recompile)
-
 (map! :when (modulep! :tools make)
       :leader
       :desc "+make/run"
