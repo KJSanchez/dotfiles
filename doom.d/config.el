@@ -44,8 +44,7 @@
 (map!
  :leader
  :desc "delete frame"
- "q f" (cmd! (print "here")))
-
+ "q f" #'delete-frame)
 
 (map!
  :leader
@@ -132,25 +131,6 @@
   :disabled t
   :config
   (centaur-tabs-group-by-projectile-project))
-
-;; (setopt centaur-tabs-set-icons t)
-;; (setopt centaur-tabs-gray-out-icons 'buffer)
-;; (setopt centaur-tabs-set-bar 'left)
-;; (setopt centaur-tabs-set-modified-marker nil)
-;; ;; (setopt centaur-tabs-close-button "")
-;; ;; (setopt centaur-tabs-modified-marker "x")
-;; (setopt centaur-tabs-style "bar")
-;; (setopt centaur-tabs-height 16)
-;; ;; Scrolling (with the mouse wheel) past the end of the tab list
-;; ;; replaces the tab list with that of another Doom workspace. This
-;; ;; prevents that.
-;; (setopt centaur-tabs-cycle-scope 'tabs)
-;; (add-hook 'dired-mode-hook 'centaur-tabs-local-mode)
-;; (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
-;; (add-hook 'python-mode-hook 'centaur-tabs-local-mode)
-;; (add-hook 'compilation-mode-hook 'centaur-tabs-local-mode)
-;; (add-hook 'inferior-python-mode-hook 'centaur-tabs-local-mode))
-
 
 (use-package! vterm
   :defer t
