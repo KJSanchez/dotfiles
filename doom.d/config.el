@@ -416,15 +416,16 @@
   :disabled t
   :defer t
   :config
-  (map! :map python-mode-map
-        :localleader
-        :prefix ("c" . "conda")
-        :desc "activate environment"
-        "a" #'conda-env-activate
-        :desc "deactivate environment"
-        "d" #'conda-env-deactivate
-        :desc "list environments"
-        "l" #'conda-env-list))
+  (map!
+   :map python-mode-map
+   :localleader
+   :prefix ("c" . "conda")
+   :desc "activate environment"
+   "a" #'conda-env-activate
+   :desc "deactivate environment"
+   "d" #'conda-env-deactivate
+   :desc "list environments"
+   "l" #'conda-env-list))
 
 
 ;; TODO set a smaller font in the imenu buffer.
