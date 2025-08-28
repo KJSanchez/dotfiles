@@ -30,6 +30,42 @@
 (load! "lib.el" doom-user-dir t)
 (load! "experimentals.el" doom-user-dir t)
 
+;; (use-package! evil-textobj-tree-sitter
+;;   :config
+;;   (define-key evil-outer-text-objects-map "e"
+;;               (evil-textobj-tree-sitter-get-textobj "element"))
+;;   (define-key evil-inner-text-objects-map "e"
+;;               (evil-textobj-tree-sitter-get-textobj "element.inner")))
+
+(map! :leader
+      :n
+      "k" #'lsp-ui-doc-glance)
+
+(map!
+ :leader
+ :desc "delete frame"
+ "q f" (cmd! (print "here")))
+
+
+(map!
+ :leader
+ :n
+ :desc "++search-notes"
+ "n s" #'++search-notes)
+
+(map!
+ :leader
+ :n
+ :desc "Browse dotfiles"
+ "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
+
+(map!
+ :after ivy
+ :map ivy-minibuffer-map
+ "M-n" #'+ivy/woccur
+ "," #'ivy-next-line
+ "<" #'ivy-previous-line)
+
 (use-package! lsp-mode
   :defer t
   :config
@@ -41,14 +77,6 @@
   :init
   (setopt lsp-eldoc-enable-hover nil)
   (setopt lsp-tailwindcss-add-on-mode t))
-
-(map! :leader
-      :n
-      "k" #'lsp-ui-doc-glance)
-
-;; Something's wrong with the binary.
-(use-package! parinfer
-  :disabled t)
 
 (use-package! tabspaces
   :defer t
@@ -134,17 +162,25 @@
         "M-<right>" (cmd! (vterm-send-escape) (vterm-send-key "f"))
         "M-<left>" (cmd! (vterm-send-escape) (vterm-send-key "b")))
 
-  (map! :when (modulep! :ui workspaces)
+  (map! :when (featurep 'activities) ;; (modulep! :ui workspaces)
         :leader
         "o t" (cmd!
-               (if (++workspace/workspace-p "vterm")
-                   (progn
-                     (++workspace/switch-to-by-name "vterm")
-                     (unless (get-buffer "*vterm*")
-                       (+vterm/here nil)))
+               (if (activities-named "vterm")
+                   (activities-switch (activities-named "vterm"))
                  (progn
-                   (+workspace/new "vterm")
-                   (+vterm/here nil))))))
+                   (let* ((monitors (display-monitor-attributes-list))
+                          ;; pick monitor whose x is greater than 0 (right of main display)
+                          (right-monitor (seq-find (lambda (m)
+                                                     (> (nth 0 (cdr (assoc 'geometry m))) 0))
+                                                   monitors))
+                          (geom (cdr (assoc 'geometry right-monitor)))
+                          (x (nth 0 geom))
+                          (y (nth 1 geom)))
+                     (make-frame `((left . ,x)
+                                   (top . ,y)
+                                   (fullscreen . maximized)))
+                     (activities-new "vterm")
+                     (+vterm/here nil)))))))
 
 (map! :leader
       :desc "imenu"
@@ -290,6 +326,10 @@
 ;; (set-popup-rule! "*compilation*" :select t :height 31 :side 'top)
 (set-popup-rule! "*Anaconda*" :height 25)
 (set-popup-rule! "*pytest*" :height .25 :select t)
+
+;; Something's wrong with the binary.
+(use-package! parinfer
+  :disabled t)
 
 (use-package! pixel-scroll
   ;; TODO: Kinda jumpy...
@@ -466,25 +506,6 @@
            ((modulep! :completion helm)    #'+helm/project-search)
            ((modulep! :completion vertico) #'+vertico/project-search)
            (#'projectile-ripgrep)))))
-
-(map!
- :leader
- :n
- :desc "++search-notes"
- "n s" #'++search-notes)
-
-(map!
- :leader
- :n
- :desc "Browse dotfiles"
- "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
-
-(map!
- :after ivy
- :map ivy-minibuffer-map
- "M-n" #'+ivy/woccur
- "," #'ivy-next-line
- "<" #'ivy-previous-line)
 
 (map!
  :leader
