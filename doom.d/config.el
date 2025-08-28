@@ -23,11 +23,12 @@
 ;;   `require' or `use-package'.
 ;; - `map!' for binding new keys
 
+(global-visual-line-mode 1)
+(toggle-frame-maximized)
+
 ;;; Code:
 (load! "lib.el" doom-user-dir t)
 (load! "experimentals.el" doom-user-dir t)
-
-(toggle-frame-maximized)
 
 (use-package! lsp-mode
   :defer t
@@ -480,6 +481,23 @@
  "M-n" #'+ivy/woccur
  "," #'ivy-next-line
  "<" #'ivy-previous-line)
+
+(map!
+ :leader
+ :n
+ "p l" (cmd!
+        (find-file
+         (completing-read
+          "Find file: "
+          (append
+           (directory-files-recursively
+            "~/codez/dp-warranty-backend/clients/corrigo/queries/local"
+            ".*"
+            t)
+           (directory-files-recursively
+            "~/codez/dp-warranty-backend/apps/local"
+            ".*"
+            t))))))
 
 (map!
  :map wgrep-mode-map
