@@ -25,7 +25,7 @@
 
 (global-visual-line-mode 1)
 
-(toggle-frame-maximized)
+(set-frame-parameter nil 'fullscreen 'maximized)
 
 (set-popup-rule! "*helpful function:" :height 100)
 
@@ -108,15 +108,14 @@
 
 (use-package! lsp-mode
   :defer t
-  :config
-  (setopt lsp-signature-auto-activate nil))
+  :custom
+  (lsp-signature-auto-activate nil))
 
 (use-package! lsp-tailwindcss
   :defer t
-  :after typescript-mode
-  :init
-  (setopt lsp-eldoc-enable-hover nil)
-  (setopt lsp-tailwindcss-add-on-mode t))
+  :custom
+  (lsp-eldoc-enable-hover nil)
+  (lsp-tailwindcss-add-on-mode t))
 
 (use-package! tabspaces
   :defer t
@@ -148,20 +147,23 @@
          (sh-mode . copilot-mode)
          (c++-mode . copilot-mode))
   :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word))
-  :config
-  (setopt copilot-max-char -1)
-  (setopt copilot-indent-offset-warning-disable t)
-  (setopt copilot-node-executable "node"))
+         ("<tab>" . 'copilot-accept-completion)
+         ("TAB" . 'copilot-accept-completion)
+         ("C-TAB" . 'copilot-accept-completion-by-word)
+         ("C-<tab>" . 'copilot-accept-completion-by-word))
+  :custom
+  (copilot-max-char -1)
+  (copilot-indent-offset-warning-disable t)
+  (copilot-node-executable "node"))
 
 (use-package! doom-modeline
+  :custom
+  (doom-modeline-display-default-persp-name t)
   :config
-  (doom-modeline-def-modeline 'main
-    '(bar buffer-info)
-    '(misc-info minor-modes check major-mode vcs))
+  ;; (doom-modeline-def-modeline 'main
+  ;;   '(bar buffer-info)
+  ;;   '(misc-info minor-modes check major-mode vcs))
+  (doom-modeline-set-modeline 'minimal t)
   (map! :leader
         :desc "toggle modeline"
         "t m" #'hide-mode-line-mode
@@ -172,6 +174,18 @@
   :disabled t
   :config
   (centaur-tabs-group-by-projectile-project))
+
+;; (use-package)
+(use-package! aidermacs
+  :custom
+  (aidermacs-default-model "openai/o3")
+  (aidermacs-default-chat-mode 'code)
+  :config
+  (map!
+   :leader
+   :desc "Aidermacs"
+   :prefix ("j" . "aider")
+   "j" #'aidermacs-transient-menu))
 
 (use-package! vterm
   :defer t
@@ -215,8 +229,8 @@
       "t i" #'imenu-list-minor-mode)
 
 (use-package! evil
-  :config
-  (setopt evil-escape-key-sequence "kj"))
+  :custom
+  (evil-escape-key-sequence "kj"))
 
 ;; (map! :after evil
 ;;       :leader
@@ -234,31 +248,6 @@
  :desc "Switch to last buffer"
  "l" #'evil-switch-to-windows-last-buffer)
 
-(map!
- :when (modulep! :ui workspaces)
- :leader
- "TAB 0" nil
- "TAB 1" nil
- "TAB 2" nil
- "TAB 3" nil
- "TAB 4" nil
- "TAB 5" nil
- "TAB 6" nil
- "TAB 7" nil
- "TAB 8" nil
- "TAB 9" nil)
-
-(map!
- :when (modulep! :ui workspaces)
- :map vterm-mode-map
- :e
- "<escape>" #'+workspace/other)
-
-(map!
- :when (modulep! :ui workspaces)
- :leader
- :desc "Display workspaces"
- "TAB f" #'+workspace/display)
 
 (map!
  :when (and (modulep! :ui workspaces)
@@ -271,26 +260,6 @@
                       :action #'+workspace-switch
                       :caller #'+workspace-switch)
             (+workspace-list-names)))
-
-(map!
- :when (modulep! :ui workspaces)
- :leader
- :desc "Switch to last workspace"
- "TAB l" #'+workspace/other)
-
-(map!
- :when (modulep! :ui workspaces)
- :leader
- :desc "Create workspace here"
- "TAB n" (cmd!
-          (condition-case _
-              (progn
-                (+workspace/new (projectile-project-name) t)
-                (+workspace/display))
-            (error
-             (progn
-               (+workspace-switch (projectile-project-name) t)
-               (+workspace/display))))))
 
 (map!
  :when (modulep! :config default)
@@ -369,21 +338,18 @@
   :hook (prog-mode . pixel-scroll-mode))
 
 (use-package! doom-ui
-  :config
-  (setopt doom-font (font-spec
-                     :family "Fira Code"
-                     :weight 'medium
-                     :size 13))
-  ;; (setopt doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
-  ;; (setopt doom-font (font-spec :family "Menlo" :size 16))
-  ;; (setopt doom-font (font-spec :family "Monaco" :size 16))
-  (setopt org-directory "~/codez/obsidian")
-  (setopt doom-theme 'doom-spacegrey)
+  :custom
+  (doom-font (font-spec :family "Fira Code" :weight 'medium :size 13))
+  ;; (doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
+  ;; (doom-font (font-spec :family "Menlo" :size 16))
+  ;; (doom-font (font-spec :family "Monaco" :size 16))
+  (org-directory "~/codez/obsidian")
+  (doom-theme 'doom-spacegrey)
   ;; (add-hook! doom-big-font-mode-hook
   ;;   (set-popup-rule! "*compilation*" :select t :side 'left :width 124))
-  (setopt +doom-dashboard-ascii-banner-fn
+  (+doom-dashboard-ascii-banner-fn
           #'++doom-dashboard-draw-ascii-banner-fn)
-  (setopt +doom-dashboard-menu-sections
+  (+doom-dashboard-menu-sections
           '(("Browse project"
              :icon (nerd-icons-octicon "nf-oct-briefcase" :face
                                        'doom-dashboard-menu-title)
@@ -407,7 +373,7 @@
                    ((require 'desktop nil t)
                     (file-exists-p (desktop-full-file-name))))
              :action doom/quickload-session)))
-  (setopt +doom-dashboard-functions
+  (+doom-dashboard-functions
           '(doom-dashboard-widget-banner
             doom-dashboard-widget-shortmenu
             doom-dashboard-widget-loaded)))
@@ -445,23 +411,23 @@
 
 (use-package! flycheck
   :defer t
-  :config
-  (setopt flycheck-disabled-checkers '(python-pylint)))
+  :custom
+  (flycheck-disabled-checkers '(python-pylint)))
 
 (use-package! projectile
   :defer t
-  :config
-  (setopt projectile-project-search-path '("~/codez/" "~/open-source/")))
+  :custom
+  (projectile-project-search-path '("~/codez/" "~/open-source/")))
 
 (use-package! magit
   :defer t
-  :config
-  (setopt git-commit-summary-max-length 100))
+  :custom
+  (git-commit-summary-max-length 100))
 
 (use-package! neotree
   :defer t
-  :config
-  (setopt neo-show-hidden-files nil))
+  :custom
+  (neo-show-hidden-files nil))
 
 (use-package! python-coverage
   :defer t
@@ -533,8 +499,47 @@
 ;; This has been more annoying than not =(.
 (use-package! persp-mode
   :defer t
+  :custom
+  (+workspaces-on-switch-project-behavior t)
   :config
-  (setopt +workspaces-on-switch-project-behavior t))
+  ;; TODO: do a when featurep vterm-mode
+  (map!
+   ;; :when (modulep! :ui workspaces)
+   :map vterm-mode-map
+   :e
+   "<escape>" #'+workspace/other)
+  (map!
+   :leader
+   "TAB 0" nil
+   "TAB 1" nil
+   "TAB 2" nil
+   "TAB 3" nil
+   "TAB 4" nil
+   "TAB 5" nil
+   "TAB 6" nil
+   "TAB 7" nil
+   "TAB 8" nil
+   "TAB 9" nil)
+  (map!
+   :leader
+   :desc "Display workspaces"
+   "TAB f" #'+workspace/display)
+  (map!
+   :leader
+   :desc "Create workspace here"
+   "TAB n" (cmd!
+            (condition-case _
+                (progn
+                  (+workspace/new (projectile-project-name) t)
+                  (+workspace/display))
+              (error
+               (progn
+                 (+workspace-switch (projectile-project-name) t)
+                 (+workspace/display))))))
+  (map!
+   :leader
+   :desc "Switch to last workspace"
+   "TAB l" #'+workspace/other))
 
 ;; (use-package! projectile
 ;;   :config
@@ -589,3 +594,9 @@
 ;;
 ;; (after! flycheck
 ;;   (map! :mode flycheck-error-list-mode-map))
+
+;; TODO: need a way to show all active workspaces. Maybe using tab-bar, centaur,
+;; or in the minibuffer.
+;;
+;; Relevant functions
+;; (+workspace/display)
