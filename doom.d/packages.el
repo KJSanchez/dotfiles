@@ -4,9 +4,6 @@
 (package! realgud-lldb :disable
   (unless (modulep! :lang cc)))
 
-(package! hy-mode :disable
-  (unless (modulep! :lang python)))
-
 (package! python-coverage :disable
   (unless (modulep! :lang python)))
 
@@ -66,10 +63,15 @@
   :disable
   (unless (modulep! :lang javascript)))
 
+;; (package! aider)
+
+;; NOTE: aidermacs doesn't work, but... aider-macs does.
+;; (aidermacs-run)
 (package! aider
   :recipe (:host github :repo "MatthewZMD/aidermacs"))
 
 ;; (package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :files ("*.el")))
+
 
 (package! prettier-elisp
   :recipe (:host github

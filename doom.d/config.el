@@ -175,17 +175,17 @@
   :config
   (centaur-tabs-group-by-projectile-project))
 
-;; (use-package)
 (use-package! aidermacs
   :custom
   (aidermacs-default-model "openai/o3")
-  (aidermacs-default-chat-mode 'code)
-  :config
-  (map!
+  (aidermacs-default-chat-mode 'code))
+
+(map!
    :leader
    :desc "Aidermacs"
    :prefix ("j" . "aider")
-   "j" #'aidermacs-transient-menu))
+   :desc "aidermacs-transient-menu"
+   "j" #'aidermacs-transient-menu)
 
 (use-package! vterm
   :defer t
@@ -453,9 +453,10 @@
 
 (use-package! rainbow-mode
   :defer t
-  :mode ("tailwind.config.ts" . (lambda ()
-                                  (typescript-mode)
-                                  (rainbow-mode 1))))
+  :mode ("tailwind.config.ts" . rainbow-mode))
+
+(use-package! typescript-mode
+  :mode ("tailwind.config.ts" . typescript-mode))
 
 (use-package! which-key
   :defer t
