@@ -177,7 +177,6 @@
 
 (use-package! aidermacs
   :custom
-  (aidermacs-default-model "openai/o3")
   (aidermacs-default-chat-mode 'code))
 
 (map!
@@ -192,6 +191,7 @@
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
   (map!
+   :when (modulep! :term vterm)
    :map vterm-mode-map
    :e
    "M-<right>" (cmd! (vterm-send-escape)
