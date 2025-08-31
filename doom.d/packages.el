@@ -13,8 +13,6 @@
 (package! kubernetes :disable
   (unless (modulep! :tools docker)))
 
-(package! aidermacs :disable t)
-
 (package! copilot
   :recipe (:host github
            :repo "copilot-emacs/copilot.el"
