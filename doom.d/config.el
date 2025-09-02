@@ -117,6 +117,12 @@
   (lsp-eldoc-enable-hover nil)
   (lsp-tailwindcss-add-on-mode t))
 
+
+;; ;; TODO: org-table not working.
+;; (use-package! feature-mode
+;;   (featurep 'feature-mode)
+;;   :before)
+
 (use-package! tabspaces
   :defer t
   :config
@@ -147,10 +153,10 @@
          (sh-mode . copilot-mode)
          (c++-mode . copilot-mode))
   :bind (:map copilot-completion-map
-         ("<tab>" . 'copilot-accept-completion)
-         ("TAB" . 'copilot-accept-completion)
-         ("C-TAB" . 'copilot-accept-completion-by-word)
-         ("C-<tab>" . 'copilot-accept-completion-by-word))
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word))
   :custom
   (copilot-max-char -1)
   (copilot-indent-offset-warning-disable t)
@@ -175,16 +181,35 @@
   :config
   (centaur-tabs-group-by-projectile-project))
 
+(use-package! treesit-auto
+  :custom
+  (treesit-auto-install t))
+
+;; TODO: get combobulate working.
+(use-package! combobulate
+  :defer t
+  :config
+  (map!
+   :leader
+   :prefix ("a" . "combobulate")
+   :desc "combobulate"
+   "a" #'combobulate))
+
+;; (use-package)
+;; (featurep 'aidermacs)
+;; (add-load-path! "~/codez/aidermacs")
+;; (require 'aidermacs)
+;; (unload-feature 'aidermacs)
 (use-package! aidermacs
   :custom
   (aidermacs-default-chat-mode 'code))
 
 (map!
-   :leader
-   :desc "Aidermacs"
-   :prefix ("j" . "aider")
-   :desc "aidermacs-transient-menu"
-   "j" #'aidermacs-transient-menu)
+ :leader
+ :desc "Aidermacs"
+ :prefix ("j" . "aider")
+ :desc "aidermacs-transient-menu"
+ "j" #'aidermacs-transient-menu)
 
 (use-package! vterm
   :defer t
@@ -348,35 +373,35 @@
   ;; (add-hook! doom-big-font-mode-hook
   ;;   (set-popup-rule! "*compilation*" :select t :side 'left :width 124))
   (+doom-dashboard-ascii-banner-fn
-          #'++doom-dashboard-draw-ascii-banner-fn)
+   #'++doom-dashboard-draw-ascii-banner-fn)
   (+doom-dashboard-menu-sections
-          '(("Browse project"
-             :icon (nerd-icons-octicon "nf-oct-briefcase" :face
-                                       'doom-dashboard-menu-title)
-             :action projectile-switch-project)
-            ("Browse .doom.d"
-             :icon (nerd-icons-octicon "nf-oct-tools" :face
-                                       'doom-dashboard-menu-title)
-             :when (file-directory-p doom-user-dir)
-             :action doom/open-private-config)
-            ("Recently opened files"
-             :icon (nerd-icons-faicon "nf-fa-file_text" :face
-                                      'doom-dashboard-menu-title)
-             :action recentf-open-files)
-            ("Reload last session"
-             :icon (nerd-icons-octicon "nf-oct-history" :face
-                                       'doom-dashboard-menu-title)
-             :when
-             (cond ((modulep! :ui workspaces))
-                   (file-exists-p (expand-file-name persp-auto-save-fname
-                                                    persp-save-dir))
-                   ((require 'desktop nil t)
-                    (file-exists-p (desktop-full-file-name))))
-             :action doom/quickload-session)))
+   '(("Browse project"
+      :icon (nerd-icons-octicon "nf-oct-briefcase" :face
+                                'doom-dashboard-menu-title)
+      :action projectile-switch-project)
+     ("Browse .doom.d"
+      :icon (nerd-icons-octicon "nf-oct-tools" :face
+                                'doom-dashboard-menu-title)
+      :when (file-directory-p doom-user-dir)
+      :action doom/open-private-config)
+     ("Recently opened files"
+      :icon (nerd-icons-faicon "nf-fa-file_text" :face
+                               'doom-dashboard-menu-title)
+      :action recentf-open-files)
+     ("Reload last session"
+      :icon (nerd-icons-octicon "nf-oct-history" :face
+                                'doom-dashboard-menu-title)
+      :when
+      (cond ((modulep! :ui workspaces))
+            (file-exists-p (expand-file-name persp-auto-save-fname
+                                             persp-save-dir))
+            ((require 'desktop nil t)
+             (file-exists-p (desktop-full-file-name))))
+      :action doom/quickload-session)))
   (+doom-dashboard-functions
-          '(doom-dashboard-widget-banner
-            doom-dashboard-widget-shortmenu
-            doom-dashboard-widget-loaded)))
+   '(doom-dashboard-widget-banner
+     doom-dashboard-widget-shortmenu
+     doom-dashboard-widget-loaded)))
 
 (after! files
   (setopt confirm-kill-emacs nil))
