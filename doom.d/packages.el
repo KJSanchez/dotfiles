@@ -68,9 +68,11 @@
 (package! aider
   :recipe (:host github :repo "MatthewZMD/aidermacs"))
 
-;; (package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :files ("*.el")))
-
+(package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :nonrecursive t))
 
 (package! prettier-elisp
   :recipe (:host github
            :repo "KarimAziev/prettier-elisp"))
+
+(package! treesit-auto
+  :disable (unless (modulep! :tools tree-sitter)))
