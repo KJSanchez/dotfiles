@@ -68,7 +68,6 @@
 
 ;;; Code:
 (load! "lib.el" doom-user-dir t)
-
 (load! "experimentals.el" doom-user-dir t)
 
 (use-package! treesit-auto
