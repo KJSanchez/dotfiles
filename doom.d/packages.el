@@ -52,11 +52,7 @@
   :disable
   (unless (modulep! :lang javascript)))
 
-;; (package! aider)
-
-;; NOTE: aidermacs doesn't work, but... aider-macs does.
-;; (aidermacs-run)
-(package! aider
+(package! aidermacs
   :recipe (:host github :repo "MatthewZMD/aidermacs"))
 
 (package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :nonrecursive t))
