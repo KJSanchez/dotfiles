@@ -71,6 +71,11 @@
 
 (load! "experimentals.el" doom-user-dir t)
 
+(use-package! treesit-auto
+  :custom
+  (treesit-auto-langs '(bash c cmake cpp css dockerfile html javascript json make markdown python rust sql toml tsx typescript yaml))
+  (treesit-auto-install t))
+
 ;; (use-package! evil-textobj-tree-sitter
 ;;   :config
 ;;   (define-key evil-outer-text-objects-map "e"
@@ -96,6 +101,11 @@
 (map!
  :leader
  :n
+ :desc "Browse .local"
+ "s E" (cmd!
+        (let
+            ((default-directory (f-join doom-emacs-dir ".local/straight/repos")))
+          (call-interactively #'+ivy/project-search-from-cwd)))
  :desc "Browse dotfiles"
  "f p" (cmd! (doom-project-find-file "~/codez/dotfiles")))
 
@@ -180,11 +190,6 @@
   :disabled t
   :config
   (centaur-tabs-group-by-projectile-project))
-
-(use-package! treesit-auto
-  :custom
-  (treesit-auto-langs '(bash c cmake cpp css dockerfile html javascript json make markdown python rust sql toml tsx typescript yaml))
-  (treesit-auto-install t))
 
 ;; TODO: get combobulate working.
 (use-package! combobulate
