@@ -183,17 +183,17 @@
 
 (use-package! treesit-auto
   :custom
+  (treesit-auto-langs '(bash c cmake cpp css dockerfile html javascript json make markdown python rust sql toml tsx typescript yaml))
   (treesit-auto-install t))
 
 ;; TODO: get combobulate working.
 (use-package! combobulate
-  :defer t
   :config
   (map!
    :leader
-   :prefix ("a" . "combobulate")
+   :prefix ("i" . "combobulate")
    :desc "combobulate"
-   "a" #'combobulate))
+   "i" #'combobulate))
 
 ;; (use-package)
 ;; (featurep 'aidermacs)
@@ -203,6 +203,15 @@
 (use-package! aidermacs
   :custom
   (aidermacs-default-chat-mode 'code))
+
+(use-package! org
+  :custom
+  (org-startup-folded nil)
+  :config
+  (add-hook 'org-mode-hook
+            (cmd!
+             (when (s-matches? "README.org" (buffer-name))
+               (org-fold-show-all)))))
 
 (map!
  :leader

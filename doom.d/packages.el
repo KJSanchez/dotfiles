@@ -28,15 +28,6 @@
 
 (package! imenu-list)
 
-;; TODO: find a sensible way to use perspectives workspaces, and tabs
-(package! tabspaces :disable t)
-
-;; (package! unique-dir-name
-;;   :recipe (:host github :repo "abougouffa/unique-dir-name"))
-
-;; (package! one-tab-per-project
-;;   :recipe (:host github :repo "abougouffa/one-tab-per-project"))
-
 (package! nix-mode :disable t)
 
 (package! feature-mode
