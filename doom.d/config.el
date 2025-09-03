@@ -587,15 +587,6 @@
 
 (add-hook! 'dired-mode-hook #'dired-hide-details-mode)
 
-(defun ++search-notes ()
-  (interactive)
-  (let ((default-directory org-directory))
-    (call-interactively
-     (cond ((modulep! :completion ivy)     #'+ivy/project-search)
-           ((modulep! :completion helm)    #'+helm/project-search)
-           ((modulep! :completion vertico) #'+vertico/project-search)
-           (#'projectile-ripgrep)))))
-
 (map!
  :leader
  :n
