@@ -75,6 +75,10 @@
   (treesit-auto-langs '(bash c cmake cpp css dockerfile html javascript json make markdown python rust sql toml tsx typescript yaml))
   (treesit-auto-install t))
 
+;; TODO: not working.
+;; M-x combobulate-cursor-edit-sequence-dwim does almost exactly what I want,
+;; however.
+
 ;; (use-package! evil-textobj-tree-sitter
 ;;   :config
 ;;   (define-key evil-outer-text-objects-map "e"
@@ -94,8 +98,10 @@
 (map!
  :leader
  :n
- :desc "++search-notes"
- "n s" #'++search-notes)
+ :desc "search notes"
+ "n s" (cmd!
+        (let ((default-directory org-directory))
+          (call-interactively #'+ivy/project-search))))
 
 (map!
  :leader
