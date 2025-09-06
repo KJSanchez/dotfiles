@@ -78,7 +78,7 @@
        json
        (javascript +lsp +tree-sitter)
        (markdown +grip)
-       (python +pyenv +lsp +pyright)
+       (python +pyenv +lsp +pyright +poetry)
        sh
        (yaml +lsp)
 
