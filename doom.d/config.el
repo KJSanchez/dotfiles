@@ -441,10 +441,13 @@
 
 (use-package! apheleia-mode
   :defer t
-  :init
-  (add-to-list 'apheleia-inhibit-functions
-               (cmd! (eq major-mode 'emacs-lisp-mode)))
-  (add-hook 'emacs-lisp-mode-hook #'prettier-elisp-mode))
+  ;; TODO: This is applying across all major modes.
+  ;; :init
+  ;; (add-to-list 'apheleia-inhibit-functions
+  ;;              (cmd! (eq major-mode 'emacs-lisp-mode)))
+
+  ;; (add-hook 'emacs-lisp-mode-hook #'prettier-elisp-mode)
+  )
 
 (use-package! jinja2-mode
   :defer t
