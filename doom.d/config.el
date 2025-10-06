@@ -79,16 +79,12 @@
 ;; M-x combobulate-cursor-edit-sequence-dwim does almost exactly what I want,
 ;; however.
 
-;; (use-package! evil-textobj-tree-sitter
-;;   :config
-;;   (define-key evil-outer-text-objects-map "e"
-;;               (evil-textobj-tree-sitter-get-textobj "element"))
-;;   (define-key evil-inner-text-objects-map "e"
-;;               (evil-textobj-tree-sitter-get-textobj "element.inner")))
-
-(map! :leader
-      :n
-      "k" #'lsp-ui-doc-glance)
+(use-package! combobulate
+  :defer t
+  :config
+  (map! :leader
+        :n
+        "c w" #'combobulate-cursor-edit-sequence-dwim))
 
 (map!
  :leader
@@ -124,7 +120,12 @@
 (use-package! lsp-mode
   :defer t
   :custom
-  (lsp-signature-auto-activate nil))
+  (lsp-signature-auto-activate nil)
+  :config
+  (map! :leader
+        :n
+        "k" #'lsp-ui-doc-glance))
+
 
 (use-package! lsp-tailwindcss
   :defer t
@@ -181,10 +182,12 @@
   :custom
   (doom-modeline-display-default-persp-name t)
   :config
-  ;; (doom-modeline-def-modeline 'main
-  ;;   '(bar buffer-info)
-  ;;   '(misc-info minor-modes check major-mode vcs))
-  (doom-modeline-set-modeline 'minimal t)
+  (doom-modeline-def-modeline 'main
+    '(bar buffer-info)
+    ;; Maybe don't want misc-info?
+    ;; '(minor-modes check major-mode))
+    '(misc-info minor-modes check major-mode))
+  ;; (doom-modeline-set-modeline 'minimal t)
   (map! :leader
         :desc "toggle modeline"
         "t m" #'hide-mode-line-mode
@@ -196,7 +199,6 @@
   :config
   (centaur-tabs-group-by-projectile-project))
 
-;; TODO: get combobulate working.
 (use-package! combobulate
   :config
   (map!
@@ -218,6 +220,10 @@
   :custom
   (org-startup-folded nil)
   :config
+  (map!
+   :map org-mode-map
+   :localleader
+   "a" #'org-fold-show-all)
   (add-hook 'org-mode-hook
             (cmd!
              (when (s-matches? "README.org" (buffer-name))
@@ -305,8 +311,13 @@
                       :caller #'+workspace-switch)
             (+workspace-list-names)))
 
+(when (modulep! :config default)
+  (map!
+   :leader
+   "f y" #'+default/yank-buffer-path-relative-to-project
+   "f Y" #'+default/yank-buffer-path))
+
 (map!
- :when (modulep! :config default)
  :leader
  "c x"
  (cmd! (+default/diagnostics)
@@ -353,7 +364,7 @@
 
 (map! :leader
       :desc "transparency"
-      "t T" (cmd!
+      "t t" (cmd!
              (let ((alpha (frame-parameter nil 'alpha)))
                (if (eq
                     (if (numberp alpha)
@@ -377,9 +388,17 @@
   :disabled t)
 
 (use-package! pixel-scroll
-  ;; TODO: Kinda jumpy...
-  :disabled t
-  :hook (prog-mode . pixel-scroll-mode))
+  :custom
+  ;; TODO: up scroll sensitivity. This *kinda* works?
+  (pixel-scroll-precision-use-momentum t)
+  ;; (pixel-scroll-precision-interpolate-page nil)
+  ;; (pixel-scroll-precision-large-scroll-height nil)
+  ;; (pixel-scroll-precision-interpolation-factor 2.0)
+  ;; (pixel-scroll-precision-interpolate-page t)
+  ;; (pixel-scroll-precision-large-scroll-height 27.0)
+  ;; (pixel-scroll-precision-interpolation-factor 10.0)
+  ;; :hook (prog-mode . pixel-scroll-precision-mode))
+  )
 
 (use-package! doom-ui
   :custom
