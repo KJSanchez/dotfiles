@@ -347,11 +347,6 @@
  :desc "+make/run-last"
  "c l" #'+make/run-last)
 
-(map!
- :map org-mode-map
- :localleader
- "a" #'org-show-all)
-
 (map! :leader "w o" #'delete-other-windows)
 
 (map!
