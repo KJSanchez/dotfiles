@@ -566,8 +566,8 @@
   :custom
   (+workspaces-on-switch-project-behavior t)
   :config
-  ;; TODO: do a when featurep vterm-mode
   (map!
+   :when (modulep! :term vterm)
    ;; :when (modulep! :ui workspaces)
    :map vterm-mode-map
    :e
