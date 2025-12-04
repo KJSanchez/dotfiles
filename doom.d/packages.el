@@ -28,8 +28,6 @@
 
 (package! imenu-list)
 
-(package! nix-mode :disable t)
-
 (package! feature-mode
   :recipe (:host github
            :repo "freesteph/cucumber.el"))
@@ -41,8 +39,6 @@
   (unless (modulep! :lang javascript))
   :recipe (:host github
            :repo "merrickluo/lsp-tailwindcss"))
-
-(package! cobol-mode)
 
 (package! rg
   :recipe (:host github
