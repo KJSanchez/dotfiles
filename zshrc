@@ -2,9 +2,10 @@
 # Maybe have a xdg_config_home directory instead?
 export PYTHONDONTWRITEBYTECODE=1
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
-export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+export HOMEBREW_AUTO_UPDATE_SECS=86400
 
 alias ls='ls -GH'
 alias j='cd ..'
