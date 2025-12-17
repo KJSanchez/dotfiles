@@ -73,7 +73,7 @@
 
        :lang
        (rust +lsp)
-       (cc +lsp)
+       (cc +lsp +tree-sitter)
        emacs-lisp
        json
        (javascript +lsp +tree-sitter)
