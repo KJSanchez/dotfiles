@@ -15,8 +15,6 @@
 ;;      directory (for easy access to its source code).
 
 (doom! :completion
-       corfu
-       ;; vertico
        (ivy +fuzzy)
        :ui
        doom              ; what makes DOOM look the way it does
@@ -27,7 +25,6 @@
        neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +all)   ; tame sudden yet inevitable temporary windows
-       ;; tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -38,7 +35,6 @@
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
        (format +onsave)
-       ;; parinfer          ; turn lisp into python, sort of
        ;; snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
 
@@ -47,13 +43,8 @@
        electric          ; smarter, keyword-based electric-indent
        vc                ; version-control and Emacs, sitting in a tree
 
-       :term
-       ;; eshell
-       vterm
-
        :checkers
        (syntax
-        ;; +flycheck      ; TODO: try?
         +childframe)
 
        :tools
@@ -62,9 +53,8 @@
        direnv           ; TODO https://github.com/doomemacs/doomemacs/issues/1666#issuecomment-853629887
        docker
        (eval +overlay)     ; run code, run (also, repls)
-       ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
-       lsp
+       (lsp +eglot)
        magit
        make              ; run make tasks from Emacs
 
@@ -72,15 +62,15 @@
        (:if IS-MAC macos)  ; improve compatibility with macOS
 
        :lang
-       (rust +lsp)
-       (cc +lsp +tree-sitter)
        emacs-lisp
        json
        (javascript +lsp +tree-sitter)
-       (markdown +grip)
        (python +pyenv +lsp +pyright +poetry)
        sh
        (yaml +lsp)
+       (markdown +grip)
 
+       (rust +lsp)
+       (cc +lsp +tree-sitter)
        :config
        (default +bindings +smartparens))
