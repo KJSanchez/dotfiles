@@ -75,17 +75,6 @@
   (treesit-auto-langs '(bash c cmake cpp css dockerfile html javascript json make markdown python rust sql toml tsx typescript yaml))
   (treesit-auto-install t))
 
-;; TODO: not working.
-;; M-x combobulate-cursor-edit-sequence-dwim does almost exactly what I want,
-;; however.
-
-(use-package! combobulate
-  :defer t
-  :config
-  (map! :leader
-        :n
-        "c w" #'combobulate-cursor-edit-sequence-dwim))
-
 (map!
  :leader
  :desc "delete frame"
@@ -199,22 +188,6 @@
   :config
   (centaur-tabs-group-by-projectile-project))
 
-(use-package! combobulate
-  :config
-  (map!
-   :leader
-   :prefix ("i" . "combobulate")
-   :desc "combobulate"
-   "i" #'combobulate))
-
-;; (use-package)
-;; (featurep 'aidermacs)
-;; (add-load-path! "~/codez/aidermacs")
-;; (require 'aidermacs)
-;; (unload-feature 'aidermacs)
-(use-package! aidermacs
-  :custom
-  (aidermacs-default-chat-mode 'code))
 
 (use-package! org
   :custom
@@ -228,51 +201,6 @@
             (cmd!
              (when (s-matches? "README.org" (buffer-name))
                (org-fold-show-all)))))
-
-(map!
- :leader
- :desc "Aidermacs"
- :prefix ("j" . "aider")
- :desc "aidermacs-transient-menu"
- "j" #'aidermacs-transient-menu)
-
-(use-package! vterm
-  :defer t
-  :config
-  (evil-set-initial-state 'vterm-mode 'emacs)
-  (map!
-   :when (modulep! :term vterm)
-   :map vterm-mode-map
-   :e
-   "M-<right>" (cmd! (vterm-send-escape)
-                     (vterm-send-key "f"))
-   "M-<left>" (cmd! (vterm-send-escape)
-                    (vterm-send-key "b")))
-  (map!
-   :when (featurep 'activities) ;; (modulep! :ui workspaces)
-   :leader
-   "o t" (cmd!
-          (if (activities-named "vterm")
-              (activities-switch (activities-named "vterm"))
-            (progn
-              (let* ((monitors (display-monitor-attributes-list))
-                     ;; pick monitor whose x is greater than 0 (right of main display)
-                     (right-monitor (seq-find (lambda (m)
-                                                (>
-                                                 (nth 0
-                                                      (cdr
-                                                       (assoc
-                                                        'geometry m)))
-                                                 0))
-                                              monitors))
-                     (geom (cdr (assoc 'geometry right-monitor)))
-                     (x (nth 0 geom))
-                     (y (nth 1 geom)))
-                (make-frame `((left . ,x)
-                              (top . ,y)
-                              (fullscreen . maximized)))
-                (activities-new "vterm")
-                (+vterm/here nil)))))))
 
 (map! :leader
       :desc "imenu"
@@ -438,16 +366,6 @@
 
 (after! files
   (setopt confirm-kill-emacs nil))
-
-(use-package! apheleia-mode
-  :defer t
-  ;; TODO: This is applying across all major modes.
-  ;; :init
-  ;; (add-to-list 'apheleia-inhibit-functions
-  ;;              (cmd! (eq major-mode 'emacs-lisp-mode)))
-
-  ;; (add-hook 'emacs-lisp-mode-hook #'prettier-elisp-mode)
-  )
 
 (use-package! jinja2-mode
   :defer t
