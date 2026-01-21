@@ -50,7 +50,7 @@
 
        :tools
        tree-sitter
-       (debugger +lsp)
+       debugger
        direnv           ; TODO https://github.com/doomemacs/doomemacs/issues/1666#issuecomment-853629887
        docker
        (eval +overlay)     ; run code, run (also, repls)

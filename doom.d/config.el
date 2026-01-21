@@ -115,18 +115,28 @@
         :n
         "k" #'lsp-ui-doc-glance))
 
-
 (use-package! lsp-tailwindcss
   :defer t
   :custom
   (lsp-eldoc-enable-hover nil)
   (lsp-tailwindcss-add-on-mode t))
 
+(use-package! eglot
+  :config
+  (map! :leader
+        :n
+        "k" #'eldoc-box-help-at-point)
 
-;; ;; TODO: org-table not working.
-;; (use-package! feature-mode
-;;   (featurep 'feature-mode)
-;;   :before)
+  (setf
+   (alist-get '(tsx-ts-mode typescript-ts-mode) eglot-server-programs nil nil 'equal)
+   '("rass"
+     "--"
+     "typescript-language-server" "--stdio"
+     "--"
+     "eslint-lsp" "--stdio"
+     "--"
+     "tailwindcss-language-server" "--stdio"
+     )))
 
 (use-package! tabspaces
   :defer t
@@ -567,3 +577,5 @@
 ;;
 ;; Relevant functions
 ;; (+workspace/display)
+
+

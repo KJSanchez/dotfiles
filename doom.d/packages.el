@@ -22,6 +22,9 @@
 
 (package! dash)
 
+(package! eldoc-box
+  :disable (unless (modulep! :tools lsp +eglot)))
+
 (package! f)
 
 (package! ov :disable t)
@@ -38,3 +41,7 @@
 
 (package! treesit-auto
   :disable (unless (modulep! :tools tree-sitter)))
+
+(package! evil-textobj-tree-sitter
+  :disable (unless (and (modulep! :tools tree-sitter)
+                        (modulep! :editor evil))))
