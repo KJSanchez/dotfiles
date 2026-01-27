@@ -541,10 +541,6 @@
           "Find file: "
           (append
            (directory-files-recursively
-            "~/codez/dp-warranty-backend/clients/corrigo/queries/local"
-            ".*"
-            t)
-           (directory-files-recursively
             "~/codez/dp-warranty-backend/apps/local"
             ".*"
             t))))))
