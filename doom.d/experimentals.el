@@ -4,17 +4,25 @@
 (require 'dash)
 (require 'evil)
 (require 'evil-textobj-tree-sitter)
+(require 'typescript-ts-mode)
 
-evil-textobj-tree-sitter-get-textobj
-evil-inner-text-objects-map
-evil-change
 
-(setq +evil-textobj-jsx-tag
-      (evil-textobj-tree-sitter-get-textobj
-        "jsx-tag"
-        '((jsx_element))))
+;; working!
+(progn
+  (setq query '((jsx_element) @jsx-tag))
+  (treesit-query-validate 'tsx query)
+  (define-key evil-inner-text-objects-map "x" 
+              (evil-textobj-tree-sitter-get-textobj
+                "jsx-tag"
+                '((tsx-ts-mode . ((jsx_element) @jsx-tag))
+                  ))
+              )
+  )
 
-(define-key evil-inner-text-objects-map "x" '+evil-textobj-jsx-tag)
+;; (map! :map +tree-sitter-outer-text-objects-map
+;;       "m" (evil-textobj-tree-sitter-get-textobj "import"
+;;             '((python-mode . [(import_statement) @import])
+;;               (rust-mode . [(use_declaration) @import]))))
 
 
 
@@ -30,13 +38,21 @@ evil-change
 
   )
 
-(defun my-evil-change (orig-fn beg end &optional type register yank-handler delete-func)
-  (message "evil-change called with args: %s" (list beg end type register yank-handler delete-func))
-  (apply orig-fn (list beg end type register yank-handler delete-func))
-  ;; evil-inner-word
+(evil-define-operator evil-change--jsx-tag
+  (orig-fn beg end type register yank-handler delete-func)
+  (interactive "<R><x><y>")
+  when
+  (message "evil-change called with args: %s" (list orig-fn beg end type register yank-handler delete-func))
+  (if nil
+      nil
+    (apply orig-fn (list beg end type register yank-handler delete-func))
+    )
   )
 
-(advice-add 'evil-change :around my-evil-change)
+
+
+(advice-add 'evil-change :around #'evil-change--jsx-tag)
+(advice-remove 'evil-change  #'evil-change--jsx-tag)
 
 
 (unwind-protect
