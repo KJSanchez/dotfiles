@@ -45,3 +45,5 @@
 (package! evil-textobj-tree-sitter
   :disable (unless (and (modulep! :tools tree-sitter)
                         (modulep! :editor evil))))
+
+(package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :nonrecursive t))
