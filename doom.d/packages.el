@@ -43,3 +43,5 @@
   :disable (unless (modulep! :tools tree-sitter)))
 
 (package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :nonrecursive t))
+
+(package! delight)
