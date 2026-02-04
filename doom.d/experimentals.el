@@ -22,14 +22,15 @@
         (while (not (string= (treesit-node-type node) "jsx_element"))
           (setq node (treesit-node-parent node)))
 
-        (let* ((jsx-region (++treesit-node-region node)))
+        (let* ((jsx-region (++treesit-node-region node))
+               (new-jsx-identifier (read-from-minibuffer "New JSX tag: ")))
           (cl-destructuring-bind (start . end) jsx-region
             (save-excursion
               (goto-char start)
-              (insert "<>")
+              (insert "<" new-jsx-identifier ">")
               (goto-char end)
-              (insert "</>"))
-            (call-interactively #'+format/buffer))))))
+              (insert "</" new-jsx-identifier ">")))))))
+
 
 (map!
  :map tsx-ts-mode-map
