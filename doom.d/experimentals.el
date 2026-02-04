@@ -37,7 +37,3 @@
               (delete-region start end)
               (goto-char start)
               (insert new-jsx-identifier)))))))
-
-
-;; open-identifier-region)))
-
