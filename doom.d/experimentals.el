@@ -8,11 +8,47 @@
  :localleader
  "w" (cmd! (print "TODO")))
 
+
+(map!
+ :map tsx-ts-mode-map
+ :desc "wrap in tag"
+ :localleader
+ "w" (cmd! 
+      (defun ++treesit-node-region (node)
+        (cons (copy-marker (treesit-node-start node))
+              (copy-marker (treesit-node-end node))))
+
+      (let ((node (treesit-node-at (point) 'tsx)))
+        (while (not (string= (treesit-node-type node) "jsx_element"))
+          (setq node (treesit-node-parent node)))
+
+        (let* ((jsx-region (++treesit-node-region node)))
+          (cl-destructuring-bind (start . end) jsx-region
+            (save-excursion
+              (goto-char start)
+              (insert "<>")
+              (goto-char end)
+              (insert "</>"))
+            (call-interactively #'+format/buffer))))))
+
 (map!
  :map tsx-ts-mode-map
  :desc "delete tag"
  :localleader
- "d" (cmd! (print "TODO")))
+ "d" (cmd! 
+      (defun ++treesit-node-region (node)
+        (cons (copy-marker (treesit-node-start node))
+              (copy-marker (treesit-node-end node))))
+
+      (let ((node (treesit-node-at (point) 'tsx)))
+        (while (not (string= (treesit-node-type node) "jsx_element"))
+          (setq node (treesit-node-parent node)))
+
+        (let* ((jsx-region (++treesit-node-region node)))
+          (cl-destructuring-bind (start . end) jsx-region
+            (save-excursion
+              (delete-region start end)))))))
+
 
 ;; TODO: this should handle fragments.
 (map!
@@ -20,33 +56,35 @@
  :desc "change tag"
  :localleader
  "c" (cmd!
-      (defun fn (@open-identifier)
-        (treesit-node-eq @open-identifier (treesit-node-at (point))))
-
       (defun ++treesit-node-region (node)
         (cons (copy-marker (treesit-node-start node))
               (copy-marker (treesit-node-end node))))
 
-      ;; (with-selected-window (next-window)
-      (let* ((query '((jsx_element
-                       open_tag: (jsx_opening_element name: (identifier) @open-identifier) 
-                       close_tag: (jsx_closing_element name: (identifier) @close-identifier)
-                       (:pred fn @open-identifier))))
-             (_ (treesit-query-validate 'tsx query))
-             (captures (treesit-query-capture (treesit-buffer-root-node) query))
-             (open-identifier (alist-get 'open-identifier captures))
-             (open-identifier-region (++treesit-node-region open-identifier))
-             (close-identifier (alist-get 'close-identifier captures))
-             (close-identifier-region (++treesit-node-region close-identifier))
-             (new-jsx-identifier (read-from-minibuffer "New JSX tag: ")))
-        (cl-destructuring-bind (start . end) open-identifier-region
-          (save-excursion
-            (delete-region start end)
-            (goto-char start)
-            (insert new-jsx-identifier)))
+      (let ((node (treesit-node-at (point) 'tsx)))
+        (while (not (string= (treesit-node-type node) "jsx_element"))
+          (setq node (treesit-node-parent node)))
 
-        (cl-destructuring-bind (start . end) close-identifier-region
-          (save-excursion
-            (delete-region start end)
-            (goto-char start)
-            (insert new-jsx-identifier))))))
+        (let* (
+               (open-identifier-region (-> node
+                                           (treesit-node-child-by-field-name "open_tag")
+                                           (treesit-node-child-by-field-name "name")
+                                           (++treesit-node-region)))
+               (close-identifier-region (-> node
+                                            (treesit-node-child-by-field-name "close_tag")
+                                            (treesit-node-child-by-field-name "name")
+                                            (++treesit-node-region)))
+               (new-jsx-identifier (read-from-minibuffer "New JSX tag: ")))
+
+          (cl-destructuring-bind (start . end) open-identifier-region
+            (save-excursion
+              (delete-region start end)
+              (goto-char start)
+              (insert new-jsx-identifier)))
+          
+          (cl-destructuring-bind (start . end) close-identifier-region
+            (save-excursion
+              (delete-region start end)
+              (goto-char start)
+              (insert new-jsx-identifier)))
+
+          (call-interactively #'+format/buffer)))))
