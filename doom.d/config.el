@@ -135,8 +135,8 @@
      "--"
      "eslint-lsp" "--stdio"
      "--"
-     "tailwindcss-language-server" "--stdio"
-     )))
+     "tailwindcss-language-server" "--stdio")))
+
 
 (use-package! tabspaces
   :defer t
@@ -323,15 +323,15 @@
 (use-package! pixel-scroll
   :custom
   ;; TODO: up scroll sensitivity. This *kinda* works?
-  (pixel-scroll-precision-use-momentum t)
-  ;; (pixel-scroll-precision-interpolate-page nil)
-  ;; (pixel-scroll-precision-large-scroll-height nil)
-  ;; (pixel-scroll-precision-interpolation-factor 2.0)
-  ;; (pixel-scroll-precision-interpolate-page t)
-  ;; (pixel-scroll-precision-large-scroll-height 27.0)
-  ;; (pixel-scroll-precision-interpolation-factor 10.0)
-  ;; :hook (prog-mode . pixel-scroll-precision-mode))
-  )
+  (pixel-scroll-precision-use-momentum t))
+;; (pixel-scroll-precision-interpolate-page nil)
+;; (pixel-scroll-precision-large-scroll-height nil)
+;; (pixel-scroll-precision-interpolation-factor 2.0)
+;; (pixel-scroll-precision-interpolate-page t)
+;; (pixel-scroll-precision-large-scroll-height 27.0)
+;; (pixel-scroll-precision-interpolation-factor 10.0)
+;; :hook (prog-mode . pixel-scroll-precision-mode))
+
 
 (use-package! doom-ui
   :custom
