@@ -6,13 +6,6 @@
  :map tsx-ts-mode-map
  :desc "wrap in tag"
  :localleader
- "w" (cmd! (print "TODO")))
-
-
-(map!
- :map tsx-ts-mode-map
- :desc "wrap in tag"
- :localleader
  "w" (cmd! 
       (defun ++treesit-node-region (node)
         (cons (copy-marker (treesit-node-start node))
