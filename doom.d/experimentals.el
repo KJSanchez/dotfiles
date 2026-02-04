@@ -4,7 +4,20 @@
 
 (map!
  :map tsx-ts-mode-map
- :desc "change-tag"
+ :desc "wrap in tag"
+ :localleader
+ "w" (cmd! (print "TODO")))
+
+(map!
+ :map tsx-ts-mode-map
+ :desc "delete tag"
+ :localleader
+ "d" (cmd! (print "TODO")))
+
+;; TODO: this should handle fragments.
+(map!
+ :map tsx-ts-mode-map
+ :desc "change tag"
  :localleader
  "c" (cmd!
       (defun fn (@open-identifier)
