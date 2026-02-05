@@ -314,7 +314,8 @@
 
 (map!
  :map emacs-lisp-mode-map
- :n "RET" (cmd! (eval-buffer nil t)))
+ :desc "eval-defun"
+ :n "RET" (cmd! (eval-defun nil)))
 
 ;; Something's wrong with the binary.
 (use-package! parinfer
@@ -485,6 +486,11 @@
 (use-package! kubernetes
   :defer t
   :config nil)
+
+(use-package! typescript-ts-mode
+  :hook
+  (ts-tsx-mode . (lambda ()
+                   (setq-local evil-shift-width 2))))
 
 ;; This has been more annoying than not =(.
 (use-package! persp-mode
