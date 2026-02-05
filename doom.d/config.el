@@ -312,14 +312,97 @@
 ;;       :map +popup-mode-map
 ;;       "Q" (cmd! (+popup-mode -q)))
 
-(map!
- :map emacs-lisp-mode-map
- :desc "eval-defun"
- :n "RET" (cmd! (eval-defun nil)))
 
-;; Something's wrong with the binary.
-(use-package! parinfer
-  :disabled t)
+(use-package! elisp-mode
+  :config
+  (map!
+   :map emacs-lisp-mode-map
+   :n "TAB" (cmd! (indent-rigidly (region-beginning) (region-end) 2))
+   :n "RET" (cmd! (eval-defun nil))))
+
+
+(use-package! typescript-ts-mode
+  :defer t
+  :config
+  (map!
+   :map tsx-ts-mode-map
+   :desc "wrap in tag"
+   :localleader
+   "w" (cmd! 
+        (defun ++treesit-node-region (node)
+          (cons (copy-marker (treesit-node-start node))
+                (copy-marker (treesit-node-end node))))
+
+        (let ((node (treesit-node-at (point) 'tsx)))
+          (while (not (string= (treesit-node-type node) "jsx_element"))
+            (setq node (treesit-node-parent node)))
+
+          (let* ((jsx-region (++treesit-node-region node))
+                 (new-jsx-identifier (read-from-minibuffer "New JSX tag: ")))
+            (cl-destructuring-bind (start . end) jsx-region
+              (save-excursion
+                (goto-char start)
+                (insert "<" new-jsx-identifier ">")
+                (goto-char end)
+                (insert "</" new-jsx-identifier ">")))))))
+
+  (map!
+   :map tsx-ts-mode-map
+   :desc "delete tag"
+   :localleader
+   "d" (cmd! 
+        (defun ++treesit-node-region (node)
+          (cons (copy-marker (treesit-node-start node))
+                (copy-marker (treesit-node-end node))))
+
+        (let ((node (treesit-node-at (point) 'tsx)))
+          (while (not (string= (treesit-node-type node) "jsx_element"))
+            (setq node (treesit-node-parent node)))
+
+          (let* ((jsx-region (++treesit-node-region node)))
+            (cl-destructuring-bind (start . end) jsx-region
+              (save-excursion
+                (delete-region start end)))))))
+
+  ;; TODO: this should handle fragments.
+  (map!
+   :map tsx-ts-mode-map
+   :desc "change tag"
+   :localleader
+   "c" (cmd!
+        (defun ++treesit-node-region (node)
+          (cons (copy-marker (treesit-node-start node))
+                (copy-marker (treesit-node-end node))))
+
+        (let ((node (treesit-node-at (point) 'tsx)))
+          (while (not (string= (treesit-node-type node) "jsx_element"))
+            (setq node (treesit-node-parent node)))
+
+          (let* (
+                 (open-identifier-region (-> node
+                                             (treesit-node-child-by-field-name "open_tag")
+                                             (treesit-node-child-by-field-name "name")
+                                             (++treesit-node-region)))
+                 (close-identifier-region (-> node
+                                              (treesit-node-child-by-field-name "close_tag")
+                                              (treesit-node-child-by-field-name "name")
+                                              (++treesit-node-region)))
+                 (new-jsx-identifier (read-from-minibuffer "New JSX tag: ")))
+
+            (cl-destructuring-bind (start . end) open-identifier-region
+              (save-excursion
+                (delete-region start end)
+                (goto-char start)
+                (insert new-jsx-identifier)))
+              
+            (cl-destructuring-bind (start . end) close-identifier-region
+              (save-excursion
+                (delete-region start end)
+                (goto-char start)
+                (insert new-jsx-identifier)))
+
+            (call-interactively #'+format/buffer))))))
+
 
 (use-package! pixel-scroll
   :custom
@@ -441,13 +524,6 @@
 (when (modulep! :lang javascript)
   (add-to-list 'auto-mode-alist '(".env.local" . shell-script-mode)))
 
-(use-package! rainbow-mode
-  :defer t
-  :mode ("tailwind.config.ts" . rainbow-mode))
-
-(use-package! typescript-mode
-  :mode ("tailwind.config.ts" . typescript-mode))
-
 (use-package! which-key
   :defer t
   :config
@@ -486,6 +562,13 @@
 (use-package! kubernetes
   :defer t
   :config nil)
+
+(use-package! rainbow-mode
+  :hook (typescript-ts-mode . rainbow-mode))
+
+;; Pretty sure this did nothing to begin with.
+;; (use-package! typescript-mode
+;;   :mode ("tailwind.config.ts" . typescript-mode))
 
 (use-package! typescript-ts-mode
   :hook
