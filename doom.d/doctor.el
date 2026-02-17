@@ -29,6 +29,11 @@
       (warn! "typescript-language-server is not installed."))))
 
 
+(when (featurep 'mermaid)
+  (unless (executable-find "mmdc")
+    (warn! "mermaid-cli is not installed.")))
+
+
 ;; TODO: this is giving a false positive.
 ;; (unless (find-font (font-spec :family "Fira Code"))
 ;;   (warn! "fira code font not found."))
