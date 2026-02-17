@@ -23,57 +23,16 @@
 ;;   `require' or `use-package'.
 ;; - `map!' for binding new keys
 
+
 (global-visual-line-mode 1)
-
+(setq initial-major-mode 'emacs-lisp-mode)
 (set-frame-parameter nil 'fullscreen 'maximized)
-
-(set-popup-rule! "*helpful function:" :height 100)
-
-(set-popup-rule! "*helpful macro:" :height 100)
-
-(set-popup-rule! "*helpful command:"
-  :height 25
-  :side 'bottom)
-
-(set-popup-rule! "*helpful variable:"
-  :height 25
-  :side 'bottom)
-
-(set-popup-rule! "*Ilist*"
-  :side 'right
-  :width 50
-  :select t)
-
-(set-popup-rule! "*ert*"
-  :side 'right
-  :width .5)
-
-(set-popup-rule! "*compilation*"
-  :select nil
-  :width .5
-  :side 'right)
-
-(set-popup-rule! "*cargo-test*"
-  :select nil
-  :width .5
-  :side 'right)
-
-;; (set-popup-rule! "*compilation*" :select t :height 31 :side 'top)
-(set-popup-rule! "*Anaconda*" :height 25)
-
-(set-popup-rule! "*pytest*"
-  :height .25
-  :select t)
-
-
-;;; Code:
 (load! "lib.el" doom-user-dir t)
-;; (load! "experimentals.el" doom-user-dir t)
 
-(use-package! treesit-auto
-  :custom
-  (treesit-auto-langs '(bash c cmake cpp css dockerfile html javascript json make markdown python rust sql toml tsx typescript yaml))
-  (treesit-auto-install t))
+(set-popup-rule! '(major-mode . helpful-mode) :height .5 :select t)
+(set-popup-rule! '(major-mode . help-mode) :height .5 :select t)
+(set-popup-rule! '(major-mode . imenu-list-major-mode) :side 'right :width 50 :select t)
+(set-popup-rule! '(major-mode . compilation-mode) :select nil :width .5 :side 'right)
 
 (map!
  :leader
@@ -105,6 +64,18 @@
  "M-n" #'+ivy/woccur
  "," #'ivy-next-line
  "<" #'ivy-previous-line)
+
+
+(use-package! direnv
+  :config
+  (defun direnv-allow--onsave ()
+    (add-hook! 'after-save-hook :local #'direnv-allow))
+  (add-hook! 'direnv-mode-hook #'direnv-allow--onsave))
+
+(use-package! treesit-auto
+  :custom
+  (treesit-auto-langs '(bash c cmake cpp css dockerfile html javascript json make markdown python rust sql toml tsx typescript yaml))
+  (treesit-auto-install t))
 
 (use-package! lsp-mode
   :defer t
@@ -183,10 +154,7 @@
   :config
   (doom-modeline-def-modeline 'main
     '(bar buffer-info)
-    ;; Maybe don't want misc-info?
-    ;; '(minor-modes check major-mode))
     '(misc-info minor-modes check major-mode))
-  ;; (doom-modeline-set-modeline 'minimal t)
   (map! :leader
         :desc "toggle modeline"
         "t m" #'hide-mode-line-mode
@@ -202,6 +170,7 @@
 (use-package! org
   :custom
   (org-startup-folded nil)
+  (org-directory "~/Library/Mobile Documents/iCloud~md~obsidian/Documents")
   :config
   (map!
    :map org-mode-map
@@ -211,10 +180,6 @@
             (cmd!
              (when (s-matches? "README.org" (buffer-name))
                (org-fold-show-all)))))
-
-(map! :leader
-      :desc "imenu"
-      "t i" #'imenu-list-minor-mode)
 
 (use-package! evil
   :custom
@@ -236,6 +201,9 @@
  :desc "Switch to last buffer"
  "l" #'evil-switch-to-windows-last-buffer)
 
+(map! :leader
+      :desc "imenu"
+      "t i" #'imenu-list-minor-mode)
 
 (map!
  :when (and (modulep! :ui workspaces)
@@ -442,7 +410,6 @@
   ;; (doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
   ;; (doom-font (font-spec :family "Menlo" :size 16))
   ;; (doom-font (font-spec :family "Monaco" :size 16))
-  (org-directory "~/codez/obsidian")
   (doom-theme 'doom-spacegrey)
   ;; (add-hook! doom-big-font-mode-hook
   ;;   (set-popup-rule! "*compilation*" :select t :side 'left :width 124))
