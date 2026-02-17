@@ -4,11 +4,10 @@
 (package! realgud-lldb :disable
   (unless (modulep! :lang cc)))
 
-(package! python-coverage :disable
-  (unless (modulep! :lang python)))
-
-(package! jinja2-mode :disable
-  (unless (modulep! :lang python)))
+(when (modulep! :lang python)
+  (package! conda)
+  (package! jinja2-mode)
+  (package! python-coverage))
 
 (package! kubernetes :disable
   (unless (modulep! :tools docker)))
@@ -45,3 +44,5 @@
 (package! combobulate :recipe (:host github :repo "mickeynp/combobulate" :nonrecursive t))
 
 (package! delight)
+
+(package! direnv)
