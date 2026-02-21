@@ -46,3 +46,5 @@
 (package! delight)
 
 (package! direnv)
+
+(package! pdf-tools)

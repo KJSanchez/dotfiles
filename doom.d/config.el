@@ -65,6 +65,11 @@
  "," #'ivy-next-line
  "<" #'ivy-previous-line)
 
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-tools-mode)
+  :custom
+  (pdf-view-display-size 'fit-height))
+
 
 (use-package! direnv
   :config
