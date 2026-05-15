@@ -46,12 +46,10 @@
        vc                ; version-control and Emacs, sitting in a tree
 
        :checkers
-       (syntax
-        +childframe)
+       (syntax +childframe +flymake)
 
        :tools
        tree-sitter
-       debugger
        direnv           ; TODO https://github.com/doomemacs/doomemacs/issues/1666#issuecomment-853629887
        docker
        (eval +overlay)     ; run code, run (also, repls)
