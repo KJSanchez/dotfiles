@@ -1,6 +1,8 @@
 ;;; ../codez/dotfiles/doom.d/doctor.el -*- lexical-binding: t; -*-
 
 (require 'treesit)
+(require 'aidermacs nil t)
+(require 'mermaid nil t)
 
 (when (modulep! :tools tree-sitter)
   (when (modulep! :lang javascript)
@@ -29,9 +31,18 @@
       (warn! "typescript-language-server is not installed."))))
 
 
+(when (featurep 'aidermacs)
+  (unless (executable-find "mcpm-aider")
+    ;; npm i -g @poai/mcpm-aider
+    (warn! "mcpm-aider is not installed."))
+  (unless (executable-find "aider")
+    (warn! "aider is not installed.")))
+
+
 (when (featurep 'mermaid)
   (unless (executable-find "mmdc")
     (warn! "mermaid-cli is not installed.")))
+
 
 
 ;; TODO: this is giving a false positive.

@@ -106,12 +106,9 @@
   (setf
    (alist-get '(tsx-ts-mode typescript-ts-mode) eglot-server-programs nil nil 'equal)
    '("rass"
-     "--"
-     "typescript-language-server" "--stdio"
-     "--"
-     "eslint-lsp" "--stdio"
-     "--"
-     "tailwindcss-language-server" "--stdio")))
+     "--" "typescript-language-server" "--stdio"
+     "--" "eslint-lsp" "--stdio"
+     "--" "tailwindcss-language-server" "--stdio")))
 
 
 (use-package! tabspaces
@@ -175,8 +172,14 @@
 (use-package! org
   :custom
   (org-startup-folded nil)
-  (org-directory "~/Library/Mobile Documents/iCloud~md~obsidian/Documents")
+  (org-directory "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/org/")
+  (org-default-notes-file "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/org/worklog.org")
+  ;; (org-refile-targets '(()))
   :config
+  (map!
+   :map org-mode-map
+   :localleader
+   "r" #'org-refile)
   (map!
    :map org-mode-map
    :localleader
