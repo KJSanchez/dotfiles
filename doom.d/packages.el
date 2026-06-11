@@ -12,6 +12,9 @@
 (package! kubernetes :disable
   (unless (modulep! :tools docker)))
 
+(package! aidermacs :disable t)
+(package! gptel :recipe (:nonrecursive t) :disable t)
+(package! mcp :disable t)
 (package! copilot
   :recipe (:host github
            :repo "copilot-emacs/copilot.el"
@@ -48,3 +51,9 @@
 (package! direnv)
 
 (package! pdf-tools)
+
+(package! visual-basic-mode
+  :recipe (:host github
+           :repo "emacsmirror/visual-basic-mode"))
+
+(package! powershell)

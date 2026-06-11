@@ -32,7 +32,7 @@
     (put-text-property
      (point)
      (dolist (line banner (point))
-       (insert (+doom-dashboard--center
+       (insert (+dashboard--center
                 +doom-dashboard--width
                 (concat
                  line (make-string (max 0 (- longest-line (length line)))
