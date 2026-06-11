@@ -412,45 +412,49 @@
 ;; :hook (prog-mode . pixel-scroll-precision-mode))
 
 
-(use-package! doom-ui
-  :custom
-  (doom-font (font-spec :family "Fira Code" :weight 'medium :size 13))
-  ;; (doom-font (font-spec :family "iosevka" :size 15 :width 'normal))
-  ;; (doom-font (font-spec :family "Menlo" :size 16))
-  ;; (doom-font (font-spec :family "Monaco" :size 16))
-  (doom-theme 'doom-spacegrey)
-  ;; (add-hook! doom-big-font-mode-hook
-  ;;   (set-popup-rule! "*compilation*" :select t :side 'left :width 124))
-  (+doom-dashboard-ascii-banner-fn
-   #'++doom-dashboard-draw-ascii-banner-fn)
-  (+doom-dashboard-menu-sections
-   '(("Browse project"
-      :icon (nerd-icons-octicon "nf-oct-briefcase" :face
-                                'doom-dashboard-menu-title)
-      :action projectile-switch-project)
-     ("Browse .doom.d"
-      :icon (nerd-icons-octicon "nf-oct-tools" :face
-                                'doom-dashboard-menu-title)
-      :when (file-directory-p doom-user-dir)
-      :action doom/open-private-config)
-     ("Recently opened files"
-      :icon (nerd-icons-faicon "nf-fa-file_text" :face
-                               'doom-dashboard-menu-title)
-      :action recentf-open-files)
-     ("Reload last session"
-      :icon (nerd-icons-octicon "nf-oct-history" :face
-                                'doom-dashboard-menu-title)
-      :when
-      (cond ((modulep! :ui workspaces))
-            (file-exists-p (expand-file-name persp-auto-save-fname
-                                             persp-save-dir))
-            ((require 'desktop nil t)
-             (file-exists-p (desktop-full-file-name))))
-      :action doom/quickload-session)))
-  (+doom-dashboard-functions
-   '(doom-dashboard-widget-banner
-     doom-dashboard-widget-shortmenu
-     doom-dashboard-widget-loaded)))
+;; (after! init
+(defun ++doom-init-ui ()
+  (setopt doom-font (font-spec :family "Fira Code" :weight 'medium :size 13))
+  (setopt doom-theme 'doom-spacegrey)
+  (call-interactively #'doom/reload-theme))
+;; (add-hook 'doom-init-ui-hook #'++doom-init-ui)
+
+;; TODO: figure out how to get these to fire after the ui has loaded.
+(setopt doom-font (font-spec :family "Fira Code" :weight 'medium :size 13))
+(setopt doom-theme 'doom-spacegrey)
+
+;; TODO: figure out why this isn't working.
+;; (setopt +dashboard-ascii-banner-fn #'++doom-dashboard-draw-ascii-banner-fn)
+
+(setopt +dashboard-menu-sections
+        '(("Browse project"
+           :icon (nerd-icons-octicon "nf-oct-briefcase" :face
+                                     'dashboard-menu-title)
+           :action projectile-switch-project)
+          ("Browse .doom.d"
+           :icon (nerd-icons-octicon "nf-oct-tools" :face
+                                     'dashboard-menu-title)
+           :when (file-directory-p doom-user-dir)
+           :action doom/open-private-config)
+          ("Recently opened files"
+           :icon (nerd-icons-faicon "nf-fa-file_text" :face
+                                    'dashboard-menu-title)
+           :action recentf-open-files)
+          ("Reload last session"
+           :icon (nerd-icons-octicon "nf-oct-history" :face
+                                     'dashboard-menu-title)
+           :when
+           (cond ((modulep! :ui workspaces))
+                 (file-exists-p (expand-file-name persp-auto-save-fname
+                                                  persp-save-dir))
+                 ((require 'desktop nil t)
+                  (file-exists-p (desktop-full-file-name))))
+           :action doom/quickload-session)))
+
+;; (setopt +dashboard-functions
+;;         '(dashboard-widget-banner
+;;           dashboard-widget-shortmenu
+;;           dashboard-widget-loaded))
 
 (after! files
   (setopt confirm-kill-emacs nil))
