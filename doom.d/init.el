@@ -15,11 +15,12 @@
 ;;      directory (for easy access to its source code).
 
 (doom! :completion
-       (ivy +fuzzy)
+       ;; (ivy +fuzzy)
+       vertico
        corfu
        :ui
        doom              ; what makes DOOM look the way it does
-       doom-dashboard    ; a nifty splash screen for Emacs
+       dashboard         ; a nifty splash screen for Emacs
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        indent-guides     ; highlighted indent columns
        modeline
