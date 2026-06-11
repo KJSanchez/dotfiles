@@ -5,6 +5,7 @@ export RIPGREP_CONFIG_PATH=~/.ripgreprc
 export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/Users/kesanchez/.dotnet/tools:$PATH"
 export HOMEBREW_AUTO_UPDATE_SECS=86400
 
 alias ls='ls -GH'
@@ -35,6 +36,10 @@ eval "$(pyenv init --path --no-rehash)"
 
 eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
+
+# Needed for dotnet sdk version that isn't on homebrew.
+eval "$(mise activate zsh)"
+
 # Disabling this to see if it breaks linting in `json/ts`
 # eval "$(nodenv init -)"
 # eval "$(rbenv init - zsh)"

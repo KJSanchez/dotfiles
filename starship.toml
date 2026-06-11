@@ -56,3 +56,7 @@ truncation_symbol = "…"
 
 [pulumi]
 format = 'via [$stack]($style) '
+
+[dotnet]
+detect_extensions = ["csproj", "fsproj", "xproj"]
+detect_files = ["global.json", "Directory.Build.props", "Directory.Build.targets", "Packages.props"]
