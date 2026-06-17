@@ -15,7 +15,6 @@
 ;;      directory (for easy access to its source code).
 
 (doom! :completion
-       ;; (ivy +fuzzy)
        vertico
        corfu
        :ui
@@ -38,11 +37,10 @@
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
        (format +onsave)
-       ;; snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       dired
+       (dired +dirvish)
        electric          ; smarter, keyword-based electric-indent
        vc                ; version-control and Emacs, sitting in a tree
 
@@ -64,7 +62,7 @@
 
        :lang
        emacs-lisp
-       json
+       (json +tree-sitter)
        (javascript +lsp +tree-sitter)
        (python +pyenv +lsp +pyright +poetry)
        sh
