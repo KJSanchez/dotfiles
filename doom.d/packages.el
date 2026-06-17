@@ -20,9 +20,13 @@
            :repo "copilot-emacs/copilot.el"
            :files ("*.el")))
 
+(package! magit-git-toolbelt :disable (unless (modulep! :tools magit)))
+
 (package! csv-mode :disable t)
 
 (package! dash)
+
+(package! ob-restclient)
 
 (package! eldoc-box
   :disable (unless (modulep! :tools lsp +eglot)))

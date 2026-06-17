@@ -97,6 +97,10 @@
   (lsp-eldoc-enable-hover nil)
   (lsp-tailwindcss-add-on-mode t))
 
+(use-package! magit-git-toolbelt
+  :custom
+  (magit-git-toolbelt-key "."))
+
 (use-package! eglot
   :config
   (map! :leader
