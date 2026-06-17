@@ -253,6 +253,11 @@
  :desc "compile"
  "c C" #'+ivy/compile)
 
+
+(map!
+ :leader
+ "s m" #'+default/search-project-for-symbol-at-point)
+
 (map! :leader
       :desc "recompile"
       "c c" #'recompile)
