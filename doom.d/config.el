@@ -134,6 +134,10 @@
                       (tabspaces-mode 1)
                       (tabspaces-restore-session)))))
 
+(use-package! eldoc
+  :config
+  (remove-hook 'eldoc-display-functions #'eldoc-display-in-echo-area))
+
 (use-package! copilot
   :hook ((emacs-lisp-mode . copilot-mode)
          (json-mode . copilot-mode)
