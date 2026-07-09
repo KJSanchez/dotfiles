@@ -66,6 +66,7 @@
        (javascript +lsp +tree-sitter)
        (python +pyenv +lsp +pyright +poetry)
        sh
+       (web +lsp +tree-sitter)
        (yaml +lsp)
        (markdown +grip)
 
