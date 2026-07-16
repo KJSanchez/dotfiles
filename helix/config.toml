@@ -1,6 +1,8 @@
 theme = "onedark"
-# theme = "spacegrey"
-
 
 [keys.insert]
 "k" = { "j" = "normal_mode" }
+
+[editor.cursor-shape]
+insert = "bar"
+
