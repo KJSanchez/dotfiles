@@ -179,7 +179,7 @@
 
 (use-package! org
   :custom
-  (org-startup-folded nil)
+  (org-startup-folded 'showall)
   (org-directory "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/org/")
   (org-default-notes-file "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/org/worklog.org")
   ;; (org-refile-targets '(()))
@@ -191,11 +191,7 @@
   (map!
    :map org-mode-map
    :localleader
-   "a" #'org-fold-show-all)
-  (add-hook 'org-mode-hook
-            (cmd!
-             (when (s-matches? "README.org" (buffer-name))
-               (org-fold-show-all)))))
+   "a" #'org-fold-show-all))
 
 (use-package! evil
   :custom
